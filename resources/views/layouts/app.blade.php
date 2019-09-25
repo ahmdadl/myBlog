@@ -51,7 +51,18 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <span class="d-inline badge badge-primary mr-1">
+                                        <span class="d-inline mr-1 badge @switch(Auth::user()->type)
+                                        @case('admin')
+                                            {{'badge-danger'}}
+                                            @break
+                                        @case('normal')
+                                            {{'badge-primary'}}
+                                            @break
+                                        @case('super')
+                                            {{'badge-success'}}
+                                        @default
+                                            {{'badge-primary'}}
+                                    @endswitch">
                                         {{Auth::user()->type}}
                                     </span>
                                 <img class="img d-inline rounded-circle pr-1" src='{{asset('img/user.png')}}' width="35" height="35">
