@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,8 @@ class User extends Authenticatable
      * 
      * normal user => declare posts and assign categoreis to them
      * team memmber user => change teams posts
-     * super user => above with any team and edit|remove categories
+     * visor user => above with any team and add categories
+     * super user =>  above and edit|remove categories
      * admin => change user access level
      */
     const ADD_POSTS = 1;
@@ -51,27 +53,55 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function canDo(string $perm) : bool
+    /**
+     * check if user can do a specific action
+     *
+     * @param string $perm
+     * @param bool $set
+     * @return boolean
+     */
+    public function canDo(int $userPermission) : bool
     {
-        switch ($perm) {
-            case 'post':
-                return $this->checkPermission(self::ADD_POSTS);
-            case 'del_post':
-                    return $this->checkPermission(self::DELETE_POSTS);
-            case 'add_ctg':
-                return $this->checkPermission(self::ADD_CATEGORIES);
-            case 'edit_ctg':
-                return $this->checkPermission(self::EDIT_CATEGORIES);
-            case 'edit_access':
-                return $this->checkPermission(self::EDIT_USER_ACCESS);
-            default:
-                return false;
-        }
+        return !!($this->perm & $userPermission);
     }
 
-    protected function checkPermission(
-        int $user_Permission = self::ADD_POSTS
-    ) : bool {
-        return !!($this->perm & $user_Permission);
+    public function givePermTo(int $userPermission) : void
+    {
+        // list all permissions into one array
+        $arr = [
+            self::ADD_POSTS,
+            self::DELETE_POSTS,
+            self::ADD_CATEGORIES,
+            self::EDIT_CATEGORIES,
+            self::EDIT_USER_ACCESS
+        ];
+
+        /**
+         * returns the sum of avaliable permissions to this user
+         * be removing the permissions greate than $userPermission
+         * 
+         * @example $userPermission = 2 which is DELETE_POST
+         *  THEN 4,8,16 will be removed
+         */
+        $this->perm = array_sum(
+            array_filter($arr, function ($x) use ($userPermission) {
+                return $x <= $userPermission;
+            })
+        );
+        
+        $this->update();
+    }
+
+    public function getTypeAttribute() : string
+    {
+        if ($this->canDo(self::EDIT_USER_ACCESS)) {
+            return 'admin';
+        } elseif ($this->canDo(self::EDIT_CATEGORIES)) {
+            return 'super';
+        } elseif ($this->canDo(self::ADD_CATEGORIES)) {
+            return 'visor';
+        } else {
+            return 'normal';
+        }
     }
 }

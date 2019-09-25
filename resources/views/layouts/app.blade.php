@@ -51,6 +51,10 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <span class="d-inline badge badge-primary mr-1">
+                                        {{Auth::user()->type}}
+                                    </span>
+                                <img class="img d-inline rounded-circle pr-1" src='{{asset('img/user.png')}}' width="35" height="35">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
