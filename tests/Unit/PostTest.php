@@ -27,4 +27,13 @@ class PostTest extends TestCase
 
         $this->assertEquals(Str::slug($post->title), $post->slug);
     }
+
+    public function testItHasPath()
+    {
+        $post = factory(Post::class)->make();
+
+        $this->assertIsString($post->path());
+
+        $this->assertEquals('/posts/' . $post->slug, $post->path());
+    }
 }

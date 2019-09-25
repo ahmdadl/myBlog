@@ -20,4 +20,9 @@ class Post extends Model
     {
         return Str::slug($this->title);
     }
+
+    public function path() : string
+    {
+        return '/posts/' . $this->slug;
+    }
 }
