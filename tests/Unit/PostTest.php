@@ -2,14 +2,19 @@
 
 namespace Tests\Unit;
 
+use App\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    // public function testItHasOwner()
-    // {
-    //     $project = factory(\App\Project::class)->create();
-    // }
+    public function testItHasMiniBody()
+    {
+        $post = factory(Post::class)->make();
+
+        $this->assertIsString($post->mini_body);
+
+        $this->assertLessThanOrEqual(250, strlen($post->mini_body));
+    }
 }
