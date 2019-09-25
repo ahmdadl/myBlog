@@ -16,11 +16,6 @@ class Post extends Model
         return Str::substr($this->body, 0, 250);
     }
 
-    public function getSlugAttribute() : string
-    {
-        return Str::slug($this->title);
-    }
-
     public function path() : string
     {
         return '/posts/' . $this->slug;
