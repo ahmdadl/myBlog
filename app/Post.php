@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App;
 
@@ -12,5 +12,10 @@ class Post extends Model
     public function getMiniBodyAttribute() : string
     {
         return Str::substr($this->body, 0, 250);
+    }
+
+    public function getSlugAttribute() : string
+    {
+        return Str::slug($this->title);
     }
 }
