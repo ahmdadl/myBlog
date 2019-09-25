@@ -9,6 +9,8 @@ class Post extends Model
 {
     protected $fillable = ['title', 'body', 'img'];
 
+    protected $primaryKey = 'slug';
+
     public function getMiniBodyAttribute() : string
     {
         return Str::substr($this->body, 0, 250);
