@@ -25,4 +25,13 @@ class PostControllerTest extends TestCase
             ->assertSee($post->title)
             ->assertSee($post->body);
     }
+
+    public function testGuestCannotCreatePost()
+    {
+        $this->get('/posts/create')->assertRedirect('login');
+
+        $this->post('/posts', [])->assertRedirect('login');
+    }
+
+
 }
