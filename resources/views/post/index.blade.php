@@ -5,13 +5,17 @@
 @endsection
 
 @section('content')
-    <div class="row">
+    <div class="row ml-2">
         @forelse ($posts as $post)
-            <div class='card col-sm-6 col-md-4 col-lg-3'>
+            <div class='card col-sm-6 col-md-4 col-lg-3 p-0 shadow'>
                 <div class="card border-primary">
                   <img class="card-img-top" src="{{asset('img/'.$post->img)}}" alt="{{$post->title}}">
                   <div class="card-body">
-                    <h4 class="card-title">{{$post->title}}</h4>
+                    <h4 class="card-title">
+                        <a href='/posts/{{$post->slug}}' class="">
+                            {{$post->title}}
+                        </a>
+                    </h4>
                     <p class="card-text">{{$post->mini_body}}</p>
                   </div>
                 </div>
