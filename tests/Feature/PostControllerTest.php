@@ -11,16 +11,13 @@ class PostControllerTest extends TestCase
 {
     public function testAnyUserCanViewAllPosts()
     {
-        $post = PostFactory::ownedBy($this->signIn())->create();
+        $post = PostFactory::create();
 
         $this->assertDatabaseHas('posts', $post->toArray());
     }
 
     public function testPostCanBeViewdBySlug()
     {
-        $this->withoutExceptionHandling();
-        $this->signIn();
-
         $post = PostFactory::ownedBy($this->signIn())->create();
 
         $this->get('/posts/'. $post->slug)
