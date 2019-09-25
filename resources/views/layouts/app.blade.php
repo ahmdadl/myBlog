@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-sm navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-sm navbar-light bg-primary shadow-sm text-light">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -33,7 +33,9 @@
                 <div class="collapse navbar-collapse navbar-sm-" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li>
+                           <a class="nav-link active" href="/posts">Posts</a>
+                        </li>  
                     </ul>
 
                     <!-- Right Side Of Navbar -->
