@@ -20,7 +20,7 @@ class PostControllerTest extends TestCase
     {
         $post = PostFactory::ownedBy($this->signIn())->create();
 
-        $this->get('/posts/'. $post->slug)
+        $this->get($post->path())
             ->assertStatus(200)
             ->assertSee($post->title)
             ->assertSee($post->body);

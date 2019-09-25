@@ -9,11 +9,24 @@ class Post extends Model
 {
     protected $fillable = ['title', 'body', 'img'];
 
-    protected $primaryKey = 'slug';
-
     public function getMiniBodyAttribute() : string
     {
         return Str::substr($this->body, 0, 250);
+    }
+
+    public function getSlugAttribute(string $slug) : string
+    {
+        return $slug;
+    }
+
+    /**
+     * Get the route key for the model
+     *
+     * @return string
+     */
+    public function getRouteKeyName() : string
+    {
+        return 'slug';
     }
 
     public function path() : string
