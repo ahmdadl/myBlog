@@ -4,13 +4,14 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Facades\Tests\Setup\PostFactory;
 use Tests\TestCase;
 
 class PostControllerTest extends TestCase
 {
     public function testAnyUserCanViewAllPosts()
     {
-        $post = factory(\App\Post::class)->create();
+        $post = PostFactory::ownedBy($this->signIn())->create();
 
         $this->assertDatabaseHas('posts', $post->toArray());
     }
@@ -20,7 +21,7 @@ class PostControllerTest extends TestCase
         $this->withoutExceptionHandling();
         $this->signIn();
 
-        $post = factory(\App\Post::class)->create();
+        $post = PostFactory::ownedBy($this->signIn())->create();
 
         $this->get('/posts/'. $post->slug)
             ->assertStatus(200)
