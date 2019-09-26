@@ -39,17 +39,9 @@ class PostController extends Controller
      */
     public function store(Request $request) : RedirectResponse
     {
-        $attr = request()->validate([
-            'title' => 'required|string|min:10|max:70',
-            'body' => 'required|string|min:50',
-            'img' => 'nullable'
-        ]);
-
-        $attr['userId'] = auth()->id();
-
-        $attr['slug'] = Str::slug($attr['title']);
-
-        $post = Post::create($attr);
+        $post = auth()->user()->createWithSlug(
+            $this->validateInputs()
+        );
 
         return redirect($post->path());
     }
@@ -97,5 +89,14 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    private function validateInputs()
+    {
+        return request()->validate([
+            'title' => 'required|string|min:10|max:70',
+            'body' => 'required|string|min:50',
+            'img' => 'nullable'
+        ]);
     }
 }
