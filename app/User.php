@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -103,5 +105,17 @@ class User extends Authenticatable
         } else {
             return 'normal';
         }
+    }
+
+    public function posts() : HasMany
+    {
+        return $this->hasMany(Post::class, 'userId')->latest();
+    }
+
+    public function createWithSlug(array $post) : Post
+    {
+        $post['slug'] = Str::slug($post['title']);
+
+        return $this->posts()->create($post);
     }
 }

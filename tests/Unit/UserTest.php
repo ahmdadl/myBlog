@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
+use Facades\Tests\Setup\PostFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -54,5 +55,18 @@ class UserTest extends TestCase
         $user->givePermTo(User::EDIT_USER_ACCESS);
 
         $this->assertEquals('admin', $user->type);
+    }
+
+    public function testHeCanCreatePostWithSlug()
+    {
+        $post = PostFactory::ownedBy($user = $this->signIn())
+            ->create('make');
+        
+        $post = $user->createWithSlug($post->attributesToArray());
+
+        $this->assertEquals(
+            $user->posts->last()->toArray(),
+            $post->toArray()
+        );
     }
 }
