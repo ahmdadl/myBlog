@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -36,9 +37,21 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) : RedirectResponse
     {
-        //
+        $attr = request()->validate([
+            'title' => 'required|string|min:10|max:70',
+            'body' => 'required|string|min:50',
+            'img' => 'nullable'
+        ]);
+
+        $attr['user_id'] = auth()->id();
+
+        $attr['slug'] = Str::slug($attr['title']);
+
+        $post = Post::create($attr);
+
+        return redirect($post->path());
     }
 
     /**

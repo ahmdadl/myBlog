@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'body', 'img'];
+    protected $guarded = [];
 
     public function getMiniBodyAttribute() : string
     {

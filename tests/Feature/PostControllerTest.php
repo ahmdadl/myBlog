@@ -33,5 +33,25 @@ class PostControllerTest extends TestCase
         $this->post('/posts', [])->assertRedirect('login');
     }
 
+    public function testAuthrizedUserCanCreatePost()
+    {
+        $this->withoutExceptionHandling();
 
+        $post = PostFactory::ownedBy($this->signIn())->create('make');
+
+        $this->get('/posts/create')
+            ->assertStatus(200)
+            ->assertViewIs('post.create');
+
+        $this->post(
+            '/posts',
+            $post->attributesToArray()
+        )->assertRedirect($post->path());
+
+        $this->assertDatabaseHas('posts', $post->attributesToArray());
+
+        $this->get($post->path())
+            ->assertSee($post->title)
+            ->assertSee($post->body);
+    }
 }
