@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Post;
+use Facades\Tests\Setup\PostFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
@@ -35,5 +36,17 @@ class PostTest extends TestCase
         $this->assertIsString($post->path());
 
         $this->assertEquals('/posts/' . $post->slug, $post->path());
+    }
+
+    public function testItHasOwner()
+    {
+        $user = $this->signIn();
+
+        $post = PostFactory::ownedBy($user)->create();
+
+        $this->assertEquals(
+            $post->owner->toArray(),
+            $user->toArray()
+        );
     }
 }

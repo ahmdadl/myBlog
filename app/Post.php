@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -32,5 +33,10 @@ class Post extends Model
     public function path() : string
     {
         return '/posts/' . $this->slug;
+    }
+
+    public function owner() : BelongsTo
+    {
+        return $this->belongsTo(User::class, 'userId');
     }
 }

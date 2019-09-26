@@ -45,7 +45,7 @@ class PostController extends Controller
             'img' => 'nullable'
         ]);
 
-        $attr['user_id'] = auth()->id();
+        $attr['userId'] = auth()->id();
 
         $attr['slug'] = Str::slug($attr['title']);
 
