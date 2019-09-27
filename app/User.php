@@ -73,7 +73,7 @@ class User extends Authenticatable
      * @param integer $userPermission
      * @return boolean
      */
-    public function givePermTo(int $userPermission) : bool
+    public function givePermTo(User $user, int $userPermission) : bool
     {
         // check if user can change user access
         if (!$this->canDo(self::EDIT_USER_ACCESS)) {
@@ -96,13 +96,13 @@ class User extends Authenticatable
          * @example $userPermission = 2 which is DELETE_POST
          *  THEN 4,8,16 will be removed
          */
-        $this->perm = array_sum(
+        $user->perm = array_sum(
             array_filter($arr, function ($x) use ($userPermission) {
                 return $x <= $userPermission;
             })
         );
         
-        return $this->update();
+        return $user->update();
     }
 
     public function getTypeAttribute() : string

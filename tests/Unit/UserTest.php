@@ -6,6 +6,7 @@ use App\User;
 use Facades\Tests\Setup\PostFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Facades\Tests\Setup\UserFactory;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -13,9 +14,9 @@ class UserTest extends TestCase
 
     public function testHeCanBeGivedPermission()
     {
-        $user = factory(User::class)->create();
+        [$admin, $user] = UserFactory::createWithAdmin();
 
-        $user->givePermTo(User::ADD_CATEGORIES);
+        $admin->givePermTo($user, User::ADD_CATEGORIES);
 
         $this->assertTrue($user->canDo(User::ADD_CATEGORIES));
         $this->assertFalse($user->canDo(User::EDIT_CATEGORIES));
@@ -23,11 +24,11 @@ class UserTest extends TestCase
 
     public function testHeHasPermission() : void
     {
-        // create user
-        $user = factory(User::class)->create();
+        // create admin and user
+        [$admin, $user] = UserFactory::createWithAdmin();
 
         // give him add_categories permission
-        $user->givePermTo(User::ADD_CATEGORIES);
+        $admin->givePermTo($user, User::ADD_CATEGORIES);
 
         // check if user can delete posts
         $this->assertTrue($user->canDo(User::ADD_POSTS));
@@ -44,31 +45,30 @@ class UserTest extends TestCase
 
     public function testHeHasType() : void
     {
-        $user = factory(User::class)->create();
+        [$admin, $user] = UserFactory::createWithAdmin();
 
         // give him edit_categories permission
-        $user->givePermTo(User::EDIT_CATEGORIES);
+        $admin->givePermTo($user, User::EDIT_CATEGORIES);
 
         $this->assertEquals('super', $user->type);
 
         // give him edit user access permission
-        $user->givePermTo(User::EDIT_USER_ACCESS);
+        $admin->givePermTo($user, User::EDIT_USER_ACCESS);
 
         $this->assertEquals('admin', $user->type);
     }
 
     public function testOnlyAdminCanEditUserAccess()
     {
-        $randomUser = factory(User::class)->create();
-
-        $this->assertFalse(
-            $randomUser->givePermTo(User::ADD_CATEGORIES)
-        );
-
-        $adminUser = User::first();
+        $admin = UserFactory::admin();
+        $randomUser = UserFactory::create();
 
         $this->assertTrue(
-            $adminUser->givePermTo(User::EDIT_CATEGORIES)
+            $admin->givePermTo($randomUser, User::EDIT_CATEGORIES)
+        );
+
+        $this->assertFalse(
+            $randomUser->givePermTo($admin, User::EDIT_USER_ACCESS)
         );
     }
 
