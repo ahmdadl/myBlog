@@ -67,8 +67,19 @@ class User extends Authenticatable
         return !!($this->perm & $userPermission);
     }
 
-    public function givePermTo(int $userPermission) : void
+    /**
+     * change user permission
+     *
+     * @param integer $userPermission
+     * @return boolean
+     */
+    public function givePermTo(int $userPermission) : bool
     {
+        // check if user can change user access
+        if (!$this->canDo(self::EDIT_USER_ACCESS)) {
+            return false;
+        }
+
         // list all permissions into one array
         $arr = [
             self::ADD_POSTS,
@@ -91,7 +102,7 @@ class User extends Authenticatable
             })
         );
         
-        $this->update();
+        return $this->update();
     }
 
     public function getTypeAttribute() : string

@@ -57,6 +57,21 @@ class UserTest extends TestCase
         $this->assertEquals('admin', $user->type);
     }
 
+    public function testOnlyAdminCanEditUserAccess()
+    {
+        $randomUser = factory(User::class)->create();
+
+        $this->assertFalse(
+            $randomUser->givePermTo(User::ADD_CATEGORIES)
+        );
+
+        $adminUser = User::first();
+
+        $this->assertTrue(
+            $adminUser->givePermTo(User::EDIT_CATEGORIES)
+        );
+    }
+
     public function testHeCanCreatePostWithSlug()
     {
         $post = PostFactory::ownedBy($user = $this->signIn())
