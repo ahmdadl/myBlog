@@ -98,6 +98,6 @@ class PostControllerTest extends TestCase
         $this->get($post->path())
             ->assertViewIs('post.show')
             ->assertSee($post->title)
-            ->assertSee($post->content);
+            ->assertSee($post->body);
     }
 }
