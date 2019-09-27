@@ -18,6 +18,7 @@
                     </h4>
                     <p class="card-text">{{$post->mini_body}}</p>
                   </div>
+                  @include('post.opr')
                 </div>
             </div>
         @empty

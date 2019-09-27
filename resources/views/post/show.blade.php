@@ -12,6 +12,7 @@
             <h4 class="card-title">{{$post->title}}</h4>
             <p class="card-text">{{$post->body}}</p>
           </div>
+          @include('post.opr')
         </div>
     </div>
 @endsection
