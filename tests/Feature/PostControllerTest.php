@@ -100,4 +100,18 @@ class PostControllerTest extends TestCase
             ->assertSee($post->title)
             ->assertSee($post->body);
     }
+
+    public function testGusetCannotDeletePost()
+    {
+        $post = PostFactory::ownedBy(UserFactory::create())->create();
+
+        $this->delete($post->path())->assertRedirect('login');
+    }
+
+    public function testUserWithoutPermissionCannotDeletePost()
+    {
+        $post = PostFactory::ownedBy($this->signIn())->create();
+
+        $this->delete($post->path())->assertStatus(403);
+    }
 }
