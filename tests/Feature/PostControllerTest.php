@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Post;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -59,38 +60,63 @@ class PostControllerTest extends TestCase
 
     public function testGuestCannotUpdatePost()
     {
-        $post = PostFactory::create('raw');
-
-        $this->get('/posts/edit')->assertRedirect('login');
-
-        $this->patch('/posts/' . $post['slug'], $post)->assertRedirect('login');
-
-        $this->assertDatabaseMissing('posts', $post);
+        $this->guestUpdateOrDeletePost('patch');
     }
 
-    public function testUserWithoutPermissionCannotUpdatePost()
+    public function testGuestCannotDeletePost()
     {
-        $post = PostFactory::ownedBy($this->signIn())->create();
+        $this->guestUpdateOrDeletePost('delete');
+    }
 
-        $this->patch($post->path(), $post->attributesToArray())
+    public function testUserWithoutPermissionCannotUpdateOrDeletePost()
+    {
+        $post = PostFactory::ownedBy(UserFactory::create())->create();
+
+        $this->actingAs(UserFactory::create())
+            ->patch($post->path(), $post->attributesToArray())
+            ->assertStatus(403);
+        
+        $this->actingAs(UserFactory::create())
+            ->delete($post->path())
             ->assertStatus(403);
     }
 
-    public function testUserCanUpdatePost()
+    public function testPostOwnerCanUpdatePostWithoutPermission()
     {
-        [$admin, $user] = UserFactory::createWithAdmin();
+        $post = PostFactory::ownedBy($this->signIn())->create();
 
-        // give user permission to update post
-        $admin->givePermTo($user, User::DELETE_POSTS);
-
-        // create post with given user
-        $post = PostFactory::ownedBy($this->signIn($user))->create();
-
-        // try to update post
         $this->patch(
             $post->path(),
             $post->attributesToArray(),
             ['HTTP_REFERER' => $post->path()]
+            )->assertRedirect($post->path());
+        
+        $this->assertDatabaseHas('posts', $post->toArray());
+    }
+
+    public function testPostOwnerCanDeletePostWithoutPermission()
+    {
+        $post = PostFactory::ownedBy($this->signIn())->create();
+
+        $this->delete(
+            $post->path(),
+            $post->attributesToArray(),
+            ['HTTP_REFERER' => $post->path()]
+            )->assertRedirect('/posts');
+        
+        $this->assertDatabaseMissing('posts', $post->toArray());
+    }
+
+    public function testUserWithPermissionCanUpdateOtheresPost()
+    {
+        [$user, $post] = $this->userUpdateOrDeletePost('update');
+
+        // try to update post
+        $this->actingAs($user)
+            ->patch(
+                $post->path(),
+                ['title' => $post->title . 'asd'],
+                ['HTTP_REFERER' => $post->path()]
             )->assertRedirect($post->path());
         
         $this->assertDatabaseHas('posts', $post->toArray());
@@ -101,32 +127,51 @@ class PostControllerTest extends TestCase
             ->assertSee($post->body);
     }
 
-    public function testGusetCannotDeletePost()
+    public function testUserWithPermissionCanDeleteOtheresPost()
     {
-        $post = PostFactory::ownedBy(UserFactory::create())->create();
+        [$user, $post] = $this->userUpdateOrDeletePost('delete');
 
-        $this->delete($post->path())->assertRedirect('login');
+        // try to update post
+        $this->actingAs($user)
+            ->delete($post->path())
+            ->assertRedirect('/posts');
+        
+        $this->assertDatabaseMissing('posts', $post->toArray());
     }
 
-    public function testUserWithoutPermissionCannotDeletePost()
+    /**
+     * Act as guest and try to update or delete post
+     *
+     * @param string $method
+     * @return void
+     */
+    protected function guestUpdateOrDeletePost(string $method)
     {
-        $post = PostFactory::ownedBy($this->signIn())->create();
+        $post = PostFactory::create('raw');
 
-        $this->delete($post->path())->assertStatus(403);
+        $this->get('/posts/edit')->assertRedirect('login');
+
+        $this->{$method}('/posts/' . $post['slug'], $post)->assertRedirect('login');
+
+        $this->assertDatabaseMissing('posts', $post);
     }
 
-    public function testUserCanDeletePost()
+    /**
+     * create user and give him permission to delete other users posts
+     *
+     * @param string $method
+     * @return array [\User, \Post]
+     */
+    protected function userUpdateOrDeletePost(string $method) : array
     {
         [$admin, $user] = UserFactory::createWithAdmin();
 
-        // give user permission to delete post
+        // give user permission to update post
         $admin->givePermTo($user, User::DELETE_POSTS);
 
-        // create post with given user
-        $post = PostFactory::ownedBy($this->signIn($user))->create();
+        // create post with another user
+        $post = PostFactory::ownedBy(UserFactory::create())->create();
 
-        $this->delete($post->path())->assertRedirect('/posts');
-
-        $this->assertDatabaseMissing('posts', $post->toArray());
+        return [$user, $post];
     }
 }
