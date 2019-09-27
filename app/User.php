@@ -123,10 +123,12 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'userId')->latest();
     }
 
-    public function createWithSlug(array $post) : Post
-    {
+    public function createWithSlug(
+        array $post,
+        string $method = 'create'
+    ) {
         $post['slug'] = Str::slug($post['title']);
 
-        return $this->posts()->create($post);
+        return $this->posts()->$method($post);
     }
 }

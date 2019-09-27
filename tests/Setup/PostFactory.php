@@ -16,7 +16,7 @@ class PostFactory
         return $this;
     }
 
-    public function create(string $methodName = 'create') : Post
+    public function create(string $methodName = 'create')
     {
         return factory(Post::class)->{$methodName}([
             'userId' => $this->ownedTo ?? factory(User::class)->create()->id

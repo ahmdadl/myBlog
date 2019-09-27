@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -77,7 +78,14 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        abort_unless(auth()->user()->canDo(User::DELETE_POSTS), 403);
+
+        auth()->user()->createWithSlug(
+            $this->validateInputs(),
+            'update'
+        );
+
+        return redirect($post->path());
     }
 
     /**

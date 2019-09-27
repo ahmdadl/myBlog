@@ -54,4 +54,23 @@ class PostControllerTest extends TestCase
             ->assertSee($post->title)
             ->assertSee($post->body);
     }
+
+    public function testGuestCannotUpdatePost()
+    {
+        $post = PostFactory::create('raw');
+
+        $this->get('/posts/edit')->assertRedirect('login');
+
+        $this->patch('/posts/' . $post['slug'], $post)->assertRedirect('login');
+
+        $this->assertDatabaseMissing('posts', $post);
+    }
+
+    public function testUserWithoutPermissionCannotUpdatePost()
+    {
+        $post = PostFactory::ownedBy($this->signIn())->create();
+
+        $this->patch($post->path(), $post->attributesToArray())
+            ->assertStatus(403);
+    }
 }
