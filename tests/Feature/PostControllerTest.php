@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Facades\Tests\Setup\PostFactory;
+use Facades\Tests\Setup\UserFactory;
 use Tests\TestCase;
 
 class PostControllerTest extends TestCase
@@ -72,5 +74,30 @@ class PostControllerTest extends TestCase
 
         $this->patch($post->path(), $post->attributesToArray())
             ->assertStatus(403);
+    }
+
+    public function testUserCanUpdatePost()
+    {
+        [$admin, $user] = UserFactory::createWithAdmin();
+
+        // give user permission to update post
+        $admin->givePermTo($user, User::DELETE_POSTS);
+
+        // create post with given user
+        $post = PostFactory::ownedBy($this->signIn($user))->create();
+
+        // try to update post
+        $this->patch(
+            $post->path(),
+            $post->attributesToArray(),
+            ['HTTP_REFERER' => $post->path()]
+            )->assertRedirect($post->path());
+        
+        $this->assertDatabaseHas('posts', $post->toArray());
+
+        $this->get($post->path())
+            ->assertViewIs('post.show')
+            ->assertSee($post->title)
+            ->assertSee($post->content);
     }
 }
