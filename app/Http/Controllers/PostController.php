@@ -78,7 +78,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        abort_unless(auth()->user()->canDo(User::DELETE_POSTS), 403);
+        $this->authorize('update', $post);
 
         auth()->user()->createWithSlug(
             $this->validateInputs(),
@@ -96,7 +96,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        abort_unless(auth()->user()->canDo(User::DELETE_POSTS), 403);
+        $this->authorize('update', $post);
 
         $post->delete();
 
