@@ -97,6 +97,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         abort_unless(auth()->user()->canDo(User::DELETE_POSTS), 403);
+
+        $post->delete();
+
+        return redirect('/posts');
     }
 
     private function validateInputs()

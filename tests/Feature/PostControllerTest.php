@@ -114,4 +114,19 @@ class PostControllerTest extends TestCase
 
         $this->delete($post->path())->assertStatus(403);
     }
+
+    public function testUserCanDeletePost()
+    {
+        [$admin, $user] = UserFactory::createWithAdmin();
+
+        // give user permission to delete post
+        $admin->givePermTo($user, User::DELETE_POSTS);
+
+        // create post with given user
+        $post = PostFactory::ownedBy($this->signIn($user))->create();
+
+        $this->delete($post->path())->assertRedirect('/posts');
+
+        $this->assertDatabaseMissing('posts', $post->toArray());
+    }
 }
