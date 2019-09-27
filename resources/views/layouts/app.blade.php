@@ -34,8 +34,11 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li>
-                           <a class="nav-link active" href="/posts">Posts</a>
-                        </li>  
+                           <a class="nav-link" href="/posts">Posts</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="/posts/create">Create</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
