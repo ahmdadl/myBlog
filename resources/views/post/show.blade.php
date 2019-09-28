@@ -7,7 +7,7 @@
 @section('content')
 <div class='row'>
     <div class="card text-left">
-        <img class="card-img-top" src="{{asset('img/'.$post->img)}}"
+        <img class="card-img-top" src="{{asset('storage/storage/img/'.$post->img)}}"
             alt="">
         <div class="card-body">
             <h4 class="card-title">

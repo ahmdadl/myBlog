@@ -3,13 +3,18 @@
 namespace Tests\Feature;
 
 use App\Category;
+use App\Http\Controllers\UploadImage;
 use App\Post;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Facades\Tests\Setup\PostFactory;
 use Facades\Tests\Setup\UserFactory;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -43,11 +48,15 @@ class PostControllerTest extends TestCase
 
     public function testAuthrizedUserCanCreatePost()
     {
+        $this->withoutExceptionHandling();
+
         $post = PostFactory::ownedBy($this->signIn())->create('raw');
 
         $this->get('/posts/create')
             ->assertStatus(200)
             ->assertViewIs('post.create');
+        
+        Arr::forget($post, 'img');
 
         $this->post('/posts', $post)
             ->assertRedirect('/posts/' . $post['slug']);
@@ -55,6 +64,28 @@ class PostControllerTest extends TestCase
         $post = Post::latest()->first();
 
         $this->canSeePost($post);
+    }
+
+    public function testUserCanUpdateImageWithPost()
+    {
+        $post = PostFactory::ownedBy($this->signIn())->create('raw');
+
+        Storage::fake('local');
+
+        $file = UploadedFile::fake()->image('name.png');
+
+        $post['img'] = $file;
+
+        $this->post(
+            '/posts',
+            $post,
+            ['HTTP_REFERER' => '/posts/create']
+        )->assertRedirect('/posts/' . $post['slug']);
+
+        Storage::disk('local')
+            ->assertExists(
+                UploadImage::IMAGE_URI . $file->hashName()
+            );
     }
 
     public function testGuestCannotUpdatePost()
@@ -108,9 +139,13 @@ class PostControllerTest extends TestCase
 
     public function testUserWithPermissionCanUpdateOtheresPost()
     {
+        $this->withoutExceptionHandling();
+
         [$user, $post] = $this->userUpdateOrDeletePost('update');
 
         $post->title = $this->faker->unique()->sentence;
+        
+        $post->img = null;
     
         // try to update post
         $res = $this->actingAs($user)

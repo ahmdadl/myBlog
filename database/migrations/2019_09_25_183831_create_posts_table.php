@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('title', 70);
             $table->string('slug')->unique()->index();
             $table->text('body');
-            $table->string('img')->default('1.png');
+            $table->string('img')->nullable()->default('1.png');
             $table->timestamps();
 
             $table->foreign('userId')

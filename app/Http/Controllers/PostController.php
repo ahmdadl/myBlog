@@ -53,9 +53,13 @@ class PostController extends Controller
      */
     public function store(Request $request) : RedirectResponse
     {
-        $post = auth()->user()->createWithSlug(
-            $this->validateInputs()
-        );
+        // validate inputs first
+        $attr = $this->validateInputs();
+
+        // upload image and store file name in database
+        $attr['img'] = UploadImage::upload($request, 'img');
+
+        $post = auth()->user()->createWithSlug($attr);
 
         return redirect($post->path());
     }
@@ -125,7 +129,7 @@ class PostController extends Controller
         return request()->validate([
             'title' => 'required|string|min:10|max:70',
             'body' => 'required|string|min:50',
-            'img' => 'nullable'
+            'img' => 'nullable|image'
         ]);
     }
 }
