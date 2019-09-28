@@ -11,7 +11,8 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-
+    use RefreshDatabase;
+    
     public function testHeCanBeGivedPermission()
     {
         [$admin, $user] = UserFactory::createWithAdmin();

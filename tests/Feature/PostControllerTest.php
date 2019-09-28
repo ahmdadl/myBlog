@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 class PostControllerTest extends TestCase
 {
-    use WithFaker;
+    use WithFaker, RefreshDatabase;
 
     public function testAnyUserCanViewAllPosts()
     {
