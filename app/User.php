@@ -20,7 +20,7 @@ class User extends Authenticatable
      * team memmber user => change teams posts
      * visor user => above with any team and add categories
      * super user =>  above and edit|remove categories
-     * admin => change user access level
+     * admin => change user access level 31
      */
     const ADD_POSTS = 1;
     const DELETE_POSTS = 2;
