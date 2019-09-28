@@ -4,16 +4,19 @@
         <div class="row">
             <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
-                    @foreach ($cats as $c)
+                    @forelse ($cats as $c)
                     <li>
-                        <a href="/category/{{$c->id}}">
+                        <a href="/category/{{$c->id}}" class="btn btn-outline-primary">
                             {{$c->title}}
-                        <span class="badge badge-primary">
+                        <span class="badge badge-info">
                             {{$c->posts->count()}}
                         </span>
                         </a>
                     </li>
-                    @endforeach
+                    @empty
+                        <span><strong class="text-danger">
+                            No Categories</strong></span>
+                    @endforelse
                 </ul>
             </div>
 
