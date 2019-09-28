@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 $factory->define(Post::class, function (Faker $faker) {
-    $title = $faker->text(60);
+    $title = $faker->unique()->text(60);
     return [
         'title' => $title,
         'slug' => Str::slug($title),

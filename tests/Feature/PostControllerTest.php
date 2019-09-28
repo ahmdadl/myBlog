@@ -8,10 +8,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Facades\Tests\Setup\PostFactory;
 use Facades\Tests\Setup\UserFactory;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PostControllerTest extends TestCase
 {
+    use WithFaker;
+
     public function testAnyUserCanViewAllPosts()
     {
         $post = PostFactory::create();
@@ -109,17 +112,30 @@ class PostControllerTest extends TestCase
 
     public function testUserWithPermissionCanUpdateOtheresPost()
     {
+        $this->withoutExceptionHandling();
+
         [$user, $post] = $this->userUpdateOrDeletePost('update');
 
+        $post->title = $this->faker->unique()->sentence;
+    
         // try to update post
-        $this->actingAs($user)
+        $res = $this->actingAs($user)
             ->patch(
                 $post->path(),
-                ['title' => $post->title . 'asd'],
+                $post->attributesToArray(),
                 ['HTTP_REFERER' => $post->path()]
-            )->assertRedirect($post->path());
+            );
         
-        $this->assertDatabaseHas('posts', $post->toArray());
+        // update post slug
+        $post->slug = Str::slug($post->title);
+
+        // assert it is being redirect to new slug
+        $res->assertRedirect($post->path());
+        
+        $this->assertDatabaseHas(
+            'posts',
+            $post->only('title', 'slug')
+        );
 
         $this->get($post->path())
             ->assertViewIs('post.show')

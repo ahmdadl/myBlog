@@ -79,11 +79,15 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $this->authorize('update', $post);
+        
+        [
+            'title' => $post->title,
+            'body' => $post->body
+        ] = $this->validateInputs();
 
-        auth()->user()->createWithSlug(
-            $this->validateInputs(),
-            'update'
-        );
+        $post->slug = Str::slug($post->title);
+
+        $post->update();
 
         return redirect($post->path());
     }
