@@ -2,10 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Category;
 use App\Post;
 use Facades\Tests\Setup\PostFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -50,5 +52,22 @@ class PostTest extends TestCase
             $post->owner->toArray(),
             $user->toArray()
         );
+    }
+
+    public function testItHasCategories()
+    {
+        $post = factory(Post::class)->create();
+        $ctg = factory(Category::class, 2)->create()->last();
+        
+        $post->categories()->attach($ctg->id);
+        
+        $this->assertIsIterable($post->categories);
+
+        $this->assertCount(1, $post->categories);
+
+        $this->assertDatabaseHas('post_category', [
+            'post_id' => $post->id,
+            'category_id' => $ctg->id
+        ]);
     }
 }

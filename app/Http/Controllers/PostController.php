@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Post;
 use App\User;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +19,8 @@ class PostController extends Controller
     public function index()
     {
         return view('post.index', [
-            'posts' => Post::latest()->get()
+            'posts' => Post::latest()->get(),
+            'cats' => Category::latest()->get()
         ]);
     }
 
