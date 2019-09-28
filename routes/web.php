@@ -20,7 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/posts', 'PostController@index');
+Route::get('/posts/q/{title}', 'PostController@search');
 
 Route::resource('posts', 'PostController', [
-    'except' => ['index']
+    'except' => ['index', 'search']
 ])->middleware('auth');

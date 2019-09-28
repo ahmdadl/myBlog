@@ -22,6 +22,15 @@ class PostController extends Controller
         ]);
     }
 
+    public function search(string $title)
+    {
+        $title = urldecode($title);
+
+        return view('post.index', [
+            'posts' => Post::where('title', 'LIKE', "%{$title}%")->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -41,8 +41,6 @@ class PostControllerTest extends TestCase
 
     public function testAuthrizedUserCanCreatePost()
     {
-        $this->withoutExceptionHandling();
-
         $post = PostFactory::ownedBy($this->signIn())->create('make');
 
         $this->get('/posts/create')
@@ -112,8 +110,6 @@ class PostControllerTest extends TestCase
 
     public function testUserWithPermissionCanUpdateOtheresPost()
     {
-        $this->withoutExceptionHandling();
-
         [$user, $post] = $this->userUpdateOrDeletePost('update');
 
         $post->title = $this->faker->unique()->sentence;
@@ -153,6 +149,20 @@ class PostControllerTest extends TestCase
             ->assertRedirect('/posts');
         
         $this->assertDatabaseMissing('posts', $post->toArray());
+    }
+
+    public function testUserCanSearchForPosts()
+    {
+        // create 20 posts with random users
+        PostFactory::create('create', 20);
+    
+        $post = Post::all()->nth(5)->last();
+
+        // hit endpoint for search
+        $this->get(
+            '/posts/q/' . Str::limit(urlencode($post->title), 5, '')
+            )->assertOk()
+            ->assertSee($post->title);
     }
 
     /**
