@@ -1,5 +1,5 @@
-<div class="card mb-4">
-    <h5 class="card-header">Search</h5>
+<div class="card mb-4 shadow border-info">
+    <h5 class="card-header text-white bg-primary">Search</h5>
     <div class="card-body">
         <form method="get" class="form" nosubmit>
             <div class="input-group">
