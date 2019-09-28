@@ -20,6 +20,11 @@ class PostControllerTest extends TestCase
         $post = PostFactory::create();
 
         $this->assertDatabaseHas('posts', $post->toArray());
+
+        $this->get('/posts')
+            ->assertOk()
+            ->assertSee($post->title)
+            ->assertSee($post->categories->first());
     }
 
     public function testPostCanBeViewdBySlug()
