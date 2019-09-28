@@ -1,23 +1,34 @@
 @extends('layouts.app')
 
 @section('title')
-    {{$post->title}}
+{{$post->title}}
 @endsection
 
 @section('content')
-    <div class='row'>
-        <div class="card text-left">
-          <img class="card-img-top" src="{{asset('img/'.$post->img)}}" alt="">
-          <div class="card-body">
+<div class='row'>
+    <div class="card text-left">
+        <img class="card-img-top" src="{{asset('img/'.$post->img)}}"
+            alt="">
+        <div class="card-body">
             <h4 class="card-title">
-              {{$post->title}}
-              <div class="row">
-                <a href="/users/{{$post->owner->id}}" class="btn btn-primary">{{$post->owner->name}}</a>
-              </div>
+                <small>
+                    @foreach ($post->categories as $c)
+                    <a href="/category/{{$c->id}}"
+                        class="btn btn-info btn-sm text-light">
+                        {{$c->title}}
+                    </a>
+                    @endforeach
+                </small>
+                <p class="py-1">{{$post->title}}</p>
+                <div class="text-center">
+                    <a href="/users/{{$post->owner->id}}"
+                        class="btn btn-primary">By
+                        {{$post->owner->name}}</a>
+                </div>
             </h4>
             <p class="card-text">{{$post->body}}</p>
-          </div>
-          @include('post.opr')
         </div>
+        @include('post.opr')
     </div>
+</div>
 @endsection

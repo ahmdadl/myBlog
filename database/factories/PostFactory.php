@@ -13,7 +13,7 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $title,
         'slug' => Str::slug($title),
-        'body' => $faker->text(350),
+        'body' => $faker->text(850),
         'img' => Arr::random([1, 2, 3, 4, 5]) . '.png',
         'userId' => function () {
             return factory(User::class)->create()->id;

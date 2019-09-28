@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Category;
 use App\Post;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -159,6 +160,22 @@ class PostControllerTest extends TestCase
             '/posts/q/' . Str::limit(urlencode($post->title), 5, '')
             )->assertOk()
             ->assertSee($post->title);
+    }
+
+    public function testUserCanViewPostAndCategories() : void
+    {
+       $this->signIn();
+
+        $post = PostFactory::create();
+
+        $ctgIds = factory(Category::class, rand(2, 5))
+            ->create()
+            ->pluck('id');
+
+        $post->categories()->attach($ctgIds);
+
+        $this->canSeePost($post)
+            ->assertSee($post->categories->last()->title);
     }
 
     /**
