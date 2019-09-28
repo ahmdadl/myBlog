@@ -191,8 +191,8 @@ class PostControllerTest extends TestCase
             ->assertViewIs('post.show')
             ->assertSee($post->title)
             ->assertSee($post->body)
-            ->assertSee($post->owner->name);
-            // ->assertSee($post->categories->last()->id);
+            ->assertSee($post->owner->name)
+            ->assertSee($post->updated_at->diffForHumans());
     }
 
     /**

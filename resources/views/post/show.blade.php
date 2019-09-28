@@ -22,8 +22,9 @@
                 <p class="py-1">{{$post->title}}</p>
                 <div class="text-center">
                     <a href="/users/{{$post->owner->id}}"
-                        class="btn btn-primary">By
-                        {{$post->owner->name}}</a>
+                        class="btn btn-outline-danger">By
+                    {{$post->owner->name}} <span class="text-muted">{{$post->updated_at->diffForHumans()}}</span>
+                    </a>
                 </div>
             </h4>
             <p class="card-text">{{$post->body}}</p>
