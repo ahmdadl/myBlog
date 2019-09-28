@@ -10,4 +10,5 @@
             @include('post.form')
         </form>
     </div>
+    @include('errors')
 @endsection

@@ -11,4 +11,5 @@
         @include('post.form', compact('post'))
     </form>
 </div>
+@include('errors')
 @endsection
