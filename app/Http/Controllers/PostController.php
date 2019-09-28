@@ -29,7 +29,9 @@ class PostController extends Controller
         $title = urldecode($title);
 
         return view('post.index', [
-            'posts' => Post::where('title', 'LIKE', "%{$title}%")->get()
+            'posts' => Post::where('title', 'LIKE', "%{$title}%")
+                ->get(),
+            'cats' => Category::latest()->get()
         ]);
     }
 

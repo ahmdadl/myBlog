@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Facades\Tests\Setup\PostFactory;
 use Facades\Tests\Setup\UserFactory;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -29,12 +30,7 @@ class PostControllerTest extends TestCase
 
     public function testPostCanBeViewdBySlug()
     {
-        $post = PostFactory::ownedBy($this->signIn())->create();
-
-        $this->get($post->path())
-            ->assertStatus(200)
-            ->assertSee($post->title)
-            ->assertSee($post->body);
+        $this->canSeePost(PostFactory::ownedBy($this->signIn())->create());
     }
 
     public function testGuestCannotCreatePost()
@@ -59,9 +55,7 @@ class PostControllerTest extends TestCase
 
         $this->assertDatabaseHas('posts', $post->attributesToArray());
 
-        $this->get($post->path())
-            ->assertSee($post->title)
-            ->assertSee($post->body);
+        $this->canSeePost($post);
     }
 
     public function testGuestCannotUpdatePost()
@@ -138,10 +132,7 @@ class PostControllerTest extends TestCase
             $post->only('title', 'slug')
         );
 
-        $this->get($post->path())
-            ->assertViewIs('post.show')
-            ->assertSee($post->title)
-            ->assertSee($post->body);
+        $this->canSeePost($post);
     }
 
     public function testUserWithPermissionCanDeleteOtheresPost()
@@ -171,12 +162,29 @@ class PostControllerTest extends TestCase
     }
 
     /**
+     * visit post page and assert all post debendcies can be seen
+     *
+     * @param Post $post
+     * @return void
+     */
+    protected function canSeePost(Post $post) : TestResponse
+    {
+        return $this->get($post->path())
+            ->assertOk()
+            ->assertViewIs('post.show')
+            ->assertSee($post->title)
+            ->assertSee($post->body)
+            ->assertSee($post->owner->name);
+            // ->assertSee($post->categories->last()->id);
+    }
+
+    /**
      * Act as guest and try to update or delete post
      *
      * @param string $method
      * @return void
      */
-    protected function guestUpdateOrDeletePost(string $method)
+    protected function guestUpdateOrDeletePost(string $method) : void
     {
         $post = PostFactory::create('raw');
 
