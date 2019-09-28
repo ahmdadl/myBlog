@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="row ml-2">
+    <div class="row">
         @forelse ($posts as $post)
             <div class='card col-sm-6 col-md-4 col-lg-3 p-0 shadow'>
                 <div class="card border-primary">
