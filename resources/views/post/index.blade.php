@@ -7,7 +7,7 @@
 @section('content')
     <div class="row">
         @forelse ($posts as $post)
-            <div class='card col-sm-6 col-md-4 col-lg-3 p-0 shadow'>
+            <div class='card col-sm-6 col-md-4 p-0 shadow'>
                 <div class="card border-primary">
                   <img class="card-img-top" src="{{asset('storage/storage/img/'.$post->img)}}" alt="{{$post->title}}">
                   <div class="card-body">
