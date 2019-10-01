@@ -15,10 +15,15 @@
     </div>
 </div>
 <div class="form-group row">
-        <div class="custom-file">
-                <input type="file" name="img" class="custom-file-input" id="customFile">
-                <label class="custom-file-label" for="customFile">Choose Image</label>
-              </div>
+    <div class="custom-file">
+        <input type="file" name="img" class="custom-file-input"
+        id="customFile">
+        <label class="custom-file-label" for="customFile">Choose
+        Image</label>
+    </div>
+    <div class="d-block my-2">
+    <img src="{{asset('storage/storage/img/' . ($post->img ?? ''))}}" class="img img-responsive rounded border-primary shadow {{isset($post) ?: 'd-none'}}" width="250" height="150" />
+    </div>
 </div>
 <div class="form-group row">
     <button type="submit"

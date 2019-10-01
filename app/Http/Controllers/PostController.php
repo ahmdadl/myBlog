@@ -96,11 +96,16 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $this->authorize('update', $post);
-        
-        [
-            'title' => $post->title,
-            'body' => $post->body
-        ] = $this->validateInputs();
+
+        // validate inputs first
+        ['title' => $post->title,
+        'body' => $post->body] = $this->validateInputs();
+
+        // upload image and store file name in database
+        $fileName = UploadImage::upload($request, 'img');
+        if ($fileName !== null) {
+            $post->img = $fileName;
+        }
 
         $post->slug = Str::slug($post->title);
 
