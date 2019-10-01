@@ -6,7 +6,7 @@
                 <ul class="list-unstyled mb-0">
                     @forelse ($cats as $c)
                     <li>
-                        <a href="/category/{{$c->id}}" class="btn btn-outline-primary">
+                        <a href="/category/{{$c->id}}" class="btn btn-outline-primary my-1">
                             {{$c->title}}
                         <span class="badge badge-info">
                             {{$c->posts->count()}}
