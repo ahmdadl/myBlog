@@ -46,8 +46,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('category.show', [
-            'category' => $category,
+        return view('post.index', [
+            'posts' => $category->posts,
             'cats' => Category::latest()->get()
         ]);
     }
