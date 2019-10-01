@@ -19,6 +19,14 @@
                     </a>
                     @endforeach
                 </small>
+                <small>
+                    @foreach ($post->members as $member)
+                    <a href="/users/{{$member->id}}"
+                        class="btn btn-danger btn-sm text-light">
+                        {{$member->name}}
+                    </a>
+                    @endforeach
+                </small>
                 <p class="py-1">{{$post->title}}</p>
                 <div class="text-center">
                     <a href="/users/{{$post->owner->id}}"

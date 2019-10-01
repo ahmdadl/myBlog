@@ -2,6 +2,7 @@
 
 use App\Category;
 use App\Post;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
@@ -22,6 +23,13 @@ class PostSeeder extends Seeder
             
             // attach these categories to posts
             $post->categories()->attach($ctgIds);
+
+            // create 5 users
+            $members = factory(User::class, rand(2, 5))
+                ->create()
+                ->pluck('id');
+            
+            $post->members()->attach($members);
         });
     }
 }
