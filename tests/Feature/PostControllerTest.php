@@ -84,7 +84,7 @@ class PostControllerTest extends TestCase
 
         Storage::disk('local')
             ->assertExists(
-                UploadImage::IMAGE_URI . $file->hashName()
+                UploadImage::IMAGE_URI . '/' . $file->hashName()
             );
     }
 
