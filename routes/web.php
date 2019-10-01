@@ -25,3 +25,5 @@ Route::get('/posts/q/{title}', 'PostController@search');
 Route::resource('posts', 'PostController', [
     'except' => ['index', 'search']
 ])->middleware('auth');
+
+Route::get('category/{category}', 'CategoryController@show');
