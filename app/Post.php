@@ -46,4 +46,19 @@ class Post extends Model
     {
         return $this->belongsToMany(Category::class, 'post_category');
     }
+    
+    public function members() : BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'post_members',
+            'postId',
+            'userId'
+        )->withTimestamps();
+    }
+
+    public function invite(User $user) : void
+    {
+        $this->members()->attach($user);
+    }
 }

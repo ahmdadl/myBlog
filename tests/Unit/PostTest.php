@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Category;
 use App\Post;
 use Facades\Tests\Setup\PostFactory;
+use Facades\Tests\Setup\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
@@ -68,6 +69,27 @@ class PostTest extends TestCase
         $this->assertDatabaseHas('post_category', [
             'post_id' => $post->id,
             'category_id' => $ctg->id
+        ]);
+    }
+
+    public function testItHasMembers()
+    {
+        $post = PostFactory::create();
+
+        $this->assertIsIterable($post->members);
+    }
+
+    public function testItCanInviteNewUsers()
+    {
+        $post = PostFactory::create();
+
+        $post->invite($user = UserFactory::create());
+
+        $this->assertCount(1, $post->members);
+
+        $this->assertDatabaseHas('post_members', [
+            'postId' => $post->id,
+            'userId' => $user->id
         ]);
     }
 }
