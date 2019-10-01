@@ -54,7 +54,8 @@ class PostPolicy
     public function update(User $user, Post $post)
     {
         return ($user->id === $post->userId)
-            || $user->canDo(User::DELETE_POSTS);
+            || $user->canDo(User::DELETE_POSTS)
+            || $post->members->contains($user);
     }
 
     /**

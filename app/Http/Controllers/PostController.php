@@ -129,6 +129,19 @@ class PostController extends Controller
         return redirect('/posts');
     }
 
+    public function addUser(Post $post)
+    {
+        $this->authorize('update', $post);
+
+        $userEmail = request()->validate([
+            'userEmail' => 'required|email|exists:users,email'
+        ])['userEmail'];
+            
+        $post->invite(User::where('email', '=', $userEmail)->first());
+
+        return back();
+    }
+
     private function validateInputs()
     {
         return request()->validate([

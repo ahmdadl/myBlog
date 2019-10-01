@@ -79,7 +79,7 @@ class PostControllerTest extends TestCase
         $this->post(
             '/posts',
             $post,
-            ['HTTP_REFERER' => '/posts/create']
+            $this->setReferer('/posts/create')
         )->assertRedirect('/posts/' . $post['slug']);
 
         Storage::disk('local')
@@ -118,7 +118,7 @@ class PostControllerTest extends TestCase
         $this->patch(
             $post->path(),
             $post->attributesToArray(),
-            ['HTTP_REFERER' => $post->path()]
+            $this->setReferer($post->path())
             )->assertRedirect($post->path());
         
         $this->assertDatabaseHas('posts', $post->toArray());
@@ -131,8 +131,8 @@ class PostControllerTest extends TestCase
         $this->delete(
             $post->path(),
             $post->attributesToArray(),
-            ['HTTP_REFERER' => $post->path()]
-            )->assertRedirect('/posts');
+            $this->setReferer($post->path())
+        )->assertRedirect('/posts');
         
         $this->assertDatabaseMissing('posts', $post->toArray());
     }
@@ -152,7 +152,7 @@ class PostControllerTest extends TestCase
             ->patch(
                 $post->path(),
                 $post->attributesToArray(),
-                ['HTTP_REFERER' => $post->path()]
+                $this->setReferer($post->path())
             );
         
         // update post slug
@@ -209,6 +209,68 @@ class PostControllerTest extends TestCase
 
         $this->canSeePost($post)
             ->assertSee($post->categories->last()->title);
+    }
+
+    public function testUnAuthrizedUserCannotInviteNewUsers()
+    {
+        $post = PostFactory::ownedBy($user = $this->signIn())
+            ->create();
+        
+        $anotherUser = factory(User::class)->create();
+
+        $this->actingAs($anotherUser)
+            ->post(
+                $post->path() . '/invite',
+                ['userEmail' => $user->email]
+            )->assertStatus(403);
+    }
+
+    public function testPostMemberCanUpdatePost()
+    {
+        $this->withoutExceptionHandling();
+
+        $post = PostFactory::ownedBy($user = $this->signIn())
+            ->create();
+
+        $anotherUser = factory(User::class)->create();
+
+        // invite new user for post members
+        $this->post(
+                $post->path() . '/invite',
+                ['userEmail' => $anotherUser->email],
+                $this->setReferer($post->path())
+            )->assertRedirect($post->path());
+
+        $this->actingAs($anotherUser)
+            ->patch(
+                $post->path(), [
+                    'title' => $post->title,
+                    'body' => $post->body
+                ],
+                $this->setReferer($post->path())
+        )->assertRedirect($post->path());
+        
+        $this->assertTrue(
+            $post->members->contains($anotherUser)
+        );
+
+        $this->assertDatabaseHas(
+            'post_members', [
+                'userId' => $anotherUser->id,
+                'postId' => $post->id
+            ]
+        );
+    }
+
+    /**
+     * set http referer for response redirect back
+     *
+     * @param string $url
+     * @return array
+     */
+    protected function setReferer(string $url) : array
+    {
+        return ['HTTP_REFERER' => $url];
     }
 
     /**

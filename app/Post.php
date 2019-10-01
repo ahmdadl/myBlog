@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -57,6 +58,12 @@ class Post extends Model
         )->withTimestamps();
     }
 
+    /**
+     * add new users to post members to allow them edit it
+     *
+     * @param User $user
+     * @return void
+     */
     public function invite(User $user) : void
     {
         $this->members()->attach($user);
