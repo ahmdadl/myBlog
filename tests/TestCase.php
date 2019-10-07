@@ -19,4 +19,15 @@ abstract class TestCase extends BaseTestCase
 
         return $user;
     }
+
+    /**
+     * set http referer for response redirect back
+     *
+     * @param string $url
+     * @return array
+     */
+    protected function setReferer(string $url) : array
+    {
+        return ['HTTP_REFERER' => $url];
+    }
 }

@@ -92,4 +92,18 @@ class PostTest extends TestCase
             'userId' => $user->id
         ]);
     }
+
+    public function testItHasActivity()
+    {
+        $post = PostFactory::create();
+
+        $this->assertIsIterable($post->activity);
+    }
+
+    public function testItHasActivities()
+    {
+        $post = PostFactory::create();
+
+        $this->assertIsIterable($post->activities);
+    }
 }

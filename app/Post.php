@@ -7,11 +7,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
 class Post extends Model
 {
     protected $guarded = [];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::created(function (Post $post) {
+            $post->recordActivity('create_post');
+        });
+
+        self::updated(function (Post $post) {
+            $post->recordActivity('update_post');
+        });
+    }
+
+    public function recordActivity(string $msg) : ?Activity
+    {
+        if (!auth()->check()) {
+            return null;
+        }
+
+        return $this->activity()->create([
+            'userId' => auth()->id(),
+            'postId' => $this->id,
+            'info' => $msg
+        ]);
+    }
 
     public function getMiniBodyAttribute() : string
     {
@@ -66,6 +93,18 @@ class Post extends Model
      */
     public function invite(User $user) : void
     {
+        $this->recordActivity('add_member');
+        
         $this->members()->attach($user);
+    }
+
+    public function activity() : MorphMany
+    {
+        return $this->morphMany(Activity::class, 'subject');
+    }
+
+    public function activities() : HasMany
+    {
+        return $this->hasMany(Activity::class, 'postId')->latest();
     }
 }

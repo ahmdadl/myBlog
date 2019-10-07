@@ -136,9 +136,9 @@ class PostController extends Controller
         $userEmail = request()->validate([
             'userEmail' => 'required|email|exists:users,email'
         ])['userEmail'];
-            
-        $post->invite(User::where('email', '=', $userEmail)->first());
 
+        $post->invite(User::where('email', '=', $userEmail)->first());
+        
         return back();
     }
 
