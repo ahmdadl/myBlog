@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Requests\PostStoreRequest;
 use App\Policies\PostPolicy;
 use App\Post;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // PostStoreRequest::class => 
     }
 
     /**

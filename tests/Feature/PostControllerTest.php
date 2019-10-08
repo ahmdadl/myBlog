@@ -262,15 +262,19 @@ class PostControllerTest extends TestCase
         );
     }
 
-    /**
-     * set http referer for response redirect back
-     *
-     * @param string $url
-     * @return array
-     */
-    protected function setReferer(string $url) : array
+    public function testNewMemberMustBeRegisterdAtThisSite()
     {
-        return ['HTTP_REFERER' => $url];
+        $post = PostFactory::ownedBy($user1 = $this->signIn())
+            ->create();
+        
+        $user2 = UserFactory::create('make');
+
+        $this->post(
+            $post->path() . '/invite',
+            ['userEmail' => $user2->email],
+            $this->setReferer($post->path())
+        )->assertRedirect($post->path())
+        ->assertSessionHasErrors('userEmail');
     }
 
     /**

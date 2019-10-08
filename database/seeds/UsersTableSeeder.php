@@ -16,6 +16,7 @@ class UsersTableSeeder extends Seeder
     {
         // create admin account
         factory(User::class)->create([
+            'name' => 'Ahmed Adel',
             'email' => 'admin@example.tld',
             'perm' => 31
         ]);
@@ -30,8 +31,8 @@ class UsersTableSeeder extends Seeder
         factory(User::class, 20)->create([
             'perm' => Arr::random([1, 2, 4, 8, 16])
         ])->each(function ($user) {
-            $user->posts()->save(
-                factory(Post::class)->make()
+            $user->posts()->create(
+                factory(Post::class)->raw()
             );
         });
     }

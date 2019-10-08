@@ -6,18 +6,28 @@
 
 @section('content')
 <div class='row'>
-    <div class="card bg-dark d-block" style="width: 100%">
-        <div class="card-title bg-dark text-light p-2 ml-3 d-block">
-            @foreach ($post->activities as $activity)
-                <span class="text-danger">
-                    {{$activity->owner->name}}
-                </span>
-                <span class="text-warning">
-                    {{$activity->info}}
-                </span><br />
+    {{-- @dump(session()->all()) --}}
+    @if ($errors->any())
+        <div class="p-3 ml-3 bg-dark text-light">
+            @foreach ($errors->all() as $err)
+                {{$err}}<br>
             @endforeach
         </div>
-    </div>
+    @endif
+    @if ($post->activities->count() > 0)
+    <div class="card bg-dark d-block" style="width: 100%">
+            <div class="card-title bg-dark text-light p-2 ml-3 d-block">
+                @foreach ($post->activities as $activity)
+                    <span class="text-danger">
+                        {{$activity->owner->name}}
+                    </span>
+                    <span class="text-warning">
+                        {{$activity->info}}
+                    </span><br />
+                @endforeach
+            </div>
+        </div>
+    @endif
     <div class="bg-dark text-light text-center m-2 p-3">
         <fieldset class="">
             <legend>Add new Member</legend>
