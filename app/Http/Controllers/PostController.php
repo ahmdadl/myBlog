@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\PostStoreRequest;
 use App\Post;
 use App\User;
 use Illuminate\Http\RedirectResponse;
@@ -51,10 +52,11 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) : RedirectResponse
-    {
+    public function store(
+        PostStoreRequest $request
+    ) : RedirectResponse {
         // validate inputs first
-        $attr = $this->validateInputs();
+        $attr = $request->validated();
 
         // upload image and store file name in database
         $attr['img'] = UploadImage::upload($request, 'img');
@@ -93,13 +95,13 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostStoreRequest $request, Post $post)
     {
-        $this->authorize('update', $post);
+        // $this->authorize('update', $post);
 
         // validate inputs first
         ['title' => $post->title,
-        'body' => $post->body] = $this->validateInputs();
+        'body' => $post->body] = $request->validated();
 
         // upload image and store file name in database
         $fileName = UploadImage::upload($request, 'img');

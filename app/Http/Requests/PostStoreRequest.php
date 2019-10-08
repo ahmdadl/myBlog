@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Policies\PostPolicy;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class PostStoreRequest extends FormRequest
 {
@@ -13,7 +15,9 @@ class PostStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        $post = $this->route('post');
+
+        return is_null($post) ? true : Gate::allows('update', $post);
     }
 
     /**
@@ -24,7 +28,9 @@ class PostStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string|min:10|max:70',
+            'body' => 'required|string|min:50',
+            'img' => 'nullable|image'
         ];
     }
 }
