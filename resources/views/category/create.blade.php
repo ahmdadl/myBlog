@@ -12,7 +12,7 @@
             <div class="form-group">
               <label for="title">Title</label>
               <input type="text" class="form-control" name="title" id="title" aria-describedby="helpId" placeholder="CategoryTitle">
-              <small id="helpId" class="form-text text-muted">must be less than 10 characters</small>
+              <small id="helpId" class="form-text text-muted">must be less than 20 characters</small>
             </div>
         </form>
     </fieldset>
