@@ -51,6 +51,10 @@
                             <a class="nav-link {{request()->is('posts/create') ? 'active' : ''}}"
                                 href="/posts/create">Create</a>
                         </li>
+                        <li>
+                            <a class="nav-link {{request()->is('category/create') ? 'active' : ''}}"
+                                href="/category/create">Ccategory</a>
+                            </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
