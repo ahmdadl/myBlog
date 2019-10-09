@@ -106,4 +106,18 @@ class PostTest extends TestCase
 
         $this->assertIsIterable($post->activities);
     }
+
+    public function testItHasAddCategoryMethod()
+    {
+        $post = PostFactory::create();
+
+        $cat = factory(Category::class)->create();
+
+        $post->addCategory($cat->id);
+
+        $this->assertContains(
+            $cat->id,
+            $post->categories->pluck('id')
+        );
+    }
 }

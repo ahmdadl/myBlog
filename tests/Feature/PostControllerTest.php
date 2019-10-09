@@ -294,6 +294,32 @@ class PostControllerTest extends TestCase
             ->assertSee($post->updated_at->diffForHumans());
     }
 
+    public function testUserWithPermissionCanAddPostCategory()
+    {
+        $this->withoutExceptionHandling();
+        
+        $admin = UserFactory::admin();
+
+        $post = PostFactory::ownedBy($admin)->create();
+
+        $user = UserFactory::create();
+
+        $admin->givePermTo($user, User::ADD_CATEGORIES);
+
+        // create category
+        $category = factory(Category::class)->create();
+
+        $this->actingAs($user)
+            ->post(
+                $post->path() . '/addCategory',
+                ['catId' => $category->id],
+                $this->setReferer($post->path())
+            )->assertRedirect($post->path());
+
+        $this->get($post->path())
+            ->assertSee($category->title);
+    }
+
     /**
      * Act as guest and try to update or delete post
      *

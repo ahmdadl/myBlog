@@ -74,6 +74,11 @@ class Post extends Model
     {
         return $this->belongsToMany(Category::class, 'post_category');
     }
+
+    public function addCategory(int $catId)
+    {
+        $this->categories()->attach($catId);
+    }
     
     public function members() : BelongsToMany
     {

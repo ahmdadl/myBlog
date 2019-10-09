@@ -27,6 +27,11 @@ Route::resource('posts', 'PostController', [
 ])->middleware('auth');
 
 Route::get('category/{category}', 'CategoryController@show');
+// add new category to post
+Route::post(
+    '/posts/{post}/addCategory',
+    'PostController@storeCategory'
+);
 
 // invite new users for post
 Route::post('/posts/{post}/invite', 'PostController@addUser');
