@@ -8,6 +8,7 @@ use App\Post;
 use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -74,7 +75,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('post.show', compact('post'));
+        return view(
+            'post.show', [
+            'post' => $post,
+            'categories' => Category::all()
+        ]);
     }
 
     /**

@@ -28,6 +28,7 @@
             </div>
         </div>
     @endif
+    @include('post.addCategory')
     <div class="bg-dark text-light text-center m-2 p-3">
         <fieldset class="">
             <legend>Add new Member</legend>
