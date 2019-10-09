@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="p-2 bg-dark text-light">
+            @include('errors')
             <fieldset class=' p-2'>
                     <legend class="text-warning">Create New Category</legend>
                     <form class="form form-horizontal" action="/category" method="POST">
