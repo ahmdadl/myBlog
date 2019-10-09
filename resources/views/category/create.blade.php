@@ -15,6 +15,9 @@
                           <input type="text" class="form-control" name="title" id="title" aria-describedby="helpId" placeholder="CategoryTitle">
                           <small id="helpId" class="form-text text-muted">must be less than 20 characters</small>
                         </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-success">Create</button>
+                        </div>
                     </form>
                 </fieldset>
     </div>
