@@ -2,12 +2,15 @@
 
 namespace App;
 
+use App\Events\UserCreatePostCategory;
+use App\Listeners\PostCategoryCreated;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -72,12 +75,14 @@ class Post extends Model
 
     public function categories() : BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'post_category');
+        return $this->belongsToMany(Category::class, 'post_categories');
     }
 
     public function addCategory(int $catId)
     {
         $this->categories()->attach($catId);
+
+        $this->recordActivity('create_post_category');
     }
     
     public function members() : BelongsToMany

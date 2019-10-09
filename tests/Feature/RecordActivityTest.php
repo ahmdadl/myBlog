@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Category;
 use App\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -77,5 +78,19 @@ class RecordActivityTest extends TestCase
                     $activity->info
                 );
         });
+    }
+
+    public function testAddingPostCategoryRecordsActivity()
+    {
+        $post = PostFactory::ownedBy($this->signIn())->create();
+
+        $category = factory(Category::class)->create();
+
+        $post->addCategory($category->id);
+
+        $this->assertEquals(
+            'create_post_category',
+            $post->activities->last()->info
+        );
     }
 }
