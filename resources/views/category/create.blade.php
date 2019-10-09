@@ -8,7 +8,7 @@
     <div class="p-2 bg-dark text-light">
             <fieldset class=' p-2'>
                     <legend class="text-warning">Create New Category</legend>
-                    <form class="form form-horizontal" action="category" method="POST">
+                    <form class="form form-horizontal" action="/category" method="POST">
                         @csrf
                         <div class="form-group">
                           <label for="title">Title</label>
