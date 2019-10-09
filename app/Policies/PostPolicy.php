@@ -51,11 +51,16 @@ class PostPolicy
      * @param  \App\Post  $post
      * @return mixed
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post) : bool
     {
         return ($user->id === $post->userId)
             || $user->canDo(User::DELETE_POSTS)
             || $post->members->contains($user);
+    }
+
+    public function updateCategory(User $user, Post $post) : bool
+    {
+        return $user->canDo(User::ADD_CATEGORIES);
     }
 
     /**

@@ -146,13 +146,15 @@ class PostController extends Controller
 
     public function storeCategory(Post $post)
     {
-        $this->authorize('update', $post);
+        $this->authorize('updateCategory', $post);
 
-        $cat = request()->validate([
+        $catId = request()->validate([
             'catId' => 'required|int|exists:categories,id'
         ])['catId'];
 
-        // $post->addCategory
+        $post->addCategory($catId);
+
+        return back();
     }
 
     private function validateInputs()

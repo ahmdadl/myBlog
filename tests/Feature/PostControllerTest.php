@@ -296,8 +296,6 @@ class PostControllerTest extends TestCase
 
     public function testUserWithPermissionCanAddPostCategory()
     {
-        $this->withoutExceptionHandling();
-        
         $admin = UserFactory::admin();
 
         $post = PostFactory::ownedBy($admin)->create();
@@ -309,6 +307,14 @@ class PostControllerTest extends TestCase
         // create category
         $category = factory(Category::class)->create();
 
+        // assert user withput permission cannot add category
+        $this->actingAs(UserFactory::create())
+            ->post(
+                $post->path() . '/addCategory',
+                ['catId' => $category->id]
+            )->assertStatus(403);
+
+        // assert that user with permission can
         $this->actingAs($user)
             ->post(
                 $post->path() . '/addCategory',
