@@ -60,7 +60,7 @@ class PostController extends Controller
         $attr = $request->validated();
 
         // upload image and store file name in database
-        $attr['img'] = UploadImage::upload($request, 'img');
+        $attr['img'] = UploadImage::upload($request, 'img') ?? '5.png';
 
         $post = auth()->user()->createWithSlug($attr);
 
