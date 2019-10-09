@@ -27,9 +27,10 @@ Route::resource('posts', 'PostController', [
 ])->middleware('auth');
 
 Route::get('category/create', 'CategoryController@create')
-    ->middleware('auth');
+    ->middleware('auth', 'create.category');
 Route::get('category/{category}', 'CategoryController@show');
-Route::post('category', 'CategoryController@store');
+Route::post('category', 'CategoryController@store')
+    ->middleware('auth', 'create.category');
 
 
 // add new category to post

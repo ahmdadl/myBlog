@@ -23,12 +23,12 @@ class CategoryControllerTest extends TestCase
         $this->signIn();
 
         $this->get('category/create')->assertStatus(403);
+
+        $this->post('category', [])->assertStatus(403);
     }
 
     public function testUserWithPermissionCanCreateCategory()
     {
-        $this->withoutExceptionHandling();
-
         // create a user and give him permission to add new categories
         UserFactory::admin()->givePermTo(
             $user = $this->signIn(),
