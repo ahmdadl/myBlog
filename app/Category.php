@@ -12,7 +12,7 @@ class Category extends Model
 
     public function posts() : BelongsToMany
     {
-        return $this->belongsToMany(Post::class, 'post_category');
+        return $this->belongsToMany(Post::class, 'post_categories');
     }
 
     public function activity() : MorphMany

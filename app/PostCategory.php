@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PostCategory extends Model
 {
-    
+    // protected $table = 'post_categories';
+
     // protected $dispatchesEvents = [
     //     'created' => UserCreatePostCategory::class,
     //     'updated' => UserCreatePostCategory::class
