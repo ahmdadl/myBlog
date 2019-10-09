@@ -26,7 +26,11 @@ Route::resource('posts', 'PostController', [
     'except' => ['index', 'search']
 ])->middleware('auth');
 
+Route::get('category/create', 'CategoryController@create')
+    ->middleware('auth');
 Route::get('category/{category}', 'CategoryController@show');
+
+
 // add new category to post
 Route::post(
     '/posts/{post}/addCategory',

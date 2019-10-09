@@ -8,15 +8,17 @@ use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function testGuestCannotCreateCategory()
+    {
+       $this->get('category/create')->assertRedirect('login');
+    }
+
+    public function testUserWithoutPermissionCannotCreateCategory()
+    {
+        $this->signIn();
+
+        $this->get('category/create')->assertStatus(403);
     }
 }
