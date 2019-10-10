@@ -24,12 +24,7 @@ class PostSeeder extends Seeder
             // attach these categories to posts
             $post->categories()->attach($ctgIds);
 
-            // create 5 users
-            $members = factory(User::class, rand(2, 5))
-                ->create()
-                ->pluck('id');
             
-            $post->members()->attach($members);
         });
     }
 }
