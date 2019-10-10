@@ -33,8 +33,12 @@ class CommentTest extends TestCase
         $this->assertEquals($comment->post->id, $post->id);
     }
 
-    // public function testItHasActivity()
-    // {
-    //     // $comment = factory(Comment::class)
-    // }
+    public function testItHasActivity()
+    {
+        [$post, $comment] = PostFactory::withComments()
+            ->ownedBy($this->signIn())
+            ->createBoth();
+
+        $this->assertIsIterable($comment->activity);
+    }
 }

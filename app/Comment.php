@@ -5,6 +5,8 @@ namespace App;
 use App\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Comment extends Model
 {
@@ -15,7 +17,7 @@ class Comment extends Model
         parent::boot();
 
         self::created(function ($comment) {
-            // $comment->recordActivity('create_comment');
+            $comment->recordActivity('create_comment');
         });
     }
 
@@ -40,5 +42,10 @@ class Comment extends Model
     public function post() : BelongsTo
     {
         return $this->belongsTo(Post::class, 'postId');
+    }
+
+    public function activity() : MorphMany
+    {
+        return $this->morphMany(Activity::class, 'subject');
     }
 }
