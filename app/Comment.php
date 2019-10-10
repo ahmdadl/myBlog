@@ -5,6 +5,7 @@ namespace App;
 use App\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
@@ -28,5 +29,15 @@ class Comment extends Model
     public function activity() : MorphMany
     {
         return $this->morphMany(Activity::class, 'subject');
+    }
+
+    public function replays() : HasMany
+    {
+        return $this->hasMany(CommentReplay::class, 'commentId');
+    }
+
+    public function replay(array $body) : CommentReplay
+    {
+        return $this->replays()->create($body);
     }
 }

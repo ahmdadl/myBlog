@@ -41,4 +41,16 @@ class CommentTest extends TestCase
 
         $this->assertIsIterable($comment->activity);
     }
+
+    public function testItCanBeReplayed()
+    {
+        [$post, $comment] = PostFactory::withComments()
+            ->createBoth();
+
+        $replay = factory(Comment::class)->make();
+
+        $comment->replay($replay->only('body'));
+
+        $this->assertCount(1, $comment->replays);
+    }
 }
