@@ -1,7 +1,7 @@
 <div class="bg-dark text-light">
     <fieldset class="p-2">
         <legend class="text-primary">Create New Comment</legend>
-        <form action="{{$post->path() . '/comments'}}" method="POST" class="form">
+        <form action="{{$action}}" method="POST" class="form">
             @csrf
             <div class="form-group">
               <label for="body">Comment</label>
