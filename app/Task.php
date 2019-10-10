@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Task extends Model
 {
     protected $fillable = ['userId', 'body'];
-    
+
     protected $casts = [
         'done' => 'boolean'
     ];
@@ -16,5 +16,18 @@ class Task extends Model
     public function post() : BelongsTo
     {
         return $this->belongsTo(Post::class, 'postId');
+    }
+
+    public function complete(bool $done = true) : bool
+    {
+        $this->done = $done;
+        $this->update();
+
+        return $done;
+    }
+
+    public function unComplete() : bool
+    {
+        return $this->complete(false);
     }
 }

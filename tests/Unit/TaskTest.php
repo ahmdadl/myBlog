@@ -17,4 +17,18 @@ class TaskTest extends TestCase
 
         $this->assertEquals($task->post->id, $post->id);
     }
+
+    public function testItCanBeCompleted()
+    {
+        [$post, $task] = PostFactory::withTasks()->createBothTasks();
+
+        $task->done = $task->complete();
+
+        $this->assertTrue($task->done);
+        $this->assertDatabaseHas('tasks', $task->attributesToArray());
+
+        $task->done = $task->unComplete();
+        $this->assertFalse($task->done);
+        $this->assertDatabaseHas('tasks', $task->attributesToArray());
+    }
 }
