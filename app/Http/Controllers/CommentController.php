@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Post;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -37,6 +38,20 @@ class CommentController extends Controller
     public function store(Request $request, Post $post)
     {
         $post->comment(
+            request()->validate([
+                'body' => 'required|min:25|max:350'
+            ])['body']
+        );
+
+        return back();
+    }
+
+    public function addReplay(
+        Request $request,
+        Post $post,
+        Comment $comment
+    ) : RedirectResponse {
+        $comment->replay(
             request()->validate([
                 'body' => 'required|min:25|max:350'
             ])['body']

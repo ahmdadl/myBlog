@@ -10,6 +10,9 @@
                     {{$comment->owner->name}}
                 </h5>
                 {{$comment->body}}
+                @foreach ($comment->replays as $replay)
+                    {{$replay->body}}
+                @endforeach
             </div>
         </li>
         @endforeach

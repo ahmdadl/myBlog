@@ -44,3 +44,7 @@ Route::post('/posts/{post}/invite', 'PostController@addUser');
 
 Route::post('posts/{post}/comments', 'CommentController@store')
     ->middleware('auth');
+Route::post(
+    'posts/{post}/comments/{comment}',
+    'CommentController@addReplay'
+);

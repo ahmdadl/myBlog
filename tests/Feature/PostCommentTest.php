@@ -49,4 +49,28 @@ class PostCommentTest extends TestCase
         $this->post($post->path() . '/comments', [])
             ->assertSessionHasErrors();
     }
+
+    public function testUserCanReplayComment()
+    {
+        $this->withoutExceptionHandling();
+
+        [$post, $comment] = PostFactory::withComments()
+            ->createBoth();
+
+        $replayComment = factory(Comment::class)->make();
+
+        $this->actingAs(UserFactory::create())
+            ->post(
+                $comment->path(),
+                $replayComment->only('body'),
+                $this->setReferer($post->path())
+            )->assertRedirect($post->path());
+        
+        $this->assertDatabaseHas(
+            'comment_replays',
+            $replayComment->only('body')
+        );
+
+        $this->get($post->path())->assertSee($replayComment->body);
+    }
 }
