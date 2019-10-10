@@ -132,4 +132,9 @@ class Post extends Model
             'body' => $body
         ]);
     }
+
+    public function tasks() : HasMany
+    {
+        return $this->hasMany(Task::class, 'postId');
+    }
 }

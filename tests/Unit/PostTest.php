@@ -143,4 +143,15 @@ class PostTest extends TestCase
             $post->comments->last()->userId
         );
     }
+
+    public function testItHasTasks()
+    {
+        [$post, $task] = PostFactory::ownedBy($user = $this->signIn())
+            ->withTasks(2)
+            ->createBothTasks();
+
+        $this->assertIsIterable($post->tasks);
+
+        $this->assertCount(2, $post->tasks);
+    }
 }
