@@ -15,33 +15,35 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
+    use RecordActivity;
+    
     protected $guarded = [];
 
-    public static function boot()
-    {
-        parent::boot();
+    // public static function boot()
+    // {
+    //     parent::boot();
 
-        self::created(function (Post $post) {
-            $post->recordActivity('create_post');
-        });
+    //     self::created(function (Post $post) {
+    //         $post->recordActivity('create_post');
+    //     });
 
-        self::updated(function (Post $post) {
-            $post->recordActivity('update_post');
-        });
-    }
+    //     self::updated(function (Post $post) {
+    //         $post->recordActivity('update_post');
+    //     });
+    // }
 
-    public function recordActivity(string $msg) : ?Activity
-    {
-        if (!auth()->check()) {
-            return null;
-        }
+    // public function recordActivity(string $msg) : ?Activity
+    // {
+    //     if (!auth()->check()) {
+    //         return null;
+    //     }
 
-        return $this->activity()->create([
-            'userId' => auth()->id(),
-            'postId' => $this->id,
-            'info' => $msg
-        ]);
-    }
+    //     return $this->activity()->create([
+    //         'userId' => auth()->id(),
+    //         'postId' => $this->id,
+    //         'info' => $msg
+    //     ]);
+    // }
 
     public function getMiniBodyAttribute() : string
     {
