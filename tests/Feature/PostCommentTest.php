@@ -41,7 +41,8 @@ class PostCommentTest extends TestCase
         $this->assertDatabaseHas('comments', $comment->toArray());
 
         $this->get($post->path())
-            ->assertSee($comment->body);
+            ->assertSee($comment->body)
+            ->assertSee($comment->owner->name);
     }
 
     public function testCommentRequiresBody()
