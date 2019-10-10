@@ -75,6 +75,6 @@
         </div>
         @include('post.opr')
     </div>
-    @include('post.comment.body')
+    @include('post.comment.index')
 </div>
 @endsection
