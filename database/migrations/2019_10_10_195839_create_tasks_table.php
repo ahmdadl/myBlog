@@ -18,6 +18,7 @@ class CreateTasksTable extends Migration
             $table->unsignedBigInteger('postId');
             $table->unsignedBigInteger('userId');
             $table->string('body');
+            $table->boolean('done')->default(false);
             $table->timestamps();
 
             $table->foreign('postId')
