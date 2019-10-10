@@ -120,4 +120,17 @@ class Post extends Model
     {
         return $this->hasMany(Activity::class, 'postId')->latest();
     }
+
+    public function comments() : HasMany
+    {
+        return $this->hasMany(Comment::class, 'postId');
+    }
+
+    public function comment(string $body)
+    {
+        return $this->comments()->create([
+            'userId' => auth()->id(),
+            'body' => $body
+        ]);
+    }
 }

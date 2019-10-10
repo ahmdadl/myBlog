@@ -41,3 +41,6 @@ Route::post(
 
 // invite new users for post
 Route::post('/posts/{post}/invite', 'PostController@addUser');
+
+Route::post('posts/{post}/comments', 'CommentController@store')
+    ->middleware('auth');

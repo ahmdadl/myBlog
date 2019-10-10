@@ -122,4 +122,25 @@ class PostTest extends TestCase
             $post->categories->pluck('id')
         );
     }
+
+    public function testItHasComments()
+    {
+        $post = PostFactory::create();
+
+        $this->assertIsIterable($post->comments);
+    }
+
+    public function testItHasAddCommentMethod()
+    {
+        $post = PostFactory::ownedBy($user = $this->signIn())
+            ->create();
+
+        $post->comment($user->id, 'some thing in here and there');
+
+        $this->assertCount(1, $post->comments);
+        $this->assertEquals(
+            $user->id, 
+            $post->comments->last()->userId
+        );
+    }
 }
