@@ -41,8 +41,11 @@ class Comment extends Model
         return $this->post->path() . '/comments/' . $this->id;
     }
 
-    public function replay(array $body) : CommentReplay
+    public function replay(string $body) : CommentReplay
     {
-        return $this->replays()->create($body);
+        return $this->replays()->create([
+            'userId' => auth()->id(),
+            'body' => $body
+        ]);
     }
 }

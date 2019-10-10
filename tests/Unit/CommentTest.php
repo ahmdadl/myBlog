@@ -45,11 +45,12 @@ class CommentTest extends TestCase
     public function testItCanBeReplayed()
     {
         [$post, $comment] = PostFactory::withComments()
+            ->ownedBy($this->signIn())
             ->createBoth();
 
         $replay = factory(Comment::class)->make();
 
-        $comment->replay($replay->only('body'));
+        $comment->replay($replay->body);
 
         $this->assertCount(1, $comment->replays);
     }

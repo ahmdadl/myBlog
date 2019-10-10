@@ -16,12 +16,18 @@ class CreateCommentReplaysTable extends Migration
         Schema::create('comment_replays', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('commentId');
+            $table->unsignedBigInteger('userId');
             $table->text('body');
             $table->timestamps();
 
             $table->foreign('commentId')
                 ->references('id')
                 ->on('comments')
+                ->onDelete('cascade');
+
+            $table->foreign('userId')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

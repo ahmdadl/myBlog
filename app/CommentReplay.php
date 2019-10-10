@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class CommentReplay extends Model
 {
-    protected $fillable = ['body'];
+    protected $fillable = ['userId', 'body'];
 }
