@@ -118,4 +118,23 @@ class RecordActivityTest extends TestCase
             $this->assertEquals('create_comment', $activity->info);
         });
     }
+
+    public function testReplayCommentRecordActivity()
+    {
+        [$post, $comment] = PostFactory::withComments()
+            ->ownedBy(UserFactory::create())
+            ->createBoth();
+        
+        $this->actingAs($this->signIn())
+            ->post(
+                $comment->path(),
+                factory(Comment::class)->make()->only('body'),
+                $this->setReferer($post->path())
+        )->assertRedirect($post->path());
+
+        $this->assertEquals(
+            'create_comment_replay',
+            $post->activities->last()->info
+        );
+    }
 }

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Activity;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
 trait RecordActivity
@@ -14,7 +15,7 @@ trait RecordActivity
 
         self::created(function (Model $model) {
             $model->recordActivity(
-                'create_' . Str::lower(class_basename($model))
+                'create_' . Str::snake(class_basename($model))
             );
         });
 
@@ -33,6 +34,8 @@ trait RecordActivity
 
         if ($this instanceof Post) {
             $postId = $this->id;
+        } elseif($this instanceof CommentReplay) {
+            $postId = $this->comment->post->id;
         } else {
             $postId = $this->post->id;
         }
@@ -44,4 +47,8 @@ trait RecordActivity
         ]);
     }
 
+    public function activity() : MorphMany
+    {
+        return $this->morphMany(Activity::class, 'subject');
+    }
 }

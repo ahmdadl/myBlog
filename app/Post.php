@@ -113,11 +113,6 @@ class Post extends Model
         $this->members()->attach($user);
     }
 
-    public function activity() : MorphMany
-    {
-        return $this->morphMany(Activity::class, 'subject');
-    }
-
     public function activities() : HasMany
     {
         return $this->hasMany(Activity::class, 'postId')->latest();
