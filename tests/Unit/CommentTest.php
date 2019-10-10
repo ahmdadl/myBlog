@@ -24,4 +24,15 @@ class CommentTest extends TestCase
 
         $this->assertEquals($comment->owner->name, $user->name);
     }
+
+    public function testItBelongsToPost()
+    {
+        $post = PostFactory::ownedBy($this->signIn())->create();
+
+        $comment = factory(Comment::class)->make();
+
+        $comment = $post->comment($comment->body);
+
+        $this->assertEquals($comment->post->id, $post->id);
+    }
 }
