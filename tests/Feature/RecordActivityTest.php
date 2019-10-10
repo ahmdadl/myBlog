@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Category;
+use App\Comment;
 use App\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -92,5 +93,29 @@ class RecordActivityTest extends TestCase
             'create_post_category',
             $post->activities->last()->info
         );
+    }
+
+    public function testCreatingCommentRecordsActivity()
+    {
+        [$post, $comment] = PostFactory::withComments()
+            ->ownedBy(UserFactory::create())
+            ->createBoth('make');
+
+        $user = $this->signIn();
+
+        $this->post(
+                $post->path() . '/comments',
+                $comment->only('body'),
+                $this->setReferer($post->path())
+            )->assertRedirect($post->path());
+
+        tap($post->activities->last(), function ($activity) use ($post, $user) {
+            $this->assertNotEquals(
+                $post->owner->id, 
+                $activity->owner->id
+            );
+            $this->assertEquals($activity->owner->name, $user->name);
+            $this->assertEquals('create_comment', $activity->info);
+        });
     }
 }

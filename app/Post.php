@@ -128,6 +128,8 @@ class Post extends Model
 
     public function comment(string $body)
     {
+        // $this->recordActivity('create_comment');
+
         return $this->comments()->create([
             'userId' => auth()->id(),
             'body' => $body
