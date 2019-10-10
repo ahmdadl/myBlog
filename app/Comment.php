@@ -36,6 +36,11 @@ class Comment extends Model
         return $this->hasMany(CommentReplay::class, 'commentId');
     }
 
+    public function path() : string
+    {
+        return $this->post->path() . '/comments/' . $this->id;
+    }
+
     public function replay(array $body) : CommentReplay
     {
         return $this->replays()->create($body);

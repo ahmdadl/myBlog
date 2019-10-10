@@ -53,4 +53,17 @@ class CommentTest extends TestCase
 
         $this->assertCount(1, $comment->replays);
     }
+
+    public function testItHasPath()
+    {
+        [$post, $comment] = PostFactory::withComments()
+            ->createBoth();
+
+        $this->assertIsString($comment->path());
+
+        $this->assertEquals(
+            $comment->path(),
+            $post->path() . '/comments/' . $comment->id
+        );
+    }
 }
