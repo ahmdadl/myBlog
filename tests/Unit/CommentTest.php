@@ -15,24 +15,26 @@ class CommentTest extends TestCase
 
     public function testItHasOwner()
     {
-        $user = UserFactory::create();
-
-        $comment = factory(Comment::class)->create([
-            'postId' => PostFactory::create()->id,
-            'userId' => $user->id
-        ]);
+        [$post, $comment] = PostFactory::withComments()
+            ->ownedBy($user = $this->signIn())
+            ->createBoth();
 
         $this->assertEquals($comment->owner->name, $user->name);
     }
 
     public function testItBelongsToPost()
     {
-        $post = PostFactory::ownedBy($this->signIn())->create();
-
-        $comment = factory(Comment::class)->make();
+        [$post, $comment] = PostFactory::withComments()
+            ->ownedBy($this->signIn())
+            ->createBoth('make');
 
         $comment = $post->comment($comment->body);
 
         $this->assertEquals($comment->post->id, $post->id);
     }
+
+    // public function testItHasActivity()
+    // {
+    //     // $comment = factory(Comment::class)
+    // }
 }

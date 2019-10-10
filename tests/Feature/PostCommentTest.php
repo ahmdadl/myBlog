@@ -25,12 +25,9 @@ class PostCommentTest extends TestCase
 
     public function testUserCanCreateComment()
     {
-        $post = PostFactory::ownedBy($user = $this->signIn())
-            ->create();
-
-        $comment = factory(Comment::class)->make([
-            'userId' => $user->id
-        ]);
+        [$post, $comment] = PostFactory::withComments()
+            ->ownedBy($user = $this->signIn())
+            ->createBoth('make');
 
         $this->post(
             $post->path() . '/comments',
