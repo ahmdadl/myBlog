@@ -147,11 +147,22 @@ class PostTest extends TestCase
     public function testItHasTasks()
     {
         [$post, $task] = PostFactory::ownedBy($user = $this->signIn())
-            ->withTasks(2)
+            ->withTasks()
             ->createBothTasks();
 
         $this->assertIsIterable($post->tasks);
 
-        $this->assertCount(2, $post->tasks);
+        $this->assertCount(1, $post->tasks);
+    }
+
+    public function testItCanAddTasks()
+    {
+        [$post, $task] = PostFactory::ownedBy($this->signIn())
+        ->withTasks()
+        ->createBothTasks('make');
+
+        $post->addTask($task->body);
+
+        $this->assertDatabaseHas('tasks', $task->only('body'));
     }
 }

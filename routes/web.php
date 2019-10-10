@@ -48,3 +48,6 @@ Route::post(
     'posts/{post}/comments/{comment}',
     'CommentController@addReplay'
 );
+
+Route::post('/posts/{post}/tasks', 'TaskController@store')
+    ->middleware('auth');

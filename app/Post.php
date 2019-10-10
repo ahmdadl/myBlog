@@ -123,7 +123,7 @@ class Post extends Model
         return $this->hasMany(Comment::class, 'postId');
     }
 
-    public function comment(string $body)
+    public function comment(string $body) : Comment
     {
         // $this->recordActivity('create_comment');
 
@@ -136,5 +136,13 @@ class Post extends Model
     public function tasks() : HasMany
     {
         return $this->hasMany(Task::class, 'postId');
+    }
+
+    public function addTask(string $body) : Task
+    {
+        return $this->tasks()->create([
+            'userId' => auth()->id(),
+            'body' => $body
+        ]);
     }
 }
