@@ -30,4 +30,9 @@ class Task extends Model
     {
         return $this->complete(false);
     }
+
+    public function path() : string
+    {
+        return $this->post->path() . '/tasks/' . $this->id;
+    }
 }

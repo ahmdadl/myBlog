@@ -31,4 +31,15 @@ class TaskTest extends TestCase
         $this->assertFalse($task->done);
         $this->assertDatabaseHas('tasks', $task->attributesToArray());
     }
+
+    public function testItHasPath()
+    {
+        [$post, $task] = PostFactory::withTasks()->createBothTasks();
+
+        $this->assertIsString($task->path());
+        $this->assertEquals(
+            $post->path() . '/tasks/' . $task->id,
+            $task->path()
+        );
+    }
 }
