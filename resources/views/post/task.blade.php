@@ -1,3 +1,8 @@
+<style>
+    .checkedTask {
+        text-decoration: line-through;
+    }
+</style>
 <div class="mt-4">
     <div class="col-12 bg-dark text-warning p-3">
         <h4 class="text-info">Tasks</h4>
@@ -18,7 +23,7 @@
             @method('PATCH')
             @csrf
             <div class="form-group">
-                <div class="form-check form-check-inline"
+                <div class="form-check form-check-inline {{!$task->done ?: 'checkedTask text-danger'}}"
                     onclick="setTimeout(_ => document.getElementById('completeTask{{$task->id}}').submit(), 50);">
                     <label
                         class="form-check-label {{ $task->done ? 'checked' : ''}}">

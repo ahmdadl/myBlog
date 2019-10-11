@@ -32,14 +32,10 @@ class TaskController extends Controller
         $this->authorize('update', $post);
 
         $done = request()->validate([
-            'done' => 'nullable|boolean'
-        ])['done'];
+            'done' => 'nullable'
+        ]);
 
-        if ($done) {
-            $task->complete();
-        } else {
-            $task->unComplete();
-        }
+        isset($done['done']) ? $task->complete() : $task->unComplete();
         
         return back();
     }
