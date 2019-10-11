@@ -51,3 +51,5 @@ Route::post(
 
 Route::post('/posts/{post}/tasks', 'TaskController@store')
     ->middleware('auth');
+Route::patch('/posts/{post}/tasks/{task}', 'TaskController@update')
+    ->middleware('auth');

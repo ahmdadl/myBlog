@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Task;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,22 @@ class TaskController extends Controller
                 'body' => 'required|min:5|max:70'
             ])['body']
         );
+
+        return back();
+    }
+
+    public function update(
+        Request $request,
+        Post $post,
+        Task $task
+    ) : RedirectResponse {
+        $this->authorize('update', $post);
+
+        $task->done = request()->validate([
+            'done' => 'nullable|boolean'
+        ])['done'];
+
+        $task->update();
 
         return back();
     }

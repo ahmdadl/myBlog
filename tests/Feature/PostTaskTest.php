@@ -91,4 +91,39 @@ class PostTaskTest extends TestCase
             ['body' => $post->body]
         )->assertSessionHasErrors('body');
     }
+
+    public function testPostOwnerCanCompleteTask()
+    {
+        [$post, $task] = PostFactory::withTasks()
+            ->ownedBy($this->signIn())
+            ->createBothTasks('create');
+        
+        $this->patch(
+            $task->path(),
+            ['done' => true],
+            $this->setReferer($post->path())
+        )->assertRedirect($post->path());
+
+        $task->done = true;
+        $this->assertDatabaseHas('tasks', $task->attributesToArray());
+    }
+
+    public function testAnyUserCannotUpdateTask()
+    {
+        [$post, $task] = PostFactory::withTasks()
+            ->ownedBy(UserFactory::create())
+            ->createBothTasks();
+        
+        $this->actingAs(UserFactory::create())
+            ->patch(
+                $task->path(),
+                ['done' => true]
+        )->assertStatus(403);
+
+        $task->done = true;
+        $this->assertDatabaseMissing(
+            'tasks',
+            $task->attributesToArray()
+        );
+    }
 }
