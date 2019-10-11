@@ -23,7 +23,11 @@
                     </span>
                     <span class="text-warning">
                         {{$activity->info}}
-                    </span><br />
+                    </span>
+                    <span class="text-muted">
+                        {{$activity->updated_at->diffForHumans()}}
+                    </span>
+                    <br />
                 @endforeach
             </div>
         </div>
