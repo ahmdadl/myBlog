@@ -63,9 +63,9 @@
                     @endforeach
                 </small>
                 <p class="py-1">{{$post->title}}</p>
-                <div class="text-center">
+                <div class="text-center" style="direction: rtl;">
                     <a href="/users/{{$post->owner->id}}"
-                        class="btn btn-outline-danger">By
+                        class="btn btn-outline-danger">
                         {{$post->owner->name}} <span
                             class="text-muted">{{$post->updated_at->diffForHumans()}}</span>
                     </a>
