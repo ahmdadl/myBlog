@@ -24,6 +24,14 @@ trait RecordActivity
                 'update_' . Str::snake(class_basename($model))
             );
         });
+
+        self::deleted(function (Model $model) {
+            if (!$model instanceof Post) {
+                $model->recordActivity(
+                    'delete_' . Str::snake(class_basename($model))
+                );
+            }
+        });
     }
 
     public function recordActivity(string $msg) : ?Activity

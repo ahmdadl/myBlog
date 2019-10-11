@@ -183,4 +183,22 @@ class RecordActivityTest extends TestCase
             );
         });
     }
+
+    public function testDeletingCommentRecordActivity()
+    {
+        [$post, $comment] = PostFactory::withComments()
+            ->createBoth();
+
+        $this->actingAs(UserFactory::admin())
+            ->delete(
+                $comment->path(),
+                [],
+                $this->setReferer($post->path())
+            )->assertRedirect($post->path());
+
+        $this->assertEquals(
+            'delete_comment',
+            $post->activities->last()->info
+        );
+    }
 }
