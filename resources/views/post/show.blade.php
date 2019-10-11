@@ -6,14 +6,7 @@
 
 @section('content')
 <div class=''>
-    {{-- @dump(session()->all()) --}}
-    @if ($errors->any())
-        <div class="p-3 ml-3 bg-dark text-light col-12 col-md-10">
-            @foreach ($errors->all() as $err)
-                {{$err}}<br>
-            @endforeach
-        </div>
-    @endif
+    @include('errors')
     @if ($post->activities->count() > 0)
     <div class="card bg-dark d-block col-12">
             <div class="card-title bg-dark text-light p-2 ml-3 d-block">
