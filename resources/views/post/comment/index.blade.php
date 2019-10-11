@@ -9,7 +9,12 @@
                 alt="{{$comment->owner->name}}" width="150" height="100">
             <div class="media-body">
                 <h5 class="mt-0 mb-1 text-primary">
-                    {{$comment->owner->name}}
+                    <span class="d-inline">{{$comment->owner->name}}</span>
+                    <form action="{{$comment->path()}}" method='POST' class="d-inline">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-outline-danger"><strong>&times;</strong></button>
+                    </form>
                 </h5>
                 {{$comment->body}}
                 <button type="button"
