@@ -31,4 +31,11 @@ class AddUserRequest extends FormRequest
             'userEmail' => 'required|email|exists:users,email'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'exists' => 'user be registered at narutoFights'
+        ];
+    }
 }
