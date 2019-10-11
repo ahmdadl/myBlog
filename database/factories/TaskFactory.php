@@ -9,8 +9,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Task::class, function (Faker $faker) {
     return [
-        'userId' => UserFactory::create(),
-        'postId' => PostFactory::create(),
+        // 'userId' => UserFactory::create(),
+        // 'postId' => PostFactory::create(),
         'body' => $faker->sentence
     ];
 });

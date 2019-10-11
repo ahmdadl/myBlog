@@ -2,8 +2,11 @@
 
 use App\Category;
 use App\Post;
+use App\Task;
 use App\User;
+use Facades\Tests\Setup\UserFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class PostSeeder extends Seeder
 {
@@ -16,15 +19,17 @@ class PostSeeder extends Seeder
     {
         // create 5 posts
         factory(Post::class, 5)->create()->each(function (Post $post) {
-            // create 5 categories and retrive it`s ids
-            $ctgIds = factory(Category::class, 5)
+            $post->tasks()->createMany(
+                factory(Task::class, rand(3, 8))->raw([
+                    'userId' => UserFactory::create()->id
+                ])
+            );
+
+            $ctgIds = factory(Category::class, rand(2, 5))
                 ->create()
                 ->pluck('id');
             
-            // attach these categories to posts
             $post->categories()->attach($ctgIds);
-
-            
         });
     }
 }

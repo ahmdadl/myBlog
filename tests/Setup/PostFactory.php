@@ -64,7 +64,8 @@ class PostFactory
         $post = $this->create($postType);
 
         $task = factory(Task::class)->$taskType([
-            'postId' => $post->id
+            'postId' => $post->id,
+            'userId' => $post->owner->id
         ]);
 
         return [$post, $task];

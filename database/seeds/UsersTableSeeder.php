@@ -27,13 +27,9 @@ class UsersTableSeeder extends Seeder
             'perm' => 15
         ]);
 
-        // create random users with posts
+        // create random users
         factory(User::class, 20)->create([
-            'perm' => Arr::random([1, 2, 4, 8, 16])
-        ])->each(function ($user) {
-            $user->posts()->create(
-                factory(Post::class)->raw()
-            );
-        });
+            'perm' => Arr::random([1, 2, 4, 8, 15])
+        ]);
     }
 }
