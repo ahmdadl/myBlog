@@ -21,7 +21,7 @@ trait RecordActivity
 
         self::updated(function (Model $model) {
             $model->recordActivity(
-                'update_' . Str::lower(class_basename($model))
+                'update_' . Str::snake(class_basename($model))
             );
         });
     }

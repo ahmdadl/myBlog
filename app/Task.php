@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
+    use RecordActivity;
+
     protected $fillable = ['userId', 'body'];
 
     protected $casts = [

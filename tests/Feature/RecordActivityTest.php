@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Activity;
 use App\Category;
 use App\Comment;
 use App\Post;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Facades\Tests\Setup\PostFactory;
 use Facades\Tests\Setup\UserFactory;
+use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
 
 class RecordActivityTest extends TestCase
@@ -136,5 +138,49 @@ class RecordActivityTest extends TestCase
             'create_comment_replay',
             $post->activities->last()->info
         );
+    }
+
+    public function testCreatingTaskRecordActivity()
+    {
+        [$post, $task] = PostFactory::withTasks()
+            ->ownedBy($this->signIn(UserFactory::admin()))
+            ->createBothTasks('make');
+
+        $this->post(
+            $post->path() . '/tasks',
+            $task->only('body'),
+            $this->setReferer($post->path())
+        )->assertRedirect($post->path());
+
+        $this->assertCount(2, $post->activities);
+
+        $this->assertEquals(
+            'create_task',
+            $post->activities->last()->info
+        );
+    }
+
+    public function testUpdatingTaskRecordActivity()
+    {
+        [$post, $task] = PostFactory::ownedBy($this->signIn())
+            ->withTasks()
+            ->createBothTasks();
+
+        $this->patch(
+            $task->path(),
+            ['done' => true],
+            $this->setReferer($post->path())
+        )->assertRedirect($post->path());
+
+        $this->assertCount(3, $post->activities);
+
+        tap($post->activities->last(), function (Activity $activity) use ($task) {
+            $this->assertEquals('update_task', $activity->info);
+
+            $this->assertEquals(
+                $activity->subject->body,
+                $task->body
+            );
+        });
     }
 }
