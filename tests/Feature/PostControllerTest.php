@@ -274,7 +274,7 @@ class PostControllerTest extends TestCase
             ['userEmail' => $user2->email],
             $this->setReferer($post->path())
         )->assertRedirect($post->path())
-        ->assertSessionHasErrors('userEmail');
+        ->assertSessionHasErrors('userEmail', null, 'addUser');
     }
 
     /**
