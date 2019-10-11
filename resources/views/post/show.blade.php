@@ -75,6 +75,7 @@
         </div>
         @include('post.opr')
     </div>
+    @include('post.task')
     @include('post.comment.index')
 </div>
 @endsection

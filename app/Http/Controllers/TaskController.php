@@ -31,12 +31,16 @@ class TaskController extends Controller
     ) : RedirectResponse {
         $this->authorize('update', $post);
 
-        $task->done = request()->validate([
+        $done = request()->validate([
             'done' => 'nullable|boolean'
         ])['done'];
 
-        $task->update();
-
+        if ($done) {
+            $task->complete();
+        } else {
+            $task->unComplete();
+        }
+        
         return back();
     }
 }
