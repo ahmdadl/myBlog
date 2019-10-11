@@ -36,6 +36,7 @@
                     placeholder="user email" class="form-control" />
             </form>
         </fieldset>
+        @include('errors', ['errorBag' => 'addUser'])
     </div>
 
     <div class="card">

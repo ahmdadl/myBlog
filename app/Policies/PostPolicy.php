@@ -63,39 +63,9 @@ class PostPolicy
         return $user->canDo(User::ADD_CATEGORIES);
     }
 
-    /**
-     * Determine whether the user can delete the post.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
-     * @return mixed
-     */
-    public function delete(User $user, Post $post)
-    {
-        //
-    }
 
-    /**
-     * Determine whether the user can restore the post.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
-     * @return mixed
-     */
-    public function restore(User $user, Post $post)
-    {
-        //
-    }
+    // public function canAddUser(User $user, Post $post) : bool
+    // {
 
-    /**
-     * Determine whether the user can permanently delete the post.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
-     * @return mixed
-     */
-    public function forceDelete(User $user, Post $post)
-    {
-        //
-    }
+    // }
 }

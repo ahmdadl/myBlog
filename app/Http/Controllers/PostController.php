@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\AddUserRequest;
 use App\Http\Requests\PostStoreRequest;
 use App\Post;
 use App\User;
@@ -136,13 +137,9 @@ class PostController extends Controller
         return redirect('/posts');
     }
 
-    public function addUser(Post $post)
+    public function addUser(AddUserRequest $request ,Post $post)
     {
-        $this->authorize('update', $post);
-
-        $userEmail = request()->validate([
-            'userEmail' => 'required|email|exists:users,email'
-        ])['userEmail'];
+        $userEmail = $request->validated()['userEmail'];
 
         $post->invite(User::where('email', '=', $userEmail)->first());
         
