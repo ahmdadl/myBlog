@@ -73,4 +73,30 @@ class PostCommentTest extends TestCase
 
         $this->get($post->path())->assertSee($replayComment->body);
     }
+
+    public function testOnlyAdminCanDeleteComments()
+    {
+        [$post, $comment] = PostFactory::withComments()
+            ->createBoth();
+
+        // try as random user  
+        $this->actingAs(UserFactory::create())
+            ->delete($comment->path())->assertStatus(403);
+
+        // try with admin user
+        $this->actingAs(UserFactory::admin())
+            ->delete(
+                $comment->path(),
+                [],
+                $this->setReferer($post->path())
+            )->assertRedirect($post->path());
+
+        $this->assertDatabaseMissing(
+            'comments',
+            $comment->attributesToArray()
+        );
+
+        $this->get($post->path())
+            ->assertDontSee($comment->body);
+    }
 }

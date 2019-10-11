@@ -100,8 +100,12 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Post $post, Comment $comment)
     {
-        //
+        abort_if(auth()->user()->type !== 'admin', 403);
+
+        $comment->delete();
+
+        return back();
     }
 }
