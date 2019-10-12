@@ -19,6 +19,7 @@ class CreateActivitiesTable extends Migration
             $table->unsignedBigInteger('postId');
             $table->nullableMorphs('subject');
             $table->string('info');
+            $table->text('changes')->nullable();
             $table->timestamps();
 
             $table->foreign('userId')

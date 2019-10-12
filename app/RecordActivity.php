@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 
 trait RecordActivity
 {
+    protected $old;
+
     public static function boot()
     {
         parent::boot();
@@ -23,6 +25,10 @@ trait RecordActivity
             $model->recordActivity(
                 'update_' . Str::snake(class_basename($model))
             );
+        });
+
+        self::updating(function (Model $model) {
+            $model->old = $model->getOriginal();
         });
 
         self::deleted(function (Model $model) {
@@ -51,7 +57,11 @@ trait RecordActivity
         return $this->activity()->create([
             'userId' => auth()->id(),
             'postId' => $postId,
-            'info' => $msg
+            'info' => $msg,
+            'changes' => [
+                'before' => $this->old,
+                'after' => $this->old
+            ]
         ]);
     }
 

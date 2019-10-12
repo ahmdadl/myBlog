@@ -162,6 +162,8 @@ class RecordActivityTest extends TestCase
 
     public function testUpdatingTaskRecordActivity()
     {
+        $this->withoutExceptionHandling();
+        
         [$post, $task] = PostFactory::ownedBy($this->signIn())
             ->withTasks()
             ->createBothTasks();
@@ -182,6 +184,12 @@ class RecordActivityTest extends TestCase
                 $task->body
             );
         });
+
+        // check it records changes
+        dd($post->activities->last()->changes);
+        // $this->assertIsString(
+        //     $post->activities->last()->changes
+        // );
     }
 
     public function testDeletingCommentRecordActivity()
