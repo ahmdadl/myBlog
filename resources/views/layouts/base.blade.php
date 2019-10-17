@@ -54,7 +54,7 @@
                         <li>
                             <a class="nav-link {{request()->is('category/create') ? 'active' : ''}}"
                                 href="/category/create">Ccategory</a>
-                            </li>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -123,6 +123,15 @@
 
         <main class="py-4">
             @yield('baseContent')
+
+            <div id="app" class="container">
+                <h2>@{{ title }}</h2>
+                <ul>
+                    <li>@{{ items[0] }}</li>
+                    <li>@{{ items[1] }}</li>
+                </ul>
+            </div>
+
         </main>
     </div>
 
@@ -135,8 +144,8 @@
         <!-- /.container -->
     </footer>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/vue.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     <script src="{{ asset('js/site.js') }}"></script>
 </body>
 

@@ -1,4 +1,13 @@
-$('.showReplayForm').click(_ => {
-    $('.replayForm').removeClass('d-none');
-    $('.replayForm textarea').focus();
+// $(".showReplayForm").click(_ => {
+//     $(".replayForm").removeClass("d-none");
+//     $(".replayForm textarea").focus();
+// });
+
+var data = {
+    items: ["Bananas", "Apples"],
+    title: "My Shopping List"
+};
+new Vue({
+    el: "#app",
+    data: data
 });
