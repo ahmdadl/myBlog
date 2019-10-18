@@ -130,6 +130,10 @@
                     <li>@{{ items[0] }}</li>
                     <li>@{{ items[1] }}</li>
                 </ul>
+
+                <k></k>
+                <my-component></my-component>
+                <user></user>
             </div>
 
         </main>
@@ -144,9 +148,10 @@
         <!-- /.container -->
     </footer>
     <!-- Scripts -->
-    <script src="{{ asset('js/vue.js') }}"></script>
-    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
-    <script src="{{ asset('js/site.js') }}"></script>
+    {{-- <script src="{{ asset('js/vue.js') }}"></script> --}}
+    <script src="{{ asset('js/ts.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script src="{{ asset('js/site.js') }}"></script> --}}
 </body>
 
 </html>
