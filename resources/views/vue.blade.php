@@ -57,6 +57,6 @@
     </form>
 
     <anime :log='dialog'></anime>
-    <anime :log='fruite'></anime>
+    {{-- <anime :log='fruite'></anime> --}}
 
 </div>
