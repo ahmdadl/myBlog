@@ -1,118 +1,59 @@
-console.log("some of MEEE");
-
 import Vue, { VNode } from "vue";
-import Component from "vue-class-component";
+import Component from "vue-class-component"
+import * as Compo from './components/index'
+import BootstrapVue from 'bootstrap-vue'
 
-const SOME_THING_COOL = "some THing";
+Vue.config.productionTip = false
+Vue.use(BootstrapVue)
 
-class Asd {
-    protected name = "asdasd";
-    protected val: number;
-
-    public getName(): string {
-        return this.name;
-    }
-
-    public setName(name: string): void {
-        this.name = name;
-    }
-
-    public getVal(): number {
-        return this.val;
-    }
-}
-
-let myName = new Asd();
-
-class B extends Asd {
-    protected val = 53;
-
-    public getName(): string {
-        return super.getName();
-    }
-}
-
-class C extends B {
-    public setVal(num: number): void {
-        this.val = num;
-    }
-}
-
-console.log(myName.getName());
-
-let c = new C();
-c.setVal(253);
-console.log(c.getVal());
-
-class Base extends Vue {
-    public name: string = "Some One Name Is Here";
-}
-
-@Component({
-    // All component options are allowed in here
-    template: '<button @click="onClick">Click!</button>'
+Vue.filter('json', (x) => {
+    return x*13;
 })
-class MyComponent extends Base {
-    // Initial data can be declared as instance properties
-    message: string = "Hello!";
 
-    // Component methods can be declared as instance methods
-    onClick(): void {
-        window.alert(this.message);
-        this.$el.textContent = 'some of Me'
-    }
-}
+Vue.filter('capt', (str: string) => {
+    if(!str) return ''
+    let output: Array<string> = []
+    str.split(' ').forEach(word => {
+        output.push(word[0].toUpperCase() + word.slice(1))
+    })
 
-@Component({
-    template: `
-        <ul>
-            <li v-for="i in list" @click="onClick(i)">{{ i }}</li>
-            <li>{{ name }}</li>
-        </ul>
-    `
+    return output.join(' ')
 })
-class List extends Base {
-    private msg: string = "some thing";
 
-    list: Array<string> = ["some", "ahm", "ads", "no here", "dead"];
-
-    private onClick(name: string): void {
-        alert(this.msg + " " + name);
-    }
-}
-
-@Component({
-    template: `
-        <form class="form">
-            <h4>{{ $data._asd }}</h4>
-            <div class="form-group">
-                <input class="form-control" v-model="title" />
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary">{{ title }}</button>
-            </div>
-            <h5>{{ name }}</h5>
-        </form>
-    `
+Vue.filter('uppercase', (str: string) => {
+    return str.toUpperCase();
 })
-class User extends Base {
-    private _asd = "wsdsdxzx dd";
-
-    public title = "submit";
-    public user = "";
-}
 
 /**
- * Register Components
+ * Register components
  */
-Vue.component("my-component", MyComponent);
-Vue.component("k", List);
-Vue.component("user", User);
+Vue.component('stable', Compo.Table)
+Vue.component('anime', Compo.Anime)
 
-let App = new Vue({
-    el: "#app",
-    data: {
-        title: "some Of Me",
-        items: ["sdsd", "eeeexd", "rrrr"]
+const Data = {
+    title: 'shopping list in here',
+    items: ['asd', 'eerd', 'trtr'],
+    limit: 10,
+    memeText: '',
+    showSolution: '',
+    someOf: false,
+    printer: [],
+    gender: [],
+    dialog: ['Hi', 'Some time Please', 'We are finishing stuff', 'for you', 'please...', 'be patient', 'will be over soon'],
+    fruite:  ["They call me fruit.", "They call me fish.", "They call me insect.", "But actually I'm not one of those", "I`m a Dragon", 'Fire Breather']
+}
+
+const Comput = {
+    isNighty: () => {
+        return new Date().getHours() < 21
+    },
+    longText: function () {
+        return this.memeText.length >= 3
     }
-});
+}
+
+const App = new Vue({
+    el: '#app',
+    data: Data,
+    computed: Comput
+})

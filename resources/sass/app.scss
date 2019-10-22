@@ -1,1 +1,37 @@
-//
+@import "node_modules/bootstrap/scss/bootstrap";
+// @import 'node_modules/bootstrap-vue/src/index.scss';
+
+@mixin point {
+    cursor: pointer;
+}
+
+th:hover {
+    cursor: pointer;
+    background-color: teal;
+    color: #fff;
+}
+
+#solution {
+    cursor: pointer;
+}
+
+.fade-enter {
+    opacity: 0;
+    background-color: red;
+}
+
+.fade-enter-active {
+    transition: opacity .5s;
+    background-color: #000;
+}
+
+.fade-leave {
+    background-color: transparent
+}
+
+.fadeIn-enter {
+    opacity: 0;
+}
+.fadeIn-enter-active {
+    transition: opacity .5s;
+}

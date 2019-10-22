@@ -15,7 +15,7 @@
     {{-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
 
     <!-- Styles -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+    {{-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" /> --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <link rel="shortcut icon" href="{{asset('favicon.ico')}}"
@@ -123,19 +123,7 @@
 
         <main class="py-4">
             @yield('baseContent')
-
-            <div id="app" class="container">
-                <h2>@{{ title }}</h2>
-                <ul>
-                    <li>@{{ items[0] }}</li>
-                    <li>@{{ items[1] }}</li>
-                </ul>
-
-                <k></k>
-                <my-component></my-component>
-                <user></user>
-            </div>
-
+            @include('vue')
         </main>
     </div>
 
@@ -150,7 +138,7 @@
     <!-- Scripts -->
     {{-- <script src="{{ asset('js/vue.js') }}"></script> --}}
     <script src="{{ asset('js/ts.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     {{-- <script src="{{ asset('js/site.js') }}"></script> --}}
 </body>
 

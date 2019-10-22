@@ -1,18 +1,22 @@
 require('./bootstrap');
+require('vue');
+window.Vue = require('../../node_modules/vue/dist/vue');
 
-window.Vue = require('vue');
+Vue.config.productionTip = false;
 
-// require('../../node_modules/@vue');
-// import {Vue} from '../../node_modules/@vue';
+var data = {
+    items: ["Bananas", "Apples"],
+    title: "My Shopping List"
+};
 
-console.log('some of My Hill');
 
-console.log('my world just starts to light');
+Vue.filter('capt', function (str) {
+    if (!str) return '';
+    return str.toString().charAt(0).toUpperCase() + str.slice(1);
+});
 
-// new Vue({
-//     el: '#app',
-//     data: {
-//         title: 'asdas das das dd'
-//     }
-//    });
-   
+
+var app = new Vue({
+    el: "#app",
+    data: data
+});
