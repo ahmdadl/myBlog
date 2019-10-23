@@ -44840,20 +44840,30 @@ var Data = {
     printer: [],
     gender: [],
     dialog: ['Hi', 'Some time Please', 'We are finishing stuff', 'for you', 'please...', 'be patient', 'will be over soon'],
-    fruite: ["They call me fruit.", "They call me fish.", "They call me insect.", "But actually I'm not one of those", "I`m a Dragon", 'Fire Breather']
+    fruite: ["They call me fruit.", "They call me fish.", "They call me insect.", "But actually I'm not one of those", "I`m a Dragon", 'Fire Breather'],
+    refre: 'some'
 };
 var Comput = {
     isNighty: function () {
         return new Date().getHours() < 21;
     },
     longText: function () {
+        // console.log(this.$refs)
         return this.memeText.length >= 3;
+    }
+};
+var Funct = {
+    superMe: function () {
+        console.log(this.$el, this.$refs);
+        console.log(this.$refs.anm.classList);
+        this.$refs.anm.classList.add('btn-danger');
     }
 };
 var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({
     el: '#app',
     data: Data,
-    computed: Comput
+    computed: Comput,
+    methods: Funct
 });
 
 

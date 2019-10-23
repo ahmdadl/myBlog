@@ -57,6 +57,8 @@
     </form>
 
     <anime :log='dialog'></anime>
+    <button class="btn btn-primary btn-sm shadow" v-on:click='superMe' ref='anm'>superMe</button>
+    {{-- @{{refre}} --}}
     {{-- <anime :log='fruite'></anime> --}}
 
 </div>
