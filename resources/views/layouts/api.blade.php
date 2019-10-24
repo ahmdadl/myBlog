@@ -121,9 +121,9 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('baseContent')
-            @include('vue')
+        <main class="py-4 container-fluid" id='app'>
+            @yield('content')
+            {{-- @include('vue') --}}
         </main>
     </div>
 

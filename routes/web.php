@@ -11,8 +11,17 @@
 |
 */
 
+use App\Http\Resources\PostCollection;
+use App\Http\Resources\PostResource;
+use App\Post;
+use Symfony\Component\HttpFoundation\Request;
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/posts');
+});
+
+Route::get('/res/img/{image}', function ($image) {
+    return redirect(asset('storage/storage/img/'. $image));
 });
 
 Auth::routes();
@@ -21,6 +30,16 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/posts', 'PostController@index');
 Route::get('/posts/q/{title}', 'PostController@search');
+// api routes
+Route::resource('/api/posts', 'PostApiController');
+
+// json routes
+Route::get('/json/posts', function (Request $request) {
+    return new PostCollection(Post::all());
+});
+Route::get('/json/posts/{post}', function (Post $post) {
+    return new PostResource($post);
+});
 
 Route::resource('posts', 'PostController', [
     'except' => ['index', 'search']

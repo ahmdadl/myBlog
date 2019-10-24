@@ -10676,3 +10676,52 @@ th:hover {
   transition: opacity 0.5s;
 }
 
+.modala {
+  position: absolute;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all ease-in 0.5s;
+}
+
+.modala .img {
+  width: 90%;
+}
+
+.gallery img {
+  cursor: pointer;
+}
+
+.postLoader {
+  -webkit-animation: loadPost 1s infinite;
+          animation: loadPost 1s infinite;
+  transition: all 0.5s ease;
+}
+
+@-webkit-keyframes loadPost {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes loadPost {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
