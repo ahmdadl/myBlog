@@ -45,7 +45,7 @@ class PostApiControllerTest extends TestCase
     {
         $output = [];
         foreach ($tasks as $task) {
-            $output[] = ['body' => $task->body];
+            $output[] = ['value' => $task->body];
         }
         return json_encode($output);
     }

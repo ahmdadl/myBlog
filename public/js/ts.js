@@ -46500,7 +46500,7 @@ var PostModal = /** @class */ (function (_super) {
         axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/posts", {
             title: this.ptitle,
             body: this.body,
-            tasks: this.tasks
+            tasks: JSON.stringify(this.tasks)
         })
             .then(function (res) {
             console.log(res);
@@ -46516,6 +46516,7 @@ var PostModal = /** @class */ (function (_super) {
             .catch(function (err) {
             _this.$bvModal.msgBoxOk("an error occured");
             _this.createForm = "was-validated";
+            console.log(err);
         });
         // .finally(() => {})
     };

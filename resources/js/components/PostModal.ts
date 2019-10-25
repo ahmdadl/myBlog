@@ -33,7 +33,7 @@ export default class PostModal extends Vue {
         Axios.post("/api/posts", {
             title: this.ptitle,
             body: this.body,
-            tasks: this.tasks
+            tasks: JSON.stringify(this.tasks)
         })
             .then(res => {
                 console.log(res);
@@ -48,6 +48,7 @@ export default class PostModal extends Vue {
             .catch(err => {
                 this.$bvModal.msgBoxOk("an error occured");
                 this.createForm = "was-validated";
+                console.log(err);
             });
         // .finally(() => {})
     }
