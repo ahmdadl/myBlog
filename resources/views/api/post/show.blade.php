@@ -6,6 +6,17 @@ post
 
 @section('content')
 <div class="row" v-if='post'>
+    {{-- Activities START --}}
+    <div v-if='post.activities' class="bg-dark text-info border-light rounded pt-2 mb-2 col-12">
+        <ul>
+            <li v-for='act in post.activities'>
+                <span class="text-warning" v-text='act.owner'></span>
+                <span class="text-primary" v-text='act.info'></span>
+                <span class="text-muted" v-text='act.update_at'></span>
+            </li>
+        </ul>
+    </div>
+    {{-- Activities END --}}
     <div class="col-12 jumbotron jumbotron-fluid bg-dark text-light mb-3"
         style="background: url('{{asset('storage/storage/img/5.png')}}') no-repeat top left;background-size: cover">
         <div class="container">
@@ -42,22 +53,21 @@ post
     </div>
 </div>
 
+{{-- Tasks START --}}
 <div class="bg-dark border text-danger rounded text-lg p-3 my-2 shadow"
     v-if='post'>
     <form method="POST" class="form" v-for="(task, indx) in post.tasks">
-        
+
         <div class="form-check form-check-inline">
             <label class="form-check-label checkable"
-                v-on:click.stop='checkTask(post.slug, task.id, indx)' :class="{'checked': task.done}">
-                <input class="form-check-input"
-                    type="checkbox" :ref='task.id' id="task.id"
-                    :value="task.id" :checked='task.done' v-on:click.stop />
+                v-on:click.stop='checkTask(post.slug, task.id, indx)'
+                :class="{'checked': task.done}">
+                <input class="form-check-input" type="checkbox" :ref='task.id'
+                    id="task.id" :value="task.id" :checked='task.done'
+                    v-on:click.stop />
                 <span class="d-none" :ref='"spinner" + task.id'>
-                    <span
-                        class="spinner-border spinner-border-sm text-info"
-                        role="status"
-                        aria-hidden="true"
-                    ></span>
+                    <span class="spinner-border spinner-border-sm text-info"
+                        role="status" aria-hidden="true"></span>
                 </span>
                 @{{task.body}}
             </label>

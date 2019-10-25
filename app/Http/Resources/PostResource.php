@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Activity;
+use App\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
@@ -25,7 +27,22 @@ class PostResource extends JsonResource
             'owner' => $this->owner,
             'cats' => $this->categories->all(),
             'tasks' => $this->tasks->all(),
-            'comments' => $this->comments->all()
+            'comments' => $this->comments->all(),
+            'activities' => $this->getActivities()
         ];
+    }
+
+    private function getActivities() : array
+    {
+        $arr = [];
+
+        foreach ($this->activities->all() as $activity) {
+            $activity->owner = User::find($activity->userId)->name;
+            $activity->update_at = $activity->updated_at->diffForHumans();
+
+            $arr[] = $activity;
+        }
+
+        return $arr;
     }
 }
