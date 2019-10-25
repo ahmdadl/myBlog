@@ -17,9 +17,14 @@ post
         </ul>
     </div>
     {{-- Activities END --}}
+
     <div class="col-12 jumbotron jumbotron-fluid bg-dark text-light mb-3"
-        style="background: url('{{asset('storage/storage/img/5.png')}}') no-repeat top left;background-size: cover">
+        :style="'background: url({{asset("storage/storage/img/")}}/' + post.img +') no-repeat top left;background-size: cover'">
         <div class="container">
+            <h6 class="bg-dark rounded-lg p-2">
+                <a href='/api/posts' class="text-warning">Posts</a> /
+                <span class="text-muted">@{{post.title}}</span>
+            </h6>
             <h1 class="display-3">@{{post.title}}</h1>
             <p class="lead">you can see all posts with loggin in</p>
             <hr class="my-2">
