@@ -42,7 +42,7 @@ export default class PostModal extends Vue {
                 if (res.status === 201) {
                     this.$bvModal.msgBoxOk("post successfully created");
                     this.$bvModal.hide("post-form");
-                    // this.ptitle = this.body = ""
+                    this.ptitle = this.body = ""
                 } else {
                     this.$bvModal.msgBoxOk("an error occured");
                 }

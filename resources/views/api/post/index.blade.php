@@ -17,10 +17,9 @@ All Posts
                 <div>
                     <b-button v-b-modal.post-form variant='info'>Create
                         Post</b-button>
-                    
+
                     <post-modal id='post-form'></post-modal>
 
-                    {{-- @include('api.post.postModal') --}}
                 </div>
             </p>
         </div>
@@ -28,8 +27,8 @@ All Posts
 </div>
 
 <div v-if='!posts' class="text-center">
-    <div class="spinner-border text-danger"
-        style="width: 3rem; height: 3rem;" role="status">
+    <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;"
+        role="status">
         <span class="sr-only">Loading...</span>
     </div>
 </div>

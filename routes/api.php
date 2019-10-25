@@ -13,9 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('posts', function (Request $request) {
-    return 'asdasd';
-});
+// Route::get('posts', function (Request $request) {
+//     return 'asdasd';
+// });
+
+Route::resource('posts', 'PostApiController');
+
+Route::put('posts/{post}/tasks/{task}', 'PostApiController@checkTask');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

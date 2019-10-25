@@ -56,6 +56,15 @@ th:hover {
     transition: all .5s ease;
 }
 
+.checked {
+    text-decoration: line-through;
+    color: $success;
+}
+
+.checkable {
+    transition: all .7s ease-in;
+}
+
 @keyframes loadPost {
     0% {
         transform: scale(1)

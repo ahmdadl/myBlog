@@ -27,10 +27,12 @@ post
             <img class="card-img-top"
                 :src="'{{asset('storage/storage/img')}}/' + post.img" />
             <div class="card-body">
-                <small class='card-title btn btn-outline-danger btn-sm'>By @{{post.owner.name}}
+                <small class='card-title btn btn-outline-danger btn-sm'>By
+                    @{{post.owner.name}}
                 </small>
                 <hr />
-                <span v-for='cat in post.cats' class="badge badge-primary rounded-pill m-1">@{{cat.title}}</span>
+                <span v-for='cat in post.cats'
+                    class="badge badge-primary rounded-pill m-1">@{{cat.title}}</span>
                 <hr />
                 <div class="card-text">
                     @{{post.body}}
@@ -40,9 +42,31 @@ post
     </div>
 </div>
 
-{{-- @include('api.comments.index') --}}
+<div class="bg-dark border text-danger rounded text-lg p-3 my-2 shadow"
+    v-if='post'>
+    <form method="POST" class="form" v-for="(task, indx) in post.tasks">
+        
+        <div class="form-check form-check-inline">
+            <label class="form-check-label checkable"
+                v-on:click.stop='checkTask(post.slug, task.id, indx)' :class="{'checked': task.done}">
+                <input class="form-check-input"
+                    type="checkbox" :ref='task.id' id="task.id"
+                    :value="task.id" :checked='task.done' v-on:click.stop />
+                <span class="d-none" :ref='"spinner" + task.id'>
+                    <span
+                        class="spinner-border spinner-border-sm text-info"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
+                </span>
+                @{{task.body}}
+            </label>
+        </div>
+    </form>
+</div>
 
-<div v-if='!post' class="container-fluid bg-dark text-danger text-center postLoader">
+<div v-if='!post'
+    class="container-fluid bg-dark text-danger text-center postLoader">
     AnimateBeforeLoading
 </div>
 @endsection

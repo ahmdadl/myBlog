@@ -46509,7 +46509,7 @@ var PostModal = /** @class */ (function (_super) {
             if (res.status === 201) {
                 _this.$bvModal.msgBoxOk("post successfully created");
                 _this.$bvModal.hide("post-form");
-                // this.ptitle = this.body = ""
+                _this.ptitle = _this.body = "";
             }
             else {
                 _this.$bvModal.msgBoxOk("an error occured");
@@ -46711,7 +46711,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].filter("uppercase", function (str) {
  */
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("stable", _components_index__WEBPACK_IMPORTED_MODULE_1__["Table"]);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("anime", _components_index__WEBPACK_IMPORTED_MODULE_1__["Anime"]);
-vue__WEBPACK_IMPORTED_MODULE_0__["default"].component('post-modal', _components_index__WEBPACK_IMPORTED_MODULE_1__["PostModal"]);
+vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("post-modal", _components_index__WEBPACK_IMPORTED_MODULE_1__["PostModal"]);
 var Data = {
     title: "shopping list in here",
     items: ["asd", "eerd", "trtr"],
@@ -46742,7 +46742,9 @@ var Data = {
     imageSrc: false,
     imgs: [1, 2, 3, 4, 5],
     posts: null,
-    post: null
+    post: null,
+    tasks: [],
+    updatingTask: false
 };
 var Comput = {
     isNighty: function () {
@@ -46757,6 +46759,27 @@ var Funct = {
         console.log(this.$el, this.$refs);
         console.log(this.$refs.anm.classList);
         this.$refs.anm.classList.add("btn-danger");
+    },
+    checkTask: function (postSlug, taskId, taskIndex) {
+        var _this = this;
+        var loader = this.$refs['spinner' + taskId][0];
+        var TaskDone = !this.$refs[taskId][0].checked;
+        // remove d-none from loader classes
+        loader.classList = [];
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.put('/api/posts/' + postSlug + '/tasks/' + taskId, {
+            done: TaskDone
+        })
+            .then(function (res) {
+            console.log(res);
+            if (res.data.done === TaskDone && res.status === 200) {
+                _this.post.tasks[taskIndex].done = TaskDone;
+            }
+        })
+            .catch(function (err) { return console.log(err); })
+            .finally(function () {
+            // hide loader
+            loader.classList.add('d-none');
+        });
     }
 };
 var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({

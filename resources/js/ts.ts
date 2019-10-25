@@ -30,7 +30,7 @@ Vue.filter("uppercase", (str: string) => {
  */
 Vue.component("stable", Compo.Table);
 Vue.component("anime", Compo.Anime);
-Vue.component('post-modal', Compo.PostModal);
+Vue.component("post-modal", Compo.PostModal);
 
 const Data = {
     title: "shopping list in here",
@@ -62,7 +62,9 @@ const Data = {
     imageSrc: false,
     imgs: [1, 2, 3, 4, 5],
     posts: null,
-    post: null
+    post: null,
+    tasks: [],
+    updatingTask: false
 };
 
 const Comput = {
@@ -79,6 +81,28 @@ const Funct = {
         console.log(this.$el, this.$refs);
         console.log(this.$refs.anm.classList);
         this.$refs.anm.classList.add("btn-danger");
+    },
+    checkTask(postSlug: string, taskId: number, taskIndex: number): void {
+        let loader = this.$refs['spinner' + taskId][0]
+        const TaskDone = !this.$refs[taskId][0].checked
+
+        // remove d-none from loader classes
+        loader.classList = []
+
+        Axios.put('/api/posts/' + postSlug + '/tasks/' + taskId, {
+            done: TaskDone
+        })
+            .then(res => {
+                console.log(res)
+                if (res.data.done === TaskDone && res.status === 200) {
+                    this.post.tasks[taskIndex].done = TaskDone
+                }
+            })
+            .catch(err => console.log(err))
+            .finally(() => {
+                // hide loader
+                loader.classList.add('d-none')
+            })
     }
 };
 

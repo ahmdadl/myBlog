@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Post;
+use App\Task;
 use Illuminate\Http\Request;
 
 class PostApiController extends Controller
@@ -16,16 +17,6 @@ class PostApiController extends Controller
     public function index()
     {
         return view('api.post.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -86,5 +77,14 @@ class PostApiController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function checkTask(
+        Post $post,
+        Task $task
+    ) {
+        request('done') ? $task->complete() : $task->unComplete();
+
+        return $task;
     }
 }

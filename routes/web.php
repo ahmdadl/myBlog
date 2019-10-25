@@ -31,7 +31,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/posts', 'PostController@index');
 Route::get('/posts/q/{title}', 'PostController@search');
 // api routes
-Route::resource('/api/posts', 'PostApiController');
+
 
 // json routes
 Route::get('/json/posts', function (Request $request) {

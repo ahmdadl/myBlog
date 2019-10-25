@@ -24,6 +24,7 @@ class PostResource extends JsonResource
             'updated_at' => $this->updated_at,
             'owner' => $this->owner,
             'cats' => $this->categories->all(),
+            'tasks' => $this->tasks->all(),
             'comments' => $this->comments->all()
         ];
     }
