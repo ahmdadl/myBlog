@@ -119,6 +119,10 @@ class PostController extends Controller
 
         $post->update();
 
+        if (request()->wantsJson()) {
+            return $post;
+        }
+
         return redirect($post->path());
     }
 
