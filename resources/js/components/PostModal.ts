@@ -12,8 +12,10 @@ export default class PostModal extends Vue {
     private ptitle: string = "";
     private body: string = "";
     private tasks: Array<{ value: string }> = [];
+    private saving = false;
 
     private savePost(): void {
+        this.saving = true;
         this.tasks = this.tasks.filter((task, index) => {
             return !task.value ||
                 task.value.length < 20 ||
@@ -49,8 +51,10 @@ export default class PostModal extends Vue {
                 this.$bvModal.msgBoxOk("an error occured");
                 this.createForm = "was-validated";
                 console.log(err);
+            })
+            .finally(() => {
+                this.saving = false;
             });
-        // .finally(() => {})
     }
 
     private addTask(): void {
