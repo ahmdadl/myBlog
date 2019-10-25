@@ -36,6 +36,10 @@ class PostApiController extends Controller
      */
     public function store(PostRequest $request)
     {
+        if (request()->has('tasks')) {
+            return auth()->user()->createWithTasks($request->validated());
+        }
+        
         return auth()->user()->createWithSlug($request->validated());
     }
 

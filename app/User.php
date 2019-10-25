@@ -128,4 +128,18 @@ class User extends Authenticatable
 
         return $this->posts()->create($post);
     }
+
+    public function createWithTasks(array $arr) : Post
+    {
+        $tasks = $arr['tasks'];
+        Arr::forget($arr, 'tasks');
+
+        if ($post = $this->createWithSlug($arr)) {
+            foreach (json_decode($tasks) as $key => $val) {
+                $post->addTask($val->body);
+            }
+        }
+
+        return $post;
+    }
 }
