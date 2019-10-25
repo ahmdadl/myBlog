@@ -12,7 +12,13 @@ export default class PostModal extends Vue {
     private ptitle: string = "";
     private body: string = "";
     private tasks: Array<{ value: string }> = [];
-    private saving = false;
+    private saving = false
+    /**
+     * will hold all response errors
+     *
+     * @memberof PostModal
+     */
+    private errors: object = {}
 
     private savePost(): void {
         this.saving = true;
@@ -30,7 +36,7 @@ export default class PostModal extends Vue {
                 ? "was-validated"
                 : "";
 
-        if (this.createForm === "was-validated") return;
+        // if (this.createForm === "was-validated") return;
 
         Axios.post("/api/posts", {
             title: this.ptitle,
@@ -48,9 +54,10 @@ export default class PostModal extends Vue {
                 }
             })
             .catch(err => {
-                this.$bvModal.msgBoxOk("an error occured");
-                this.createForm = "was-validated";
-                console.log(err);
+                this.$bvModal.msgBoxOk("an error occured")
+                this.createForm = "was-validated"
+                this.errors = err.response.data.errors
+                console.log(this.errors)
             })
             .finally(() => {
                 this.saving = false;

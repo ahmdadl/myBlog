@@ -24,8 +24,12 @@
                             maxlength="255"
                             required
                         />
-                        <div id="helpId" class="invalid-feedback">
-                            must be longer than 10 chars
+                        <div
+                            id="helpId"
+                            v-if="errors.title"
+                            class="invalid-feedback text-capitalize font-weight-bold"
+                            v-text='errors.title[0]'
+                        >
                         </div>
                         <div class="valid-feedback">
                             looks fine
@@ -43,9 +47,13 @@
                             minlength="50"
                             required
                         ></textarea>
-                        <small id="helId" class="text-muted"
-                            >must be longer than 50 character</small
+                        <small
+                            v-if="errors.body"
+                            id="helId"
+                            class="invalid-feedback text-capitalize font-weight-bold"
+                            v-text='errors.body[0]'
                         >
+                        </small>
                     </div>
                 </div>
                 <div class="col-6">
