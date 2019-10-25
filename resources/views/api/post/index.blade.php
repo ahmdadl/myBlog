@@ -18,7 +18,7 @@ All Posts
                     <b-button v-b-modal.post-form variant='info'>Create
                         Post</b-button>
 
-                    <post-modal id='post-form'></post-modal>
+                    <post-modal id='post-form' :all-posts='posts'></post-modal>
 
                 </div>
             </p>

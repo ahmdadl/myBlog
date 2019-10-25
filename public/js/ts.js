@@ -46503,7 +46503,8 @@ var PostModal = /** @class */ (function (_super) {
                 (this.ptitle.length < 10 || this.ptitle.length > 255)
                 ? "was-validated"
                 : "";
-        // if (this.createForm === "was-validated") return;
+        if (this.createForm === "was-validated")
+            return;
         axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/api/posts", {
             title: this.ptitle,
             body: this.body,
@@ -46515,6 +46516,9 @@ var PostModal = /** @class */ (function (_super) {
                 _this.$bvModal.msgBoxOk("post successfully created");
                 _this.$bvModal.hide("post-form");
                 _this.ptitle = _this.body = "";
+                _this.tasks = [];
+                res.data.img = '1.png';
+                _this.$parent.$data.posts.unshift(res.data);
             }
             else {
                 _this.$bvModal.msgBoxOk("an error occured");
@@ -46523,8 +46527,10 @@ var PostModal = /** @class */ (function (_super) {
             .catch(function (err) {
             _this.$bvModal.msgBoxOk("an error occured");
             _this.createForm = "was-validated";
-            _this.errors = err.response.data.errors;
-            console.log(_this.errors);
+            if (err.response.data) {
+                _this.errors = err.response.data.errors;
+                console.log(err.response.data);
+            }
         })
             .finally(function () {
             _this.saving = false;
@@ -46534,7 +46540,6 @@ var PostModal = /** @class */ (function (_super) {
         this.tasks.push({ value: "" });
     };
     PostModal.prototype.mounted = function () {
-        // console.log("mounted now");
         this.addTask();
     };
     Object.defineProperty(PostModal.prototype, "modalId", {
@@ -46547,7 +46552,13 @@ var PostModal = /** @class */ (function (_super) {
     PostModal = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         Object(_vue__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             props: {
-                id: String
+                id: {
+                    type: String,
+                    required: true
+                },
+                allPosts: {
+                    required: true
+                }
             },
             template: __webpack_require__(/*! ./post-modal.html */ "./resources/js/components/post-modal.html")
         })

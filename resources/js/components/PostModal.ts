@@ -3,7 +3,13 @@ import Axios from "axios";
 
 @Component({
     props: {
-        id: String
+        id: {
+            type: String,
+            required: true
+        },
+        allPosts: {
+            required: true
+        }
     },
     template: require("./post-modal.html")
 })
@@ -36,7 +42,7 @@ export default class PostModal extends Vue {
                 ? "was-validated"
                 : "";
 
-        // if (this.createForm === "was-validated") return;
+        if (this.createForm === "was-validated") return;
 
         Axios.post("/api/posts", {
             title: this.ptitle,
@@ -49,6 +55,9 @@ export default class PostModal extends Vue {
                     this.$bvModal.msgBoxOk("post successfully created");
                     this.$bvModal.hide("post-form");
                     this.ptitle = this.body = ""
+                    this.tasks = []
+                    res.data.img = '1.png'
+                    this.$parent.$data.posts.unshift(res.data)
                 } else {
                     this.$bvModal.msgBoxOk("an error occured");
                 }
@@ -56,8 +65,11 @@ export default class PostModal extends Vue {
             .catch(err => {
                 this.$bvModal.msgBoxOk("an error occured")
                 this.createForm = "was-validated"
-                this.errors = err.response.data.errors
-                console.log(this.errors)
+                if (err.response.data) {
+                    this.errors = err.response.data.errors
+                    console.log(err.response.data)
+                }
+
             })
             .finally(() => {
                 this.saving = false;
@@ -69,7 +81,6 @@ export default class PostModal extends Vue {
     }
 
     public mounted(): void {
-        // console.log("mounted now");
         this.addTask();
     }
 
