@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/posts', function (Request $request) {
+Route::get('posts', function (Request $request) {
     return 'asdasd';
 });
 
