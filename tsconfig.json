@@ -1,31 +1,31 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-      "baseUrl": "./",
-      // "sourceRoot": "./resources/typescript/",
-      // "outDir": "./public/assets/js",
-      // "outFile": "./public/assets/js/app.js",
-      "sourceMap": true,
-      "declaration": false,
-      "allowJs": true,
-      "strictNullChecks":true,
-      "downlevelIteration": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "importHelpers": true,
-      "target": "es5",
-      "module": "es2015",
-      "moduleResolution": "node",
-      "typeRoots": [
-        "node_modules/@types"
-      ],
-      "lib": [
-        "dom",
-        "es6"
-      ]
+        "baseUrl": "./",
+        // "sourceRoot": "./resources/typescript/",
+        // "outDir": "./public/assets/js",
+        // "outFile": "./public/assets/js/app.js",
+        "sourceMap": true,
+        "declaration": false,
+        "allowJs": true,
+        "strictNullChecks": true,
+        "downlevelIteration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es5",
+        "module": "es2015",
+        "moduleResolution": "node",
+        // "strict": true,
+        // "noUnusedLocals": true,
+        // "noUnusedParameters": true,
+        // "jsx": "preserve",
+        // "jsxFactory": "h",
+        "typeRoots": ["node_modules/@types"],
+        "lib": ["dom", "es6"]
     },
     "files": [
-      "./resources/js/ts.ts",
-      // "./resources/js/components/index.ts"
+        "./resources/js/ts.ts"
+        // "./resources/js/components/index.ts"
     ]
-  }
+}
