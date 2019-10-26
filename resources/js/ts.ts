@@ -89,7 +89,7 @@ const Comput = {
 
 const Funct = {
     superMe() {
-        console.log(this.$el, this.$refs);
+        // console.log(this.$el, this.$refs);
         console.log(this.$refs.anm.classList);
         this.$refs.anm.classList.add("btn-danger");
     },
