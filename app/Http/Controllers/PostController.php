@@ -138,6 +138,10 @@ class PostController extends Controller
 
         $post->delete();
 
+        if (request()->wantsJson()) {
+            return ['deleted' => true];
+        }
+
         return redirect('/posts');
     }
 

@@ -46358,6 +46358,77 @@ var Anime = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./resources/js/components/EditPost.ts":
+/*!*********************************************!*\
+  !*** ./resources/js/components/EditPost.ts ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vue */ "./resources/js/components/vue.ts");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+var EditPost = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(EditPost, _super);
+    function EditPost() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.title = '';
+        _this.body = '';
+        _this.saving = false;
+        return _this;
+    }
+    EditPost.prototype.mounted = function () {
+        this.title = this.$props.postData.title;
+        this.body = this.$props.postData.body;
+    };
+    EditPost.prototype.updatePost = function () {
+        var _this = this;
+        this.saving = true;
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('/posts/' + this.$props.postData.slug, {
+            title: this.title,
+            body: this.body
+        })
+            .then(function (res) {
+            console.log(res);
+            if (res.status === 200 && res.data.img) {
+                _this.$root.$data.post.title = res.data.title;
+                _this.$root.$data.post.body = res.data.body;
+                _this.$bvModal.hide('post-edit');
+            }
+        })
+            .catch(function (err) {
+            console.log(err.response || err);
+        })
+            .finally(function () { _this.saving = false; });
+    };
+    EditPost = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_vue__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            props: {
+                id: {
+                    type: String,
+                    required: true
+                },
+                postData: {
+                    type: Object,
+                    required: true
+                }
+            },
+            template: __webpack_require__(/*! ./edit-post.html */ "./resources/js/components/edit-post.html")
+        })
+    ], EditPost);
+    return EditPost;
+}(_vue__WEBPACK_IMPORTED_MODULE_1__["Vue"]));
+/* harmony default export */ __webpack_exports__["default"] = (EditPost);
+
+
+/***/ }),
+
 /***/ "./resources/js/components/List2.ts":
 /*!******************************************!*\
   !*** ./resources/js/components/List2.ts ***!
@@ -46570,11 +46641,22 @@ var PostModal = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./resources/js/components/edit-post.html":
+/*!************************************************!*\
+  !*** ./resources/js/components/edit-post.html ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<b-modal\r\n    centered\r\n    size=\"lg\"\r\n    :id=\"id\"\r\n    title=\"Edit Post\"\r\n    header-text-variant=\"info\"\r\n>\r\n    <b-container fluid>\r\n        <form class=\"form needs-validation\" @submit.stop.prevent novalidate>\r\n            <div class=\"form-group\">\r\n                <label for=\"title\">title</label>\r\n                <input\r\n                    type=\"text\"\r\n                    v-model=\"title\"\r\n                    id=\"title\"\r\n                    class=\"form-control\"\r\n                    placeholder=\"post title\"\r\n                    aria-describedby=\"titleHelp\"\r\n                />\r\n                <small id=\"titleHelp\" class=\"text-muted\"></small>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"body\">content</label>\r\n                <textarea\r\n                    class=\"form-control\"\r\n                    v-model=\"body\"\r\n                    id=\"body\"\r\n                    rows=\"5\"\r\n                ></textarea>\r\n            </div>\r\n        </form>\r\n    </b-container>\r\n    <template v-slot:modal-footer>\r\n        <div class=\"w-100\">\r\n            <p class=\"float-left\">copy&copy;ninjaCoder</p>\r\n            <b-button\r\n                variant=\"success\"\r\n                class=\"float-right\"\r\n                v-on:click.stop.prevent=\"updatePost\"\r\n            >\r\n                <span v-if=\"saving\">\r\n                    <span\r\n                        class=\"spinner-border spinner-border-sm\"\r\n                        role=\"status\"\r\n                        aria-hidden=\"true\"\r\n                    ></span>\r\n                    Saving...\r\n                </span>\r\n                <span v-else>Save</span>\r\n            </b-button>\r\n            <b-button\r\n                variant=\"danger\"\r\n                class=\"float-right mr-2\"\r\n                v-on:click.stop.prevent='$bvModal.hide(\"post-edit\")'\r\n            >\r\n                Close</b-button\r\n            >\r\n        </div>\r\n    </template>\r\n</b-modal>\r\n";
+
+/***/ }),
+
 /***/ "./resources/js/components/index.ts":
 /*!******************************************!*\
   !*** ./resources/js/components/index.ts ***!
   \******************************************/
-/*! exports provided: List2, List3, Table, Anime, PostModal */
+/*! exports provided: List2, List3, Table, Anime, PostModal, EditPost */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46593,6 +46675,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _PostModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./PostModal */ "./resources/js/components/PostModal.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PostModal", function() { return _PostModal__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _EditPost__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EditPost */ "./resources/js/components/EditPost.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EditPost", function() { return _EditPost__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
 
 
 
@@ -46729,6 +46815,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].filter("uppercase", function (str) {
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("stable", _components_index__WEBPACK_IMPORTED_MODULE_1__["Table"]);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("anime", _components_index__WEBPACK_IMPORTED_MODULE_1__["Anime"]);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("post-modal", _components_index__WEBPACK_IMPORTED_MODULE_1__["PostModal"]);
+vue__WEBPACK_IMPORTED_MODULE_0__["default"].component('edit-post', _components_index__WEBPACK_IMPORTED_MODULE_1__["EditPost"]);
 var Data = {
     title: "shopping list in here",
     items: ["asd", "eerd", "trtr"],
@@ -46769,7 +46856,8 @@ var Data = {
     newComment: "",
     comErr: null,
     commentSaving: null,
-    commentdeleting: null
+    commentdeleting: null,
+    postDeleteing: null
 };
 var Comput = {
     isNighty: function () {
@@ -46869,7 +46957,7 @@ var Funct = {
     },
     deleteComment: function (postSlug, cId, index) {
         var _this = this;
-        console.log(this.$refs['co' + cId]);
+        // console.log(this.$refs['co' + cId])
         var loader = this.$refs['co' + cId][0];
         loader.classList = [];
         axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete('/posts/' + postSlug + '/comments/' + cId)
@@ -46884,6 +46972,28 @@ var Funct = {
             console.log(err.response || err);
         })
             .finally(function () { loader.classList = ['d-none']; });
+    },
+    deletePost: function (postSlug, isPostPage, postIndx) {
+        var _this = this;
+        if (postIndx === void 0) { postIndx = 0; }
+        // console.log(isPostPage)
+        this.postDeleteing = true;
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete('/posts/' + postSlug)
+            .then(function (res) {
+            console.log(res);
+            if (res.status === 200 && res.data.deleted) {
+                if (isPostPage) {
+                    location.href = '/api/posts';
+                }
+                else {
+                    _this.posts.splice(postIndx, 1);
+                }
+            }
+        })
+            .catch(function (err) {
+            console.log(err.response || err);
+        })
+            .finally(function () { _this.postDeleteing = false; });
     }
 };
 var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({

@@ -43,7 +43,11 @@ All Posts
                 <a class='card-title' :href="'/api/posts/' + post.slug">
                     <h4>@{{post.title}}</h4>
                 </a>
-                <p class="card-text">@{{post.body.substr(0, 250)}}</p>
+                <p class="card-text">
+                    @{{post.body.substr(0, 250)}}
+                    <br>
+                    @include('api.post.opr', ['isPost' => false])
+                </p>
             </div>
         </div>
     </div>

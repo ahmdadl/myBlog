@@ -8,7 +8,7 @@ post
 <div class="row" v-if='post'>
     {{-- Activities START --}}
     <div v-if='post.activities'
-        class="bg-dark text-info border-light rounded pt-2 mb-2 col-12">
+        class="bg-dark text-info border-light rounded pt-2 mb-2 col-12 d-none">
         <ul>
             <li v-for='act in post.activities'>
                 <span class="text-warning" v-text='act.owner'></span>
@@ -53,6 +53,7 @@ post
                 <hr />
                 <div class="card-text">
                     @{{post.body}}
+                    @include('api.post.opr', ['isPost' => true])
                 </div>
             </div>
         </div>

@@ -31,6 +31,7 @@ Vue.filter("uppercase", (str: string) => {
 Vue.component("stable", Compo.Table);
 Vue.component("anime", Compo.Anime);
 Vue.component("post-modal", Compo.PostModal);
+Vue.component('edit-post', Compo.EditPost)
 
 const Data = {
     title: "shopping list in here",
@@ -72,7 +73,8 @@ const Data = {
     newComment: "",
     comErr: null,
     commentSaving: null,
-    commentdeleting: null
+    commentdeleting: null,
+    postDeleteing: null
 };
 
 const Comput = {
@@ -178,7 +180,7 @@ const Funct = {
             });
     },
     deleteComment (postSlug: string, cId:number, index: number) {
-        console.log(this.$refs['co' + cId])
+        // console.log(this.$refs['co' + cId])
         const loader = this.$refs['co' + cId][0]
         loader.classList = []
         
@@ -195,6 +197,27 @@ const Funct = {
                 console.log(err.response || err)
             })
             .finally(() => {loader.classList = ['d-none']})
+    },
+    deletePost (postSlug: string, isPostPage: boolean, postIndx: number = 0) {
+        // console.log(isPostPage)
+        this.postDeleteing = true
+
+        Axios.delete('/posts/' + postSlug)
+            .then(res => {
+                console.log(res)
+
+                if (res.status === 200 && res.data.deleted) {
+                    if (isPostPage) {
+                        location.href = '/api/posts'
+                    } else {
+                        this.posts.splice(postIndx, 1)
+                    }
+                }
+            })
+            .catch(err => {
+                console.log(err.response || err)
+            })
+            .finally(() => {this.postDeleteing = false})
     }
 };
 

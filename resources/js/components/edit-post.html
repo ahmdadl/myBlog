@@ -1,0 +1,60 @@
+<b-modal
+    centered
+    size="lg"
+    :id="id"
+    title="Edit Post"
+    header-text-variant="info"
+>
+    <b-container fluid>
+        <form class="form needs-validation" @submit.stop.prevent novalidate>
+            <div class="form-group">
+                <label for="title">title</label>
+                <input
+                    type="text"
+                    v-model="title"
+                    id="title"
+                    class="form-control"
+                    placeholder="post title"
+                    aria-describedby="titleHelp"
+                />
+                <small id="titleHelp" class="text-muted"></small>
+            </div>
+            <div class="form-group">
+                <label for="body">content</label>
+                <textarea
+                    class="form-control"
+                    v-model="body"
+                    id="body"
+                    rows="5"
+                ></textarea>
+            </div>
+        </form>
+    </b-container>
+    <template v-slot:modal-footer>
+        <div class="w-100">
+            <p class="float-left">copy&copy;ninjaCoder</p>
+            <b-button
+                variant="success"
+                class="float-right"
+                v-on:click.stop.prevent="updatePost"
+            >
+                <span v-if="saving">
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
+                    Saving...
+                </span>
+                <span v-else>Save</span>
+            </b-button>
+            <b-button
+                variant="danger"
+                class="float-right mr-2"
+                v-on:click.stop.prevent='$bvModal.hide("post-edit")'
+            >
+                Close</b-button
+            >
+        </div>
+    </template>
+</b-modal>
