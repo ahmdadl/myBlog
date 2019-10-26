@@ -10,6 +10,13 @@ import Axios from 'axios';
         postData: {
             type: Object,
             required: true
+        },
+        isPost: {
+            required: false
+        },
+        postIndx: {
+            type: Number,
+            required: false
         }
     },
     template: require('./edit-post.html')
@@ -25,8 +32,13 @@ export default class EditPost extends Vue
         this.body = this.$props.postData.body
     }
 
+    public get modalId () : string {
+        return this.$props.id
+    } 
+
     public updatePost (){
         this.saving = true
+
         Axios.put('/posts/' + this.$props.postData.slug, {
             title: this.title,
             body: this.body
@@ -34,9 +46,20 @@ export default class EditPost extends Vue
             .then(res => {
                 console.log(res)
                 if (res.status === 200 && res.data.img) {
-                    this.$root.$data.post.title = res.data.title
-                    this.$root.$data.post.body = res.data.body
-                    this.$bvModal.hide('post-edit')
+                    let p = {
+                        title: '',
+                        body: ''
+                    }
+
+                    if (!this.$props.isPost) {
+                        p = this.$root.$data.posts[this.$props.postIndx]
+                    } else {
+                        p = this.$root.$data.post
+                    }
+                    p.title = res.data.title
+                    p.body = res.data.body
+                    this.$bvModal.hide(this.modalId)
+                    this.title = this.body = ''
                 }
             })
             .catch(err => {

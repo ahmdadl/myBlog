@@ -46387,6 +46387,13 @@ var EditPost = /** @class */ (function (_super) {
         this.title = this.$props.postData.title;
         this.body = this.$props.postData.body;
     };
+    Object.defineProperty(EditPost.prototype, "modalId", {
+        get: function () {
+            return this.$props.id;
+        },
+        enumerable: true,
+        configurable: true
+    });
     EditPost.prototype.updatePost = function () {
         var _this = this;
         this.saving = true;
@@ -46397,9 +46404,20 @@ var EditPost = /** @class */ (function (_super) {
             .then(function (res) {
             console.log(res);
             if (res.status === 200 && res.data.img) {
-                _this.$root.$data.post.title = res.data.title;
-                _this.$root.$data.post.body = res.data.body;
-                _this.$bvModal.hide('post-edit');
+                var p = {
+                    title: '',
+                    body: ''
+                };
+                if (!_this.$props.isPost) {
+                    p = _this.$root.$data.posts[_this.$props.postIndx];
+                }
+                else {
+                    p = _this.$root.$data.post;
+                }
+                p.title = res.data.title;
+                p.body = res.data.body;
+                _this.$bvModal.hide(_this.modalId);
+                _this.title = _this.body = '';
             }
         })
             .catch(function (err) {
@@ -46417,6 +46435,13 @@ var EditPost = /** @class */ (function (_super) {
                 postData: {
                     type: Object,
                     required: true
+                },
+                isPost: {
+                    required: false
+                },
+                postIndx: {
+                    type: Number,
+                    required: false
                 }
             },
             template: __webpack_require__(/*! ./edit-post.html */ "./resources/js/components/edit-post.html")
@@ -46648,7 +46673,7 @@ var PostModal = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<b-modal\r\n    centered\r\n    size=\"lg\"\r\n    :id=\"id\"\r\n    title=\"Edit Post\"\r\n    header-text-variant=\"info\"\r\n>\r\n    <b-container fluid>\r\n        <form class=\"form needs-validation\" @submit.stop.prevent novalidate>\r\n            <div class=\"form-group\">\r\n                <label for=\"title\">title</label>\r\n                <input\r\n                    type=\"text\"\r\n                    v-model=\"title\"\r\n                    id=\"title\"\r\n                    class=\"form-control\"\r\n                    placeholder=\"post title\"\r\n                    aria-describedby=\"titleHelp\"\r\n                />\r\n                <small id=\"titleHelp\" class=\"text-muted\"></small>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"body\">content</label>\r\n                <textarea\r\n                    class=\"form-control\"\r\n                    v-model=\"body\"\r\n                    id=\"body\"\r\n                    rows=\"5\"\r\n                ></textarea>\r\n            </div>\r\n        </form>\r\n    </b-container>\r\n    <template v-slot:modal-footer>\r\n        <div class=\"w-100\">\r\n            <p class=\"float-left\">copy&copy;ninjaCoder</p>\r\n            <b-button\r\n                variant=\"success\"\r\n                class=\"float-right\"\r\n                v-on:click.stop.prevent=\"updatePost\"\r\n            >\r\n                <span v-if=\"saving\">\r\n                    <span\r\n                        class=\"spinner-border spinner-border-sm\"\r\n                        role=\"status\"\r\n                        aria-hidden=\"true\"\r\n                    ></span>\r\n                    Saving...\r\n                </span>\r\n                <span v-else>Save</span>\r\n            </b-button>\r\n            <b-button\r\n                variant=\"danger\"\r\n                class=\"float-right mr-2\"\r\n                v-on:click.stop.prevent='$bvModal.hide(\"post-edit\")'\r\n            >\r\n                Close</b-button\r\n            >\r\n        </div>\r\n    </template>\r\n</b-modal>\r\n";
+module.exports = "<b-modal\r\n    centered\r\n    size=\"lg\"\r\n    :id=\"id\"\r\n    title=\"Edit Post\"\r\n    header-text-variant=\"info\"\r\n>\r\n    <b-container fluid>\r\n        <form class=\"form needs-validation\" @submit.stop.prevent novalidate>\r\n            <div class=\"form-group\">\r\n                <label for=\"title\">title</label>\r\n                <input\r\n                    type=\"text\"\r\n                    v-model=\"title\"\r\n                    id=\"title\"\r\n                    class=\"form-control\"\r\n                    placeholder=\"post title\"\r\n                    aria-describedby=\"titleHelp\"\r\n                />\r\n                <small id=\"titleHelp\" class=\"text-muted\"></small>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"body\">content</label>\r\n                <textarea\r\n                    class=\"form-control\"\r\n                    v-model=\"body\"\r\n                    id=\"body\"\r\n                    rows=\"5\"\r\n                ></textarea>\r\n            </div>\r\n        </form>\r\n    </b-container>\r\n    <template v-slot:modal-footer>\r\n        <div class=\"w-100\">\r\n            <p class=\"float-left\">copy&copy;ninjaCoder</p>\r\n            <b-button\r\n                variant=\"success\"\r\n                class=\"float-right\"\r\n                v-on:click.stop.prevent=\"updatePost\"\r\n            >\r\n                <span v-if=\"saving\">\r\n                    <span\r\n                        class=\"spinner-border spinner-border-sm\"\r\n                        role=\"status\"\r\n                        aria-hidden=\"true\"\r\n                    ></span>\r\n                    Saving...\r\n                </span>\r\n                <span v-else>Save</span>\r\n            </b-button>\r\n            <b-button\r\n                variant=\"danger\"\r\n                class=\"float-right mr-2\"\r\n                v-on:click.stop.prevent='$bvModal.hide(modalId)'\r\n            >\r\n                Close</b-button\r\n            >\r\n        </div>\r\n    </template>\r\n</b-modal>\r\n";
 
 /***/ }),
 
@@ -46857,7 +46882,8 @@ var Data = {
     comErr: null,
     commentSaving: null,
     commentdeleting: null,
-    postDeleteing: null
+    postDeleteing: null,
+    postIndx: null
 };
 var Comput = {
     isNighty: function () {

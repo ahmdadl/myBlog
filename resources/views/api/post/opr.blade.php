@@ -1,10 +1,10 @@
 <div class="mt-3">
-    <b-button v-b-modal.post-edit variant='info'>Edit
+    <b-button v-on:click.stop='$bvModal.show("post-edit" + post.id)' variant='info'>Edit
         Post</b-button>
-    <edit-post id='post-edit' :post-data='post'></edit-post>
-    
+    <edit-post :id='"post-edit" + post.id' :post-data='post' is-post='{{$isPost ?? false}}' :post-indx='postIndx || 0'></edit-post>
+
     <button type="button" class="btn btn-outline-danger"
-        v-on:click="deletePost(post.slug, {{$isPost}})">
+        v-on:click="deletePost(post.slug, {{$isPost ?? 'false'}}, postIndx || 0)">
         <span v-if="postDeleteing">
             <span
                 class="spinner-border spinner-border-sm"

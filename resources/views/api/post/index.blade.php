@@ -36,7 +36,7 @@ All Posts
 <div class="container">
     <div class="row">
         <div class="card col-12 col-sm-6 col-md-4 col-lg-3 m-2 p-0"
-            v-for='post in posts' :key='post.id'>
+            v-for='(post, postIndx) in posts' :key='post.id'>
             <img class="card-img-top"
                 :src="'{{asset('storage/storage/img')}}/' + post.img" />
             <div class="card-body">
@@ -46,7 +46,7 @@ All Posts
                 <p class="card-text">
                     @{{post.body.substr(0, 250)}}
                     <br>
-                    @include('api.post.opr', ['isPost' => false])
+                    @include('api.post.opr')
                 </p>
             </div>
         </div>

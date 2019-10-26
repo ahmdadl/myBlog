@@ -74,7 +74,8 @@ const Data = {
     comErr: null,
     commentSaving: null,
     commentdeleting: null,
-    postDeleteing: null
+    postDeleteing: null,
+    postIndx: null
 };
 
 const Comput = {
