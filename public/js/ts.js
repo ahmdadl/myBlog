@@ -46811,7 +46811,7 @@ var Funct = {
         this.taskSaving = true;
         if (this.newTask.length < 5 || this.newTask.length > 70) {
             this.newTaskError = true;
-            return;
+            // return;
         }
         axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/posts/" + postSlug + "/tasks", {
             body: this.newTask
@@ -46839,7 +46839,7 @@ var Funct = {
         if (this.newComment.length < 25 || this.newComment.length > 350) {
             this.comErr = "";
             this.commentSaving = false;
-            return;
+            // return;
         }
         axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/posts/" + postSlug + "/comments", {
             body: this.newComment

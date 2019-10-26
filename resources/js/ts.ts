@@ -117,7 +117,7 @@ const Funct = {
 
         if (this.newTask.length < 5 || this.newTask.length > 70) {
             this.newTaskError = true;
-            return;
+            // return;
         }
 
         Axios.post("/posts/" + postSlug + "/tasks", {
@@ -147,7 +147,7 @@ const Funct = {
         if (this.newComment.length < 25 || this.newComment.length > 350) {
             this.comErr = "";
             this.commentSaving = false;
-            return;
+            // return;
         }
 
         Axios.post("/posts/" + postSlug + "/comments", {
