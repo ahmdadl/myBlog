@@ -1,6 +1,7 @@
 <?php
 
 use App\Category;
+use App\Comment;
 use App\Post;
 use App\Task;
 use App\User;
@@ -18,7 +19,7 @@ class PostSeeder extends Seeder
     public function run()
     {
         // create 5 posts
-        factory(Post::class, 5)->create()->each(function (Post $post) {
+        factory(Post::class, 7)->create()->each(function (Post $post) {
             $post->tasks()->createMany(
                 factory(Task::class, rand(3, 8))->raw([
                     'userId' => UserFactory::create()->id
@@ -30,6 +31,13 @@ class PostSeeder extends Seeder
                 ->pluck('id');
             
             $post->categories()->attach($ctgIds);
+
+            // with comments
+            $post->comments()->createMany(
+                factory(Comment::class, rand(2, 4))->raw([
+                    'userId' => UserFactory::create()->id
+                ])
+            );
         });
     }
 }

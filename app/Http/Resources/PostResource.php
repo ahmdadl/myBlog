@@ -27,7 +27,7 @@ class PostResource extends JsonResource
             'owner' => $this->owner,
             'cats' => $this->categories->all(),
             'tasks' => $this->tasks->all(),
-            'comments' => $this->comments->all(),
+            'comments' => $this->getComments(),
             'activities' => $this->getActivities()
         ];
     }
@@ -41,6 +41,19 @@ class PostResource extends JsonResource
             $activity->update_at = $activity->updated_at->diffForHumans();
 
             $arr[] = $activity;
+        }
+
+        return $arr;
+    }
+
+    private function getComments() : array
+    {
+        $arr = [];
+
+        foreach ($this->comments->all() as $comment) {
+            $comment->owner = User::find($comment->userId);
+            $comment->created = $comment->created_at->diffForHumans();
+            $arr[] = $comment;
         }
 
         return $arr;
