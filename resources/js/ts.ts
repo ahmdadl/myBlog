@@ -65,10 +65,13 @@ const Data = {
     post: null,
     tasks: [],
     updatingTask: false,
-    newTask: '',
+    newTask: "",
     taskBodyError: null,
     newTaskError: false,
-    taskSaving: null
+    taskSaving: null,
+    newComment: "",
+    comErr: null,
+    commentSaving: null
 };
 
 const Comput = {
@@ -87,54 +90,91 @@ const Funct = {
         this.$refs.anm.classList.add("btn-danger");
     },
     checkTask(postSlug: string, taskId: number, taskIndex: number): void {
-        let loader = this.$refs['spinner' + taskId][0]
-        const TaskDone = !this.$refs[taskId][0].checked
+        let loader = this.$refs["spinner" + taskId][0];
+        const TaskDone = !this.$refs[taskId][0].checked;
 
         // remove d-none from loader classes
-        loader.classList = []
+        loader.classList = [];
 
-        Axios.put('/api/posts/' + postSlug + '/tasks/' + taskId, {
+        Axios.put("/api/posts/" + postSlug + "/tasks/" + taskId, {
             done: TaskDone
         })
             .then(res => {
-                console.log(res)
+                console.log(res);
                 if (res.data.done === TaskDone && res.status === 200) {
-                    this.post.tasks[taskIndex].done = TaskDone
+                    this.post.tasks[taskIndex].done = TaskDone;
                 }
             })
             .catch(err => console.log(err))
             .finally(() => {
                 // hide loader
-                loader.classList.add('d-none')
-            })
+                loader.classList.add("d-none");
+            });
     },
-    saveTask (postSlug: string) : void
-    {
-        this.taskBodyError = this.newTaskError = null
-        this.taskSaving = true
+    saveTask(postSlug: string): void {
+        this.taskBodyError = this.newTaskError = null;
+        this.taskSaving = true;
 
         if (this.newTask.length < 5 || this.newTask.length > 70) {
             this.newTaskError = true;
             return;
         }
 
-        Axios.post('/posts/' + postSlug + '/tasks',{
+        Axios.post("/posts/" + postSlug + "/tasks", {
             body: this.newTask
         })
             .then(res => {
-                console.log(res)
+                console.log(res);
 
                 if (res.status === 201) {
-                    this.post.tasks.push(res.data)
+                    this.post.tasks.push(res.data);
                 }
             })
             .catch(err => {
-                console.log(err)
+                console.log(err);
                 if (err.response) {
-                    this.taskBodyError = err.response.data.errors.body[0] || err.response.data.message
+                    this.taskBodyError =
+                        err.response.data.errors.body[0] ||
+                        err.response.data.message;
                 }
             })
-            .finally(() => this.taskSaving = null)
+            .finally(() => (this.taskSaving = null));
+    },
+    addComment(postSlug: string): void {
+        this.commErr = null;
+        this.commentSaving = true;
+
+        if (this.newComment.length < 25 || this.newComment.length > 350) {
+            this.comErr = "";
+            this.commentSaving = false;
+            return;
+        }
+
+        Axios.post("/posts/" + postSlug + "/comments", {
+            body: this.newComment
+        })
+            .then(res => {
+                console.log(res);
+                if (res.status === 201) {
+                    this.newComment = "";
+                    this.post.comments.unshift(res.data);
+                    setTimeout(() => {
+                        this.$refs["com" + res.data.id][0].classList.value += ' buffer'
+                    }, 100);
+                }
+            })
+            .catch(err => {
+                console.log(err.response || err);
+
+                if (err.response) {
+                    this.comErr =
+                        err.response.data.errors.body[0] ||
+                        err.response.data.message;
+                }
+            })
+            .finally(() => {
+                this.commentSaving = false;
+            });
     }
 };
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Post;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -37,11 +38,17 @@ class CommentController extends Controller
      */
     public function store(Request $request, Post $post)
     {
-        $post->comment(
+        $comment = $post->comment(
             request()->validate([
                 'body' => 'required|min:25|max:350'
             ])['body']
         );
+
+        if (request()->wantsJson()) {
+            $comment->owner = User::find($comment->userId);
+            $comment->created = $comment->created_at->diffForHumans();
+            return $comment;
+        }
 
         return back();
     }

@@ -46762,10 +46762,13 @@ var Data = {
     post: null,
     tasks: [],
     updatingTask: false,
-    newTask: '',
+    newTask: "",
     taskBodyError: null,
     newTaskError: false,
-    taskSaving: null
+    taskSaving: null,
+    newComment: "",
+    comErr: null,
+    commentSaving: null
 };
 var Comput = {
     isNighty: function () {
@@ -46783,11 +46786,11 @@ var Funct = {
     },
     checkTask: function (postSlug, taskId, taskIndex) {
         var _this = this;
-        var loader = this.$refs['spinner' + taskId][0];
+        var loader = this.$refs["spinner" + taskId][0];
         var TaskDone = !this.$refs[taskId][0].checked;
         // remove d-none from loader classes
         loader.classList = [];
-        axios__WEBPACK_IMPORTED_MODULE_3___default.a.put('/api/posts/' + postSlug + '/tasks/' + taskId, {
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.put("/api/posts/" + postSlug + "/tasks/" + taskId, {
             done: TaskDone
         })
             .then(function (res) {
@@ -46799,7 +46802,7 @@ var Funct = {
             .catch(function (err) { return console.log(err); })
             .finally(function () {
             // hide loader
-            loader.classList.add('d-none');
+            loader.classList.add("d-none");
         });
     },
     saveTask: function (postSlug) {
@@ -46810,7 +46813,7 @@ var Funct = {
             this.newTaskError = true;
             return;
         }
-        axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/posts/' + postSlug + '/tasks', {
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/posts/" + postSlug + "/tasks", {
             body: this.newTask
         })
             .then(function (res) {
@@ -46822,10 +46825,46 @@ var Funct = {
             .catch(function (err) {
             console.log(err);
             if (err.response) {
-                _this.taskBodyError = err.response.data.errors.body[0] || err.response.data.message;
+                _this.taskBodyError =
+                    err.response.data.errors.body[0] ||
+                        err.response.data.message;
             }
         })
-            .finally(function () { return _this.taskSaving = null; });
+            .finally(function () { return (_this.taskSaving = null); });
+    },
+    addComment: function (postSlug) {
+        var _this = this;
+        this.commErr = null;
+        this.commentSaving = true;
+        if (this.newComment.length < 25 || this.newComment.length > 350) {
+            this.comErr = "";
+            this.commentSaving = false;
+            return;
+        }
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/posts/" + postSlug + "/comments", {
+            body: this.newComment
+        })
+            .then(function (res) {
+            console.log(res);
+            if (res.status === 201) {
+                _this.newComment = "";
+                _this.post.comments.unshift(res.data);
+                setTimeout(function () {
+                    _this.$refs["com" + res.data.id][0].classList.value += ' buffer';
+                }, 100);
+            }
+        })
+            .catch(function (err) {
+            console.log(err.response || err);
+            if (err.response) {
+                _this.comErr =
+                    err.response.data.errors.body[0] ||
+                        err.response.data.message;
+            }
+        })
+            .finally(function () {
+            _this.commentSaving = false;
+        });
     }
 };
 var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({

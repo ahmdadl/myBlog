@@ -10707,6 +10707,13 @@ th:hover {
   cursor: pointer;
 }
 
+.buffer {
+  transition: all 0.5s ease;
+  border: 4px solid transparent;
+  -webkit-animation: borderAnm 1.3s ease-in-out 0s;
+          animation: borderAnm 1.3s ease-in-out 0s;
+}
+
 @-webkit-keyframes loadPost {
   0% {
     transform: scale(1);
@@ -10732,6 +10739,52 @@ th:hover {
 
   100% {
     transform: scale(1);
+  }
+}
+
+@-webkit-keyframes borderAnm {
+  0% {
+    border-color: #007bff;
+  }
+
+  25% {
+    border-color: #6c757d;
+  }
+
+  50% {
+    border-color: #28a745;
+  }
+
+  75% {
+    border-color: #17a2b8;
+  }
+
+  100% {
+    border-color: #f8f9fa;
+    border-width: 0;
+  }
+}
+
+@keyframes borderAnm {
+  0% {
+    border-color: #007bff;
+  }
+
+  25% {
+    border-color: #6c757d;
+  }
+
+  50% {
+    border-color: #28a745;
+  }
+
+  75% {
+    border-color: #17a2b8;
+  }
+
+  100% {
+    border-color: #f8f9fa;
+    border-width: 0;
   }
 }
 

@@ -36,7 +36,7 @@ class PostResource extends JsonResource
     {
         $arr = [];
 
-        foreach ($this->activities->all() as $activity) {
+        foreach ($this->activities()->latest()->get() as $activity) {
             $activity->owner = User::find($activity->userId)->name;
             $activity->update_at = $activity->updated_at->diffForHumans();
 
@@ -50,7 +50,7 @@ class PostResource extends JsonResource
     {
         $arr = [];
 
-        foreach ($this->comments->all() as $comment) {
+        foreach ($this->comments()->latest()->get() as $comment) {
             $comment->owner = User::find($comment->userId);
             $comment->created = $comment->created_at->diffForHumans();
             $arr[] = $comment;
