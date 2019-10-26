@@ -62,7 +62,8 @@ th:hover {
 }
 
 .checkable {
-    transition: all .7s ease-in;
+    transition: all .5s ease-in;
+    cursor: pointer;
 }
 
 @keyframes loadPost {

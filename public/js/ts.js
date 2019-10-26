@@ -46761,7 +46761,11 @@ var Data = {
     posts: null,
     post: null,
     tasks: [],
-    updatingTask: false
+    updatingTask: false,
+    newTask: '',
+    taskBodyError: null,
+    newTaskError: false,
+    taskSaving: null
 };
 var Comput = {
     isNighty: function () {
@@ -46797,6 +46801,31 @@ var Funct = {
             // hide loader
             loader.classList.add('d-none');
         });
+    },
+    saveTask: function (postSlug) {
+        var _this = this;
+        this.taskBodyError = this.newTaskError = null;
+        this.taskSaving = true;
+        if (this.newTask.length < 5 || this.newTask.length > 70) {
+            this.newTaskError = true;
+            return;
+        }
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/posts/' + postSlug + '/tasks', {
+            body: this.newTask
+        })
+            .then(function (res) {
+            console.log(res);
+            if (res.status === 201) {
+                _this.post.tasks.push(res.data);
+            }
+        })
+            .catch(function (err) {
+            console.log(err);
+            if (err.response) {
+                _this.taskBodyError = err.response.data.errors.body[0] || err.response.data.message;
+            }
+        })
+            .finally(function () { return _this.taskSaving = null; });
     }
 };
 var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({

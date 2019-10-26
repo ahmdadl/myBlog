@@ -12,14 +12,18 @@ class TaskController extends Controller
     public function store(
         Request $request,
         Post $post
-    ) : RedirectResponse {
+    ) {
         $this->authorize('updateCategory', $post);
 
-        $post->addTask(
+        $task = $post->addTask(
             request()->validate([
                 'body' => 'required|min:5|max:70'
             ])['body']
         );
+
+        if (request()->wantsJson()) {
+            return $task;
+        }
 
         return back();
     }

@@ -64,7 +64,11 @@ const Data = {
     posts: null,
     post: null,
     tasks: [],
-    updatingTask: false
+    updatingTask: false,
+    newTask: '',
+    taskBodyError: null,
+    newTaskError: false,
+    taskSaving: null
 };
 
 const Comput = {
@@ -103,6 +107,34 @@ const Funct = {
                 // hide loader
                 loader.classList.add('d-none')
             })
+    },
+    saveTask (postSlug: string) : void
+    {
+        this.taskBodyError = this.newTaskError = null
+        this.taskSaving = true
+
+        if (this.newTask.length < 5 || this.newTask.length > 70) {
+            this.newTaskError = true;
+            return;
+        }
+
+        Axios.post('/posts/' + postSlug + '/tasks',{
+            body: this.newTask
+        })
+            .then(res => {
+                console.log(res)
+
+                if (res.status === 201) {
+                    this.post.tasks.push(res.data)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                if (err.response) {
+                    this.taskBodyError = err.response.data.errors.body[0] || err.response.data.message
+                }
+            })
+            .finally(() => this.taskSaving = null)
     }
 };
 
