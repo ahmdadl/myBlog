@@ -113,6 +113,10 @@ class CommentController extends Controller
 
         $comment->delete();
 
+        if (request()->wantsJson()) {
+            return 'deleted';
+        }
+
         return back();
     }
 }

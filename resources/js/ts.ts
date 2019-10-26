@@ -71,7 +71,8 @@ const Data = {
     taskSaving: null,
     newComment: "",
     comErr: null,
-    commentSaving: null
+    commentSaving: null,
+    commentdeleting: null
 };
 
 const Comput = {
@@ -175,6 +176,25 @@ const Funct = {
             .finally(() => {
                 this.commentSaving = false;
             });
+    },
+    deleteComment (postSlug: string, cId:number, index: number) {
+        console.log(this.$refs['co' + cId])
+        const loader = this.$refs['co' + cId][0]
+        loader.classList = []
+        
+
+        Axios.delete('/posts/' + postSlug + '/comments/' + cId)
+            .then(res => {
+                console.log(res)
+                if (res.status === 200 && res.data === 'deleted') {
+                    // console.log(this.post.comments[index])
+                    this.post.comments.splice(1, index)
+                }
+            })
+            .catch(err => {
+                console.log(err.response || err)
+            })
+            .finally(() => {loader.classList = ['d-none']})
     }
 };
 

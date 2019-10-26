@@ -46768,7 +46768,8 @@ var Data = {
     taskSaving: null,
     newComment: "",
     comErr: null,
-    commentSaving: null
+    commentSaving: null,
+    commentdeleting: null
 };
 var Comput = {
     isNighty: function () {
@@ -46865,6 +46866,24 @@ var Funct = {
             .finally(function () {
             _this.commentSaving = false;
         });
+    },
+    deleteComment: function (postSlug, cId, index) {
+        var _this = this;
+        console.log(this.$refs['co' + cId]);
+        var loader = this.$refs['co' + cId][0];
+        loader.classList = [];
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete('/posts/' + postSlug + '/comments/' + cId)
+            .then(function (res) {
+            console.log(res);
+            if (res.status === 200 && res.data === 'deleted') {
+                // console.log(this.post.comments[index])
+                _this.post.comments.splice(1, index);
+            }
+        })
+            .catch(function (err) {
+            console.log(err.response || err);
+        })
+            .finally(function () { loader.classList = ['d-none']; });
     }
 };
 var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({

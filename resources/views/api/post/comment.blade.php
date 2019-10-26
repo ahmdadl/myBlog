@@ -25,15 +25,29 @@
     <hr class="bg-info p-1" />
 
     <ul class="list-unstyled">
-        <li class="media my-3 p-1" :ref='"com" + comment.id' v-for='comment in post.comments'>
+        <li class="media my-3 p-1" :ref='"com" + comment.id'
+            v-for='(comment, cindx) in post.comments'>
             <a class="d-flex text-danger" :href="'/users/' + comment.owner.id">
                 <img src="{{asset('img/user.png')}}" class="img-responsive img"
                     :alt="comment.owner.name" width="130" />
             </a>
             <div class="media-body ml-2">
-                <span class="text-xl text-danger">@{{comment.owner.name}}</span>
+                <span class="text-xl text-danger">
+                    @{{comment.owner.name}}
+                </span>
+                <small class="text-muted" dir="ltr">
+                    @{{comment.created}}
+                </small>
+                <button class="btn btn-danger btn-sm p-0 px-2 ml-2"
+                    @click.stop.prevent='deleteComment(post.slug, comment.id, cindx)'>
+                    <span class="d-none" :ref="'co' + comment.id">
+                        <span
+                            class="spinner-border spinner-border-sm text-light text-sm"
+                            role="status" aria-hidden="true"></span>
+                    </span>
+                    x
+                </button>
 
-                <small class="text-muted" dir="ltr">@{{comment.created}}</small>
                 <span class="d-block">
                     @{{comment.body}}
                     <button type="button"
