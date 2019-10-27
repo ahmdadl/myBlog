@@ -139,7 +139,7 @@
     @vueLink(url()->current())
         <script src="{{ mix('js/ts.js') }}"></script>
     @else
-        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}    
+        <script src="{{ mix('js/app.js') }}"></script>    
     @endvueLink
 </body>
 

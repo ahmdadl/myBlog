@@ -18,7 +18,7 @@
                 </h5>
                 {{$comment->body}}
                 <button type="button"
-                    class="btn btn-outline-primary ml-3 showReplayForm">Replay</button>
+                    class="btn btn-outline-primary ml-3 showReplayForm" replay-id='replay{{$comment->id}}'>Replay</button>
                 <ul class="list-unstyled mt-1">
                     @foreach ($comment->replays as $replay)
                     <li class="media {{ $loop->last ?: 'mb-4' }}">
@@ -34,7 +34,7 @@
                         </div>
                     </li>
                     @endforeach
-                    <div class="replayForm d-none">
+                    <div id="replay{{$comment->id}}" class="replayForm d-none">
                         @include('post.comment.form', [
                         'action' => $comment->path()
                         ])
