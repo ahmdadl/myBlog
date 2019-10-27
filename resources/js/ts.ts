@@ -7,10 +7,6 @@ import Axios from "axios";
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 
-Vue.filter("json", x => {
-    return x * 13;
-});
-
 Vue.filter("capt", (str: string) => {
     if (!str) return "";
     let output: Array<string> = [];

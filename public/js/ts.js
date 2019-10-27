@@ -46819,9 +46819,6 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].config.productionTip = false;
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0__["default"].filter("json", function (x) {
-    return x * 13;
-});
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].filter("capt", function (str) {
     if (!str)
         return "";
