@@ -22,8 +22,8 @@ class PostController extends Controller
     public function index()
     {
         return view('post.index', [
-            'posts' => Post::latest()->get(),
-            'cats' => Category::latest()->get()
+            'posts' => Post::latest()->paginate(15),
+            'cats' => Category::latest()->limit(15)->get()
         ]);
     }
 
