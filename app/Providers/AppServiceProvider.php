@@ -7,6 +7,8 @@ use App\Policies\PostPolicy;
 use App\Post;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +35,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(169);
+
+        Blade::if('vueLink', function (string $currentUrl) {
+            return Str::contains($currentUrl, '/api/');
+        });
     }
 }
