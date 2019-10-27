@@ -1,4 +1,4 @@
-@extends('layouts/api')
+@extends('layouts/app')
 
 @section('title')
 All Posts
