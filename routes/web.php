@@ -36,7 +36,8 @@ Route::resource('/api/posts', 'PostApiController');
 
 // json routes
 Route::get('/json/posts', function (Request $request) {
-    return new PostCollection(Post::latest()->get());
+    // return new PostCollection(Post::latest()->get());
+    return Post::latest()->paginate(15);
 });
 Route::get('/json/posts/{post}', function (Post $post) {
     return new PostResource($post);

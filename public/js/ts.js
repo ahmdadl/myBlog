@@ -46837,7 +46837,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].filter("uppercase", function (str) {
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("stable", _components_index__WEBPACK_IMPORTED_MODULE_1__["Table"]);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("anime", _components_index__WEBPACK_IMPORTED_MODULE_1__["Anime"]);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("post-modal", _components_index__WEBPACK_IMPORTED_MODULE_1__["PostModal"]);
-vue__WEBPACK_IMPORTED_MODULE_0__["default"].component('edit-post', _components_index__WEBPACK_IMPORTED_MODULE_1__["EditPost"]);
+vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("edit-post", _components_index__WEBPACK_IMPORTED_MODULE_1__["EditPost"]);
 var Data = {
     title: "shopping list in here",
     items: ["asd", "eerd", "trtr"],
@@ -46880,7 +46880,8 @@ var Data = {
     commentSaving: null,
     commentdeleting: null,
     postDeleteing: null,
-    postIndx: null
+    postIndx: null,
+    paginate: null
 };
 var Comput = {
     isNighty: function () {
@@ -46892,7 +46893,7 @@ var Comput = {
 };
 var Funct = {
     superMe: function () {
-        // console.log(this.$el, this.$refs);
+        // console.log(this.$el, this.$refs)
         console.log(this.$refs.anm.classList);
         this.$refs.anm.classList.add("btn-danger");
     },
@@ -46923,7 +46924,7 @@ var Funct = {
         this.taskSaving = true;
         if (this.newTask.length < 5 || this.newTask.length > 70) {
             this.newTaskError = true;
-            // return;
+            // return
         }
         axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/posts/" + postSlug + "/tasks", {
             body: this.newTask
@@ -46951,7 +46952,7 @@ var Funct = {
         if (this.newComment.length < 25 || this.newComment.length > 350) {
             this.comErr = "";
             this.commentSaving = false;
-            // return;
+            // return
         }
         axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/posts/" + postSlug + "/comments", {
             body: this.newComment
@@ -46962,7 +46963,8 @@ var Funct = {
                 _this.newComment = "";
                 _this.post.comments.unshift(res.data);
                 setTimeout(function () {
-                    _this.$refs["com" + res.data.id][0].classList.value += ' buffer';
+                    _this.$refs["com" + res.data.id][0].classList.value +=
+                        " buffer";
                 }, 100);
             }
         })
@@ -46981,12 +46983,12 @@ var Funct = {
     deleteComment: function (postSlug, cId, index) {
         var _this = this;
         // console.log(this.$refs['co' + cId])
-        var loader = this.$refs['co' + cId][0];
+        var loader = this.$refs["co" + cId][0];
         loader.classList = [];
-        axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete('/posts/' + postSlug + '/comments/' + cId)
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete("/posts/" + postSlug + "/comments/" + cId)
             .then(function (res) {
             console.log(res);
-            if (res.status === 200 && res.data === 'deleted') {
+            if (res.status === 200 && res.data === "deleted") {
                 // console.log(this.post.comments[index])
                 _this.post.comments.splice(1, index);
             }
@@ -46994,19 +46996,21 @@ var Funct = {
             .catch(function (err) {
             console.log(err.response || err);
         })
-            .finally(function () { loader.classList = ['d-none']; });
+            .finally(function () {
+            loader.classList = ["d-none"];
+        });
     },
     deletePost: function (postSlug, isPostPage, postIndx) {
         var _this = this;
         if (postIndx === void 0) { postIndx = 0; }
         // console.log(isPostPage)
         this.postDeleteing = true;
-        axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete('/posts/' + postSlug)
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete("/posts/" + postSlug)
             .then(function (res) {
             console.log(res);
             if (res.status === 200 && res.data.deleted) {
                 if (isPostPage) {
-                    location.href = '/api/posts';
+                    location.href = "/api/posts";
                 }
                 else {
                     _this.posts.splice(postIndx, 1);
@@ -47016,7 +47020,32 @@ var Funct = {
             .catch(function (err) {
             console.log(err.response || err);
         })
-            .finally(function () { _this.postDeleteing = false; });
+            .finally(function () {
+            _this.postDeleteing = false;
+        });
+    },
+    loadPosts: function (pageArg, objectToSet) {
+        var _this = this;
+        var page = "?page=" + pageArg;
+        // check if request for one post it`s slug
+        if (typeof pageArg === 'string') {
+            page = "/" + pageArg;
+        }
+        axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("/json/posts" + page)
+            .then(function (res) {
+            console.log(res.data);
+            // check if pagination data provided
+            if (res.data.current_page) {
+                _this.paginate = {
+                    current: res.data.current_page,
+                    from: res.data.from,
+                    to: res.data.last_page
+                };
+            }
+            // set proper data holder with response data
+            _this.$data[objectToSet] = res.data.data;
+        })
+            .catch(function (err) { return console.error(err); });
     }
 };
 var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({
@@ -47025,25 +47054,14 @@ var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({
     computed: Comput,
     methods: Funct,
     mounted: function () {
-        var _this = this;
         var Path = document.location.pathname;
         if (Path === "/api/posts") {
-            axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("/json/posts")
-                .then(function (res) {
-                _this.posts = res.data.data;
-                console.log(res.data.data);
-            })
-                .catch(function (err) { return console.error(err); });
+            this.loadPosts(1, 'posts');
         }
         else {
             var PostSlug = Path.replace("/api/posts/", "");
             document.title = PostSlug;
-            axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("/json/posts/" + PostSlug)
-                .then(function (res) {
-                _this.post = res.data.data;
-                console.log(res.data.data);
-            })
-                .catch(function (err) { return console.error(err); });
+            this.loadPosts(PostSlug, 'post');
         }
     }
 });
