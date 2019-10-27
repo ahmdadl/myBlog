@@ -39,7 +39,7 @@
         @include('errors', ['errorBag' => 'addUser'])
     </div>
 
-    <div class="card">
+    <div class="card col-sm-10 col-md-8">
         <img class="card-img-top"
             src="{{asset('storage/storage/img/'.$post->img)}}" alt="">
         <div class="card-body">
