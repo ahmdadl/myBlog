@@ -19,9 +19,9 @@ class PostSeeder extends Seeder
     public function run()
     {
         // create 5 posts
-        factory(Post::class, 7)->create()->each(function (Post $post) {
+        factory(Post::class, 125)->create()->each(function (Post $post) {
             $post->tasks()->createMany(
-                factory(Task::class, rand(3, 8))->raw([
+                factory(Task::class, rand(3, 7))->raw([
                     'userId' => UserFactory::create()->id
                 ])
             );
