@@ -123,7 +123,7 @@
 
         <main class="py-4">
             @yield('baseContent')
-            @include('vue')
+            {{-- @include('vue') --}}
         </main>
     </div>
 
