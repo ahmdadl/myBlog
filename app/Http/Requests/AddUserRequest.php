@@ -35,7 +35,7 @@ class AddUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'exists' => 'user be registered at narutoFights'
+            'exists' => 'user must be registered at this website'
         ];
     }
 }
