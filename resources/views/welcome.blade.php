@@ -117,7 +117,7 @@
             </div>
 
             <div class="links">
-                <a href="/login" class="version">
+                <a href="{{auth()->check() ? '/api/posts' : '/login'}}" class="version">
                     GoTo Vue.js version
                 </a>
                 <a href="/posts" class="version">
