@@ -28,8 +28,8 @@ all posts
         <b>Note:</b> no posts has been added yet
     </div>
     @endforelse
-    <div class="pt-5 ml-auto font-weight-bold">
-        {{$posts->links()}}
-    </div>
+</div>
+<div class="pt-5 ml-auto font-weight-bold row">
+    {{$posts->links()}}
 </div>
 @endsection
