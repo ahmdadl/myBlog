@@ -28,6 +28,7 @@ Vue.component("stable", Compo.Table)
 Vue.component("anime", Compo.Anime)
 Vue.component("post-modal", Compo.PostModal)
 Vue.component("edit-post", Compo.EditPost)
+Vue.component('paginator', Compo.Paginator)
 
 const Data = {
     title: "shopping list in here",
@@ -81,14 +82,13 @@ const Comput = {
     },
     longText: function() {
         return this.memeText.length >= 3
-    }
+    },
+    // this.$on()
 }
 
 const Funct = {
     superMe() {
-        // console.log(this.$el, this.$refs)
-        console.log(this.$refs.anm.classList)
-        this.$refs.anm.classList.add("btn-danger")
+        console.log(this.$el)
     },
     checkTask(postSlug: string, taskId: number, taskIndex: number): void {
         let loader = this.$refs["spinner" + taskId][0]
@@ -222,6 +222,9 @@ const Funct = {
             })
     },
     loadPosts(pageArg: number | string, objectToSet: string) {
+        // show loading spinner
+        this.posts = null
+        
         let page = "?page=" + pageArg
 
         // check if request for one post it`s slug
@@ -255,8 +258,23 @@ const App = new Vue({
     computed: Comput,
     methods: Funct,
     mounted() {
+        /**
+         * download data based on url
+         */
         const Path = document.location.pathname
         if (Path === "/api/posts") {
+            // split href into two to check if page number available
+            let query = document.location.href.split('?')
+
+            // if ?page exists in href
+            if (query.length === 2) {
+                // extract page number from url and load posts from 
+                // this page
+                this.loadPosts(parseInt(query[1].split('=')[1]), 'posts')
+                return;
+            }
+            
+            // return page one posts
             this.loadPosts(1, 'posts')
         } else {
             const PostSlug = Path.replace("/api/posts/", "")

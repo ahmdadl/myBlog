@@ -46551,6 +46551,80 @@ var List3 = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Paginator.ts":
+/*!**********************************************!*\
+  !*** ./resources/js/components/Paginator.ts ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vue */ "./resources/js/components/vue.ts");
+
+
+var Paginator = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(Paginator, _super);
+    function Paginator() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.pagesNums = [];
+        _this.numberOfPages = 0;
+        _this.current = 0;
+        _this.from = 0;
+        _this.to = 0;
+        _this.afterCurrent = 0;
+        _this.beforeCurrent = 0;
+        return _this;
+    }
+    Paginator.prototype.pagesList = function () {
+        var _this = this;
+        // get how many pages before current page
+        this.beforeCurrent = this.current - 1;
+        // limit before pages to current page minus 3 pages
+        if (this.beforeCurrent > 3)
+            this.beforeCurrent = this.current - 3;
+        // calculate how many pages after current
+        this.afterCurrent = this.to - this.current;
+        // limit after pages to 4
+        if (this.afterCurrent > 4)
+            this.afterCurrent = this.current + 4;
+        console.log(this.beforeCurrent, this.afterCurrent);
+        return Array(this.afterCurrent - this.beforeCurrent).fill(1).map(function (x, i) {
+            return i + _this.beforeCurrent + 1;
+        });
+    };
+    Paginator.prototype.load = function (pageNum) {
+        this.$root.loadPosts(pageNum, 'posts');
+        window.history.pushState('posts page', 'page ' + pageNum, '/api/posts?page=' + pageNum);
+        this.current = pageNum;
+        this.pagesNums = this.pagesList();
+    };
+    Paginator.prototype.mounted = function () {
+        this.numberOfPages = this.pageData.to;
+        this.current = this.pageData.current;
+        this.from = this.pageData.from;
+        this.to = this.pageData.to;
+        this.pagesNums = this.pagesList();
+    };
+    Paginator = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_vue__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            props: {
+                pageData: {
+                    type: Object,
+                    required: true
+                }
+            },
+            template: __webpack_require__(/*! ./paginator.html */ "./resources/js/components/paginator.html")
+        })
+    ], Paginator);
+    return Paginator;
+}(_vue__WEBPACK_IMPORTED_MODULE_1__["Vue"]));
+/* harmony default export */ __webpack_exports__["default"] = (Paginator);
+
+
+/***/ }),
+
 /***/ "./resources/js/components/PostModal.ts":
 /*!**********************************************!*\
   !*** ./resources/js/components/PostModal.ts ***!
@@ -46681,7 +46755,7 @@ module.exports = "<b-modal\n    centered\n    size=\"lg\"\n    :id=\"id\"\n    t
 /*!******************************************!*\
   !*** ./resources/js/components/index.ts ***!
   \******************************************/
-/*! exports provided: List2, List3, Table, Anime, PostModal, EditPost */
+/*! exports provided: List2, List3, Table, Anime, PostModal, EditPost, Paginator */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46704,6 +46778,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EditPost__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EditPost */ "./resources/js/components/EditPost.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "EditPost", function() { return _EditPost__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
+/* harmony import */ var _Paginator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Paginator */ "./resources/js/components/Paginator.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Paginator", function() { return _Paginator__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
 
 
@@ -46712,6 +46788,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/paginator.html":
+/*!************************************************!*\
+  !*** ./resources/js/components/paginator.html ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<nav aria-label=\"Page navigation\">\r\n    <ul class=\"pagination\">\r\n        <li class=\"page-item\">\r\n            <a href=\"#\" class=\"page-link\" @click.prevent=\"load(1)\">First</a>\r\n        </li>\r\n        <li class=\"page-item\">\r\n            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" @click.prevent=\"load(current - 1)\">\r\n                <span aria-hidden=\"true\">&laquo;</span>\r\n            </a>\r\n        </li>\r\n        <li\r\n            class=\"page-item\"\r\n            v-for=\"i in pagesNums\"\r\n            :class='i === current ? \"active\" : \"\"'\r\n        >\r\n            <button type=\"button\" class=\"page-link\" @click.prevent=\"load(i)\">\r\n                {{ i }}\r\n            </button>\r\n        </li>\r\n        <li class=\"page-item\">\r\n            <a class=\"page-link\" href=\"#\" aria-label=\"Next\" @click.prevent=\"load(current + 1)\">\r\n                <span aria-hidden=\"true\">&raquo;</span>\r\n            </a>\r\n        </li>\r\n        <li class=\"page-item\">\r\n            <a class=\"page-link\" href=\"#\" @click.prevent=\"load(to)\">\r\n                Last\r\n            </a>\r\n        </li>\r\n    </ul>\r\n</nav>\r\n";
 
 /***/ }),
 
@@ -46838,6 +46927,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("stable", _components_inde
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("anime", _components_index__WEBPACK_IMPORTED_MODULE_1__["Anime"]);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("post-modal", _components_index__WEBPACK_IMPORTED_MODULE_1__["PostModal"]);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].component("edit-post", _components_index__WEBPACK_IMPORTED_MODULE_1__["EditPost"]);
+vue__WEBPACK_IMPORTED_MODULE_0__["default"].component('paginator', _components_index__WEBPACK_IMPORTED_MODULE_1__["Paginator"]);
 var Data = {
     title: "shopping list in here",
     items: ["asd", "eerd", "trtr"],
@@ -46889,13 +46979,11 @@ var Comput = {
     },
     longText: function () {
         return this.memeText.length >= 3;
-    }
+    },
 };
 var Funct = {
     superMe: function () {
-        // console.log(this.$el, this.$refs)
-        console.log(this.$refs.anm.classList);
-        this.$refs.anm.classList.add("btn-danger");
+        console.log(this.$el);
     },
     checkTask: function (postSlug, taskId, taskIndex) {
         var _this = this;
@@ -47026,6 +47114,8 @@ var Funct = {
     },
     loadPosts: function (pageArg, objectToSet) {
         var _this = this;
+        // show loading spinner
+        this.posts = null;
         var page = "?page=" + pageArg;
         // check if request for one post it`s slug
         if (typeof pageArg === 'string') {
@@ -47054,8 +47144,21 @@ var App = new vue__WEBPACK_IMPORTED_MODULE_0__["default"]({
     computed: Comput,
     methods: Funct,
     mounted: function () {
+        /**
+         * download data based on url
+         */
         var Path = document.location.pathname;
         if (Path === "/api/posts") {
+            // split href into two to check if page number available
+            var query = document.location.href.split('?');
+            // if ?page exists in href
+            if (query.length === 2) {
+                // extract page number from url and load posts from 
+                // this page
+                this.loadPosts(parseInt(query[1].split('=')[1]), 'posts');
+                return;
+            }
+            // return page one posts
             this.loadPosts(1, 'posts');
         }
         else {

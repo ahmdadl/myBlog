@@ -51,5 +51,6 @@ All Posts
             </div>
         </div>
     </div>
+    <paginator v-if='paginate' :page-data='paginate'></paginator>
 </div>
 @endsection

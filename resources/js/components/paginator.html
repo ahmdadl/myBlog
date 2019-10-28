@@ -1,0 +1,31 @@
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item">
+            <a href="#" class="page-link" @click.prevent="load(1)">First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous" @click.prevent="load(current - 1)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li
+            class="page-item"
+            v-for="i in pagesNums"
+            :class='i === current ? "active" : ""'
+        >
+            <button type="button" class="page-link" @click.prevent="load(i)">
+                {{ i }}
+            </button>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next" @click.prevent="load(current + 1)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#" @click.prevent="load(to)">
+                Last
+            </a>
+        </li>
+    </ul>
+</nav>
