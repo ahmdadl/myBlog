@@ -78,6 +78,12 @@
             margin-bottom: 30px;
         }
 
+        .githup img {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
     </style>
 </head>
 
@@ -98,6 +104,14 @@
         @endif
 
         <div class="content">
+            <div class="githup">
+                <a href="https://github.com/abo3adel/myBlog">
+                    <img width="149" height="149"
+                        src="https://github.blog/wp-content/uploads/2008/12/forkme_left_green_007200.png?resize=149%2C149"
+                        class="attachment-full size-full"
+                        alt="Fork me on GitHub" data-recalc-dims="1">
+                </a>
+            </div>
             <div class="title m-b-md">
                 Welcome To {{config('app.name')}}
             </div>
