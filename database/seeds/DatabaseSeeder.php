@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersTableSeeder::class);
         $this->call(PostSeeder::class);
-        // $this->call(TaskTableSeeder::class);
+        $this->call(CategorySeeder::class);
 
         dump(Post::all()->count());
         // $this->call(CategorySeeder::class);

@@ -26,11 +26,11 @@ class PostSeeder extends Seeder
                 ])
             );
 
-            $ctgIds = factory(Category::class, rand(2, 5))
-                ->create()
-                ->pluck('id');
+            // $ctgIds = factory(Category::class, rand(2, 5))
+            //     ->create()
+            //     ->pluck('id');
             
-            $post->categories()->attach($ctgIds);
+            // $post->categories()->attach($ctgIds);
 
             // with comments
             $post->comments()->createMany(
