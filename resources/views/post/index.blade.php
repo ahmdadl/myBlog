@@ -18,7 +18,7 @@ all posts
                         {{$post->title}}
                     </a>
                 </h4>
-                <p class="card-text">{{$post->mini_body}}</p>
+                <p class="card-text">{{substr($post->body, 0, 250)}}</p>
             </div>
             @include('post.opr')
         </div>

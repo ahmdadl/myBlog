@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -53,8 +55,14 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        $posts = DB::table('post_categories')
+            ->join('posts', 'post_categories.post_id', '=', 'posts.id')
+            ->where('post_categories.category_id', '=', $category->id)
+            ->select('post_categories.*', 'posts.*')
+            ->paginate(15);
+
         return view('post.index', [
-            'posts' => $category->posts,
+            'posts' => $posts,
             'cats' => Category::latest()->get()
         ]);
     }
