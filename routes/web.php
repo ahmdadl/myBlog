@@ -18,7 +18,7 @@ use App\Post;
 use Symfony\Component\HttpFoundation\Request;
 
 Route::get('/', function () {
-    return redirect('/posts');
+    return view('welcome');
 });
 
 Route::get('/res/img/{image}', function ($image) {
