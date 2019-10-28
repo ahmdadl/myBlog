@@ -15,6 +15,13 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     /**
+     * number of posts to be loaded on page
+     * 
+     * @param number
+     */
+    const POSTS_PER_PAGE = 15;
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -22,7 +29,7 @@ class PostController extends Controller
     public function index()
     {
         return view('post.index', [
-            'posts' => Post::latest()->paginate(15),
+            'posts' => Post::latest()->paginate(self::POSTS_PER_PAGE),
             'cats' => Category::latest()->limit(15)->get()
         ]);
     }
@@ -33,7 +40,7 @@ class PostController extends Controller
 
         return view('post.index', [
             'posts' => Post::where('title', 'LIKE', "%{$title}%")
-                ->paginate(15),
+                ->paginate(self::POSTS_PER_PAGE),
             'cats' => Category::latest()->get()
         ]);
     }

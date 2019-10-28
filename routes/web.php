@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\PostController;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Post;
@@ -37,7 +38,7 @@ Route::resource('/api/posts', 'PostApiController');
 // json routes
 Route::get('/json/posts', function (Request $request) {
     // return new PostCollection(Post::latest()->get());
-    return Post::latest()->paginate(15);
+    return Post::latest()->paginate(PostController::POSTS_PER_PAGE);
 });
 Route::get('/json/posts/{post}', function (Post $post) {
     return new PostResource($post);
