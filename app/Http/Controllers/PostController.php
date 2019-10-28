@@ -33,7 +33,7 @@ class PostController extends Controller
 
         return view('post.index', [
             'posts' => Post::where('title', 'LIKE', "%{$title}%")
-                ->get(),
+                ->paginate(15),
             'cats' => Category::latest()->get()
         ]);
     }
