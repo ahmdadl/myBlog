@@ -88,7 +88,7 @@ const Comput = {
 
 const Funct = {
     superMe() {
-        console.log(this.$el)
+        // console.log(this.$el)
     },
     checkTask(postSlug: string, taskId: number, taskIndex: number): void {
         let loader = this.$refs["spinner" + taskId][0]
@@ -101,12 +101,12 @@ const Funct = {
             done: TaskDone
         })
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.done === TaskDone && res.status === 200) {
                     this.post.tasks[taskIndex].done = TaskDone
                 }
             })
-            .catch(err => console.log(err))
+            // .catch(err => console.log(err))
             .finally(() => {
                 // hide loader
                 loader.classList.add("d-none")
@@ -125,14 +125,14 @@ const Funct = {
             body: this.newTask
         })
             .then(res => {
-                console.log(res)
+                // console.log(res)
 
                 if (res.status === 201) {
                     this.post.tasks.push(res.data)
                 }
             })
             .catch(err => {
-                console.log(err)
+                // console.log(err)
                 if (err.response) {
                     this.taskBodyError =
                         err.response.data.errors.body[0] ||
@@ -155,7 +155,7 @@ const Funct = {
             body: this.newComment
         })
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 if (res.status === 201) {
                     this.newComment = ""
                     this.post.comments.unshift(res.data)
@@ -166,7 +166,7 @@ const Funct = {
                 }
             })
             .catch(err => {
-                console.log(err.response || err)
+                // console.log(err.response || err)
 
                 if (err.response) {
                     this.comErr =
@@ -179,32 +179,32 @@ const Funct = {
             })
     },
     deleteComment(postSlug: string, cId: number, index: number) {
-        // console.log(this.$refs['co' + cId])
+        console.log(this.$refs['co' + cId])
         const loader = this.$refs["co" + cId][0]
         loader.classList = []
 
         Axios.delete("/posts/" + postSlug + "/comments/" + cId)
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 if (res.status === 200 && res.data === "deleted") {
-                    // console.log(this.post.comments[index])
+                    console.log(this.post.comments[index])
                     this.post.comments.splice(1, index)
                 }
             })
             .catch(err => {
-                console.log(err.response || err)
+                // console.log(err.response || err)
             })
             .finally(() => {
                 loader.classList = ["d-none"]
             })
     },
     deletePost(postSlug: string, isPostPage: boolean, postIndx: number = 0) {
-        // console.log(isPostPage)
+        console.log(isPostPage)
         this.postDeleteing = true
 
         Axios.delete("/posts/" + postSlug)
             .then(res => {
-                console.log(res)
+                // console.log(res)
 
                 if (res.status === 200 && res.data.deleted) {
                     if (isPostPage) {
@@ -215,7 +215,7 @@ const Funct = {
                 }
             })
             .catch(err => {
-                console.log(err.response || err)
+                // console.log(err.response || err)
             })
             .finally(() => {
                 this.postDeleteing = false
@@ -234,7 +234,7 @@ const Funct = {
 
         Axios.get("/json/posts" + page)
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
 
                 // check if pagination data provided
                 if (res.data.current_page) {

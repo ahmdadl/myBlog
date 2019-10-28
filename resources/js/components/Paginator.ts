@@ -40,6 +40,7 @@ export default class Paginator extends Vue {
     }
 
     public load(pageNum: number) : void {
+        // @ts-ignore
         this.$root.loadPosts(pageNum, 'posts')
         
         window.history.pushState('posts page', 'page ' + pageNum, '/api/posts?page=' + pageNum)
@@ -50,10 +51,10 @@ export default class Paginator extends Vue {
     }
 
     mounted () {
-        this.numberOfPages = this.pageData.to
-        this.current = this.pageData.current;
-        this.from = this.pageData.from;
-        this.to = this.pageData.to;
+        this.numberOfPages = this.$props.pageData.to
+        this.current = this.$props.pageData.current;
+        this.from = this.$props.pageData.from;
+        this.to = this.$props.pageData.to;
         
         this.pagesNums = this.pagesList()
     }
