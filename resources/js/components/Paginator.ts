@@ -10,52 +10,68 @@ import { Vue, Component } from "./vue";
     template: require("./paginator.html")
 })
 export default class Paginator extends Vue {
-    public pagesNums: Array<number> = [] 
+    public pagesNums: Array<number | null> = [];
 
     public numberOfPages: number = 0;
-    private current: number = 0
-    private from: number = 0
-    private to: number = 0
+    private current: number = 0;
+    private from: number = 0;
+    private to: number = 0;
 
-    public afterCurrent: number = 0
-    public beforeCurrent: number = 0
+    public afterCurrent: number = 0;
+    public beforeCurrent: number = 0;
 
     public pagesList() {
         // get how many pages before current page
-        this.beforeCurrent = this.current - 1
+        this.beforeCurrent = this.current - 1;
         // limit before pages to current page minus 3 pages
-        if (this.beforeCurrent > 3) this.beforeCurrent=this.current-3
+        if (this.beforeCurrent > 3) this.beforeCurrent = this.current - 3;
 
-        // calculate how many pages after current
-        this.afterCurrent = this.to - this.current
-        // limit after pages to 4
-        if (this.afterCurrent > 4) this.afterCurrent = this.current+4
+        // console.log(this.beforeCurrent, this.afterCurrent);
 
-
-        // console.log(this.beforeCurrent, this.afterCurrent)
-
-        return Array(this.afterCurrent - this.beforeCurrent).fill(1).map((x, i) => {
-            return i+this.beforeCurrent+1
-        })
+        if (this.current === this.to) {
+            return Array(this.current)
+                .fill(0)
+                .map((x, i) => i < this.current - 5 ? null : i + 1)
+                .filter(x => x !== null);
+        } else if (this.current === this.from) {
+            return Array(6)
+                .fill(0)
+                .map((x, i) => i + 1)
+                .filter(x => (x < this.to && x >= this.from));
+        } else {
+            return Array(7)
+                .fill(0)
+                .map((x, i) => i+this.beforeCurrent)
+                .filter(x => x < this.to)
+        }
     }
 
-    public load(pageNum: number) : void {
+    public load(pageNum: number) {
+        // check if trying to load negative pages or more than last page
+        if (pageNum === this.current) {
+            return false;
+        }
+
         // @ts-ignore
-        this.$root.loadPosts(pageNum, 'posts')
-        
-        window.history.pushState('posts page', 'page ' + pageNum, '/api/posts?page=' + pageNum)
+        this.$root.loadPosts(pageNum, "posts");
 
-        this.current = pageNum
+        window.history.pushState(
+            "posts page",
+            "page " + pageNum,
+            "/api/posts?page=" + pageNum
+        );
 
-        this.pagesNums = this.pagesList()
+        this.current = pageNum;
+
+        this.pagesNums = this.pagesList();
     }
 
-    mounted () {
-        this.numberOfPages = this.$props.pageData.to
+    mounted() {
+        this.numberOfPages = this.$props.pageData.to;
         this.current = this.$props.pageData.current;
         this.from = this.$props.pageData.from;
         this.to = this.$props.pageData.to;
-        
-        this.pagesNums = this.pagesList()
+
+        this.pagesNums = this.pagesList();
     }
 }
