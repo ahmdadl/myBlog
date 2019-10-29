@@ -12,14 +12,14 @@
                     class="{{request()->is('posts') ? 'active' : ''}}">
                     Posts
                 </b-nav-item>
-                <b-nav-item href='/posts/create'
+                {{-- <b-nav-item href='/posts/create'
                     class="{{request()->is('posts/create') ? 'active' : ''}}">
                     CreatePost
                 </b-nav-item>
                 <b-nav-item href='/category/create'
                     class="{{request()->is('category/create') ? 'active' : ''}}">
                     Ccategory
-                </b-nav-item>
+                </b-nav-item> --}}
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">
