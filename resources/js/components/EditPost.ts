@@ -44,7 +44,7 @@ export default class EditPost extends Vue
             body: this.body
         })
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 if (res.status === 200 && res.data.img) {
                     let p = {
                         title: '',
@@ -63,7 +63,7 @@ export default class EditPost extends Vue
                 }
             })
             .catch(err => {
-                console.log(err.response || err)
+                // console.log(err.response || err)
             })
             .finally(() => {this.saving = false})
     }

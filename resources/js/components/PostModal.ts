@@ -50,7 +50,7 @@ export default class PostModal extends Vue {
             tasks: JSON.stringify(this.tasks)
         })
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 201) {
                     this.$bvModal.msgBoxOk("post successfully created");
                     this.$bvModal.hide("post-form");
@@ -67,7 +67,7 @@ export default class PostModal extends Vue {
                 this.createForm = "was-validated"
                 if (err.response.data) {
                     this.errors = err.response.data.errors
-                    console.log(err.response.data)
+                    // console.log(err.response.data)
                 }
 
             })

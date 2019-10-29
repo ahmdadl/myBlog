@@ -32,7 +32,7 @@ export default class Paginator extends Vue {
         if (this.afterCurrent > 4) this.afterCurrent = this.current+4
 
 
-        console.log(this.beforeCurrent, this.afterCurrent)
+        // console.log(this.beforeCurrent, this.afterCurrent)
 
         return Array(this.afterCurrent - this.beforeCurrent).fill(1).map((x, i) => {
             return i+this.beforeCurrent+1
