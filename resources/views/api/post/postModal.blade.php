@@ -5,7 +5,8 @@
             <div class="row mb-1 text-center">
                 <div class="col-6">
                     <h5 class="text-primary">
-                        Create Post</h5>
+                        Create Post
+                    </h5>
                     <div class="form-group">
                         <input type="text" v-model="ptitle" id="ptitle"
                             class="form-control col-12"
