@@ -5,7 +5,7 @@
 
     <button type="button" class="btn btn-outline-danger"
         v-on:click="deletePost(post.slug, {{$isPost ?? 'false'}}, postIndx || 0)">
-        <span v-if="postDeleteing">
+        <span :ref="'delPost' + postIndx" class="d-none">
             <span
                 class="spinner-border spinner-border-sm"
                 role="status"

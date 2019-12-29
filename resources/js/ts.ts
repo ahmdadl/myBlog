@@ -2,7 +2,11 @@ import Vue, { VNode } from "vue"
 import Component from "vue-class-component"
 import * as Compo from "./components/index"
 import BootstrapVue from "bootstrap-vue"
-import Axios from "axios"
+import Axios from 'axios';
+
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+// @ts-ignore
+Axios.defaults.headers.common['X-CSRF-TOKEN'] = document.getElementById('csrf-token').value
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
@@ -179,7 +183,7 @@ const Funct = {
             })
     },
     deleteComment(postSlug: string, cId: number, index: number) {
-        console.log(this.$refs['co' + cId])
+        // console.log(this.$refs['co' + cId])
         const loader = this.$refs["co" + cId][0]
         loader.classList = []
 
@@ -187,7 +191,7 @@ const Funct = {
             .then(res => {
                 // console.log(res)
                 if (res.status === 200 && res.data === "deleted") {
-                    console.log(this.post.comments[index])
+                    // console.log(this.post.comments[index])
                     this.post.comments.splice(1, index)
                 }
             })
@@ -199,8 +203,9 @@ const Funct = {
             })
     },
     deletePost(postSlug: string, isPostPage: boolean, postIndx: number = 0) {
-        console.log(isPostPage)
-        this.postDeleteing = true
+        // console.log(isPostPage)
+        const loader = this.$refs['delPost' + postIndx][0]
+        loader.classList.remove('d-none')
 
         Axios.delete("/posts/" + postSlug)
             .then(res => {
@@ -218,7 +223,7 @@ const Funct = {
                 // console.log(err.response || err)
             })
             .finally(() => {
-                this.postDeleteing = false
+                loader.classList.add('d-none')
             })
     },
     loadPosts(pageArg: number | string, objectToSet: string) {
