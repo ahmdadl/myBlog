@@ -18,3 +18,7 @@ for (const btn of replayBtns) {
         // form.getElementsByClassName('form-control').focus()
     });
 }
+
+// hide splash screen
+let splash = document.getElementById('splashScreen');
+if (splash) splash.style.display = 'none';
