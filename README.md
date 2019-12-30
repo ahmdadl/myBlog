@@ -1,6 +1,6 @@
 # myBlog
 
 ### Available Versions
-#### [Vue.Js](https://github.com/abo3adel/myBlog)
+#### [Vue.Js](http://aboadeltestblog.epizy.com/)
 
-#### [PHP](https://github.com/abo3adel/myBlog)
+#### [Laravel](http://aboadeltestblog.epizy.com/posts)
