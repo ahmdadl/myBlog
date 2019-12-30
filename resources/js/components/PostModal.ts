@@ -44,7 +44,7 @@ export default class PostModal extends Vue {
 
         if (this.createForm === "was-validated") return;
 
-        Axios.post("/api/posts", {
+        Axios.post("/json/posts", {
             title: this.ptitle,
             body: this.body,
             tasks: JSON.stringify(this.tasks)

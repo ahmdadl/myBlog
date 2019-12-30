@@ -101,7 +101,7 @@ const Funct = {
         // remove d-none from loader classes
         loader.classList = []
 
-        Axios.put("/api/posts/" + postSlug + "/tasks/" + taskId, {
+        Axios.post("/posts/" + postSlug + "/tasks/" + taskId, {
             done: TaskDone
         })
             .then(res => {
@@ -187,7 +187,7 @@ const Funct = {
         const loader = this.$refs["co" + cId][0]
         loader.classList = []
 
-        Axios.delete("/posts/" + postSlug + "/comments/" + cId)
+        Axios.post("/json/posts/" + postSlug + "/comments/" + cId)
             .then(res => {
                 // console.log(res)
                 if (res.status === 200 && res.data === "deleted") {
@@ -207,7 +207,7 @@ const Funct = {
         const loader = this.$refs['delPost' + postIndx][0]
         loader.classList.remove('d-none')
 
-        Axios.delete("/posts/" + postSlug)
+        Axios.post("/posts/" + postSlug)
             .then(res => {
                 // console.log(res)
 
@@ -286,5 +286,9 @@ const App = new Vue({
             document.title = PostSlug
             this.loadPosts(PostSlug, 'post')
         }
+
+        // hide splash screen
+        let splash = document.getElementById('splashScreen')
+        if (splash) splash.style.display = 'none'
     }
 })

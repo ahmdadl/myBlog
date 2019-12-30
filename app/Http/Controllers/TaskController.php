@@ -36,6 +36,10 @@ class TaskController extends Controller
         $this->authorize('update', $post);
 
         (null !== request('done')) ? $task->complete() : $task->unComplete();
+
+        if (request()->wantsJson()) {
+            return json_encode(['done' => true]);
+        }
         
         return back();
     }

@@ -39,7 +39,7 @@ export default class EditPost extends Vue
     public updatePost (){
         this.saving = true
 
-        Axios.put('/posts/' + this.$props.postData.slug, {
+        Axios.post('/json/posts/' + this.$props.postData.slug + '/edit', {
             title: this.title,
             body: this.body
         })

@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 Route::get('/res/img/{image}', function ($image) {
-    return redirect(asset('storage/storage/img/'. $image));
+    return redirect(asset('storage/storage/img/' . $image));
 });
 
 Auth::routes();
@@ -43,6 +43,9 @@ Route::get('/json/posts', function (Request $request) {
 Route::get('/json/posts/{post}', function (Post $post) {
     return new PostResource($post);
 });
+Route::post('/json/posts', 'PostApiController@store');
+Route::post('/json/posts/{post}', 'PostController@destroy');
+Route::post('/json/posts/{post}/edit', 'PostController@update');
 
 Route::resource('posts', 'PostController', [
     'except' => ['index', 'search']
@@ -70,8 +73,8 @@ Route::post(
     'posts/{post}/comments/{comment}',
     'CommentController@addReplay'
 );
-Route::delete(
-    'posts/{post}/comments/{comment}',
+Route::post(
+    '/json/posts/{post}/comments/{comment}',
     'CommentController@destroy'
 );
 
@@ -79,3 +82,5 @@ Route::post('/posts/{post}/tasks', 'TaskController@store')
     ->middleware('auth');
 Route::patch('/posts/{post}/tasks/{task}', 'TaskController@update')
     ->middleware('auth');
+
+Route::post('/posts/{post}/tasks/{task}', 'PostApiController@checkTask');

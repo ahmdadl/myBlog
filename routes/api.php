@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 //     return 'asdasd';
 // });
 
-Route::put('posts/{post}/tasks/{task}', 'PostApiController@checkTask');
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
